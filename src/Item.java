@@ -21,9 +21,13 @@ public class Item {
 	
 	public String getItemID() { return this.itemID; }
 
+	
 	public ItemCat getItemCat() { return this.itemCat; }
 	
+	public void setItemName(String ItemName){this.itemName = ItemName ; }
+	
 	public String getItemName() { return this.itemName; }
+	
 	
 	public String getItemDesc() { return this.itemDesc; }
 	
