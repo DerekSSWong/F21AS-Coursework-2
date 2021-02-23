@@ -17,6 +17,8 @@ public class Item {
 		this.itemPrice = itemPrice;
 	}
 	
+	public void setItemID(String ID) { this.itemID = ID;}
+	
 	public String getItemID() { return this.itemID; }
 
 	public ItemCat getItemCat() { return this.itemCat; }
