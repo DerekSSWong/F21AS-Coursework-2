@@ -32,61 +32,61 @@ public class Item {
 	}
 	
 	/**
-	 * Changes the ID of an Item instance to the input parameter
+	 * Updates the item ID to the String provided in the parameter
 	 * @param ID 
 	 */
 	public void setItemID(String ID) { itemID = ID; }
 	
 	/**
-	 * Returns the current ID of the Item instance
+	 * Returns the current ID of the item
 	 * @return
 	 */
 	public String getItemID() { return itemID; }
 	
 	/**
-	 * Changes the category of an Item instance to the input parameter
+	 * Updates the item category to the String provided in the parameter
 	 * @param cat
 	 */
 	public void setItemCat(String cat) { itemCat = ItemCat.valueOf(cat); }
 	
 	/**
-	 * Returns the current category of the Item instance
+	 * Returns the current category of the item
 	 * @return
 	 */
 	public ItemCat getItemCat() { return itemCat; }
 	
 	/**
-	 * Changes the name of an Item instance to the input parameter
+	 * Updates the item name to the String provided in the parameter
 	 * @param name 
 	 */
 	public void setItemName(String name){ itemName = name; }
 	
 	/**
-	 * Returns the current name of the Item instance
+	 * Returns the current name of the item
 	 * @return
 	 */
 	public String getItemName() { return itemName; }
 	
 	/**
-	 * Changes the description of an Item instance to the input parameter
+	 * Updates the item description to the String provided in the parameter
 	 * @param desc 
 	 */
 	public void setItemDesc(String desc) { this.itemDesc = desc; }
 	
 	/**
-	 * Returns the current description of the Item instance
+	 * Returns the current description of the item
 	 * @return
 	 */
 	public String getItemDesc() { return itemDesc; }
 	
 	/**
-	 * Changes the price of an Item instance to the input parameter
+	 * Updates the item price to the double provided in the parameter
 	 * @param desc 
 	 */
 	public void setItemPrice(double price) { itemPrice = price; }
 	
 	/**
-	 * Returns the current price of the Item instance
+	 * Returns the current price of the item
 	 * @return
 	 */
 	public double getItemPrice() { return itemPrice; }
