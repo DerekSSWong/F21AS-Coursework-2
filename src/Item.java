@@ -1,13 +1,27 @@
 
+/**
+ * Class for storing information of items
+ * @author Derek Wong
+ * 
+ */
+
 public class Item {
 	
 	private String itemID;
-	private enum ItemCat {HOTDRINK, COLDDRINK, MAIN, OTHER};
+	public static enum ItemCat {HOTDRINK, COLDDRINK, MAIN, OTHER};
 	private ItemCat itemCat;
 	private String itemName;
 	private String itemDesc;
 	private double itemPrice;
 	
+	/**
+	 * Constructor for the class
+	 * @param itemID The ID of the item, in the form of itemCat + integer (e.g. HOTDRINK3)
+	 * @param itemCat The category of the item, which are currently: HOTDRINK, COLDDRINK, MAIN, OTHER
+	 * @param itemName The name of the item
+	 * @param itemDesc A short description of the item
+	 * @param itemPrice The price of the item, non-negative, two d.p.
+	 */
 	public Item(String itemID, String itemCat, String itemName, String itemDesc, double itemPrice) {
 		
 		this.itemID = itemID;
@@ -17,31 +31,65 @@ public class Item {
 		this.itemPrice = itemPrice;
 	}
 	
-	//Set and get for itemID
-	public void setItemID(String itemID) { this.itemID = itemID;}
+	/**
+	 * Changes the ID of an Item instance to the input parameter
+	 * @param ID 
+	 */
+	public void setItemID(String ID) { itemID = ID; }
 	
-	public String getItemID() { return this.itemID; }
+	/**
+	 * Returns the current ID of the Item instance
+	 * @return
+	 */
+	public String getItemID() { return itemID; }
 	
-	//Set and get for itemCat
-	public void setItemCat(String itemCat) { this.itemCat = ItemCat.valueOf(itemCat); }
+	/**
+	 * Changes the category of an Item instance to the input parameter
+	 * @param cat
+	 */
+	public void setItemCat(String cat) { itemCat = ItemCat.valueOf(cat); }
 	
-	public ItemCat getItemCat() { return this.itemCat; }
+	/**
+	 * Returns the current category of the Item instance
+	 * @return
+	 */
+	public ItemCat getItemCat() { return itemCat; }
 	
-	//Set and get for itemName
-	public void setItemName(String itemName){ this.itemName = itemName; }
+	/**
+	 * Changes the name of an Item instance to the input parameter
+	 * @param name 
+	 */
+	public void setItemName(String name){ itemName = name; }
 	
-	public String getItemName() { return this.itemName; }
+	/**
+	 * Returns the current name of the Item instance
+	 * @return
+	 */
+	public String getItemName() { return itemName; }
 	
+	/**
+	 * Changes the description of an Item instance to the input parameter
+	 * @param desc 
+	 */
+	public void setItemDesc(String desc) { this.itemDesc = desc; }
 	
-	//Set and get for itemDesc
-	public void setItemDesc(String itemDesc) { this.itemDesc = itemDesc; }
+	/**
+	 * Returns the current description of the Item instance
+	 * @return
+	 */
+	public String getItemDesc() { return itemDesc; }
 	
-	public String getItemDesc() { return this.itemDesc; }
+	/**
+	 * Changes the price of an Item instance to the input parameter
+	 * @param desc 
+	 */
+	public void setItemPrice(double price) { itemPrice = price; }
 	
-	//Set and get for itemPrice
-	public void setItemPrice(double itemPrice) { this.itemPrice = itemPrice; }
-	
-	public double getItemPrice() { return this.itemPrice; }
+	/**
+	 * Returns the current price of the Item instance
+	 * @return
+	 */
+	public double getItemPrice() { return itemPrice; }
 	
 }
 
