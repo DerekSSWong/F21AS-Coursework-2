@@ -2,9 +2,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+
+
 class ItemTest {
 	
-	Item testItem = new Item("tst001", "COLDDRINK", "TestItem", "This is a test item", 12.99);
+	Item testItem = new Item("tst001", Item.ItemCat.COLDDRINK, "TestItem", "This is a test item", 12.99);
 	
 	//Set and get itemID
 	@Test
@@ -26,7 +28,8 @@ class ItemTest {
 	
 	@Test
 	void testSetItemCat() {
-		testItem.setItemCat("MAIN");
+		Item.ItemCat cat = Item.ItemCat.MAIN;
+		testItem.setItemCat(cat);
 		assertEquals("MAIN", testItem.getItemCat().name());
 	}
 	

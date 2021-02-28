@@ -22,10 +22,10 @@ public class Item {
 	 * @param itemDesc A short description of the item
 	 * @param itemPrice The price of the item, non-negative, two d.p.
 	 */
-	public Item(String itemID, String itemCat, String itemName, String itemDesc, double itemPrice) {
+	public Item(String itemID, ItemCat itemCat, String itemName, String itemDesc, double itemPrice) {
 		
 		this.itemID = itemID;
-		this.itemCat = ItemCat.valueOf(itemCat);
+		this.itemCat = itemCat;
 		this.itemName = itemName;
 		this.itemDesc = itemDesc;
 		this.itemPrice = itemPrice;
@@ -44,10 +44,10 @@ public class Item {
 	public String getItemID() { return itemID; }
 	
 	/**
-	 * Updates the item category to the String provided in the parameter
+	 * Updates the item category to the enum provided in the parameter
 	 * @param cat
 	 */
-	public void setItemCat(String cat) { itemCat = ItemCat.valueOf(cat); }
+	public void setItemCat(ItemCat cat) { itemCat = cat; }
 	
 	/**
 	 * Returns the current category of the item
