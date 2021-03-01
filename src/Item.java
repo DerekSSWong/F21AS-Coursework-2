@@ -1,96 +1,132 @@
 
 /**
  * Class for storing information of items
+ * 
  * @author Derek Wong
  * 
  */
 
 public class Item {
-	
+
 	private String itemID;
-	public static enum ItemCat {HOTDRINK, COLDDRINK, MAIN, OTHER};
+
+	public static enum ItemCat {
+		HOTDRINK, COLDDRINK, MAIN, OTHER
+	};
+
 	private ItemCat itemCat;
 	private String itemName;
 	private String itemDesc;
 	private double itemPrice;
-	
+
 	/**
 	 * Constructor for the class
-	 * @param itemID The ID of the item, in the form of itemCat + integer (e.g. HOTDRINK3)
-	 * @param itemCat The category of the item, which are currently: HOTDRINK, COLDDRINK, MAIN, OTHER
-	 * @param itemName The name of the item
-	 * @param itemDesc A short description of the item
+	 * 
+	 * @param itemID    The ID of the item, in the form of itemCat + integer (e.g.
+	 *                  HOTDRINK3)
+	 * @param itemCat   The category of the item, which are currently: HOTDRINK,
+	 *                  COLDDRINK, MAIN, OTHER
+	 * @param itemName  The name of the item
+	 * @param itemDesc  A short description of the item
 	 * @param itemPrice The price of the item, non-negative, two d.p.
 	 */
 	public Item(String itemID, ItemCat itemCat, String itemName, String itemDesc, double itemPrice) {
-		
+
 		this.itemID = itemID;
 		this.itemCat = itemCat;
 		this.itemName = itemName;
 		this.itemDesc = itemDesc;
 		this.itemPrice = itemPrice;
 	}
-	
+
 	/**
 	 * Updates the item ID to the String provided in the parameter
-	 * @param ID 
+	 * 
+	 * @param ID
 	 */
-	public void setItemID(String ID) { itemID = ID; }
-	
+	public void setItemID(String ID) {
+		itemID = ID;
+	}
+
 	/**
 	 * Returns the current ID of the item
-	 * @return
+	 * 
+	 * @return String
 	 */
-	public String getItemID() { return itemID; }
-	
+	public String getItemID() {
+		return itemID;
+	}
+
 	/**
 	 * Updates the item category to the enum provided in the parameter
+	 * 
 	 * @param cat
 	 */
-	public void setItemCat(ItemCat cat) { itemCat = cat; }
-	
+	public void setItemCat(ItemCat cat) {
+		itemCat = cat;
+	}
+
 	/**
 	 * Returns the current category of the item
-	 * @return
+	 * 
+	 * @return ItemCat
 	 */
-	public ItemCat getItemCat() { return itemCat; }
-	
+	public ItemCat getItemCat() {
+		return itemCat;
+	}
+
 	/**
 	 * Updates the item name to the String provided in the parameter
-	 * @param name 
+	 * 
+	 * @param name
 	 */
-	public void setItemName(String name){ itemName = name; }
-	
+	public void setItemName(String name) {
+		itemName = name;
+	}
+
 	/**
 	 * Returns the current name of the item
-	 * @return
+	 * 
+	 * @return String
 	 */
-	public String getItemName() { return itemName; }
-	
+	public String getItemName() {
+		return itemName;
+	}
+
 	/**
 	 * Updates the item description to the String provided in the parameter
-	 * @param desc 
+	 * 
+	 * @param desc
 	 */
-	public void setItemDesc(String desc) { this.itemDesc = desc; }
-	
+	public void setItemDesc(String desc) {
+		this.itemDesc = desc;
+	}
+
 	/**
 	 * Returns the current description of the item
-	 * @return
+	 * 
+	 * @return String
 	 */
-	public String getItemDesc() { return itemDesc; }
-	
+	public String getItemDesc() {
+		return itemDesc;
+	}
+
 	/**
 	 * Updates the item price to the double provided in the parameter
-	 * @param desc 
+	 * 
+	 * @param desc
 	 */
-	public void setItemPrice(double price) { itemPrice = price; }
-	
+	public void setItemPrice(double price) {
+		itemPrice = price;
+	}
+
 	/**
 	 * Returns the current price of the item
-	 * @return
+	 * 
+	 * @return double
 	 */
-	public double getItemPrice() { return itemPrice; }
-	
+	public double getItemPrice() {
+		return itemPrice;
+	}
+
 }
-
-
