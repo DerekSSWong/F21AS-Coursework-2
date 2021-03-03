@@ -19,9 +19,13 @@ import javax.swing.JTextArea;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.TreeSet;
+
 import javax.swing.table.DefaultTableModel;
 
 public class OrderGUI extends JFrame {
+    private Manager manager;
+
     // The GUI components
     JLabel menuSortLabel, categoryFilterLabel, discountLabel, totalLabel, discountAmount, totalAmount;
     JButton idButton, nameButton, categoryButton, priceButton, addButton, deleteButton, acceptButton;
@@ -31,7 +35,8 @@ public class OrderGUI extends JFrame {
     JTextArea dealsTextArea;
 
     // Constructor
-    public OrderGUI() {
+    public OrderGUI(Manager manager) {
+        this.manager = manager;
         // Set up title for window
         setTitle("Cafe");
         // Create container and add panels
@@ -102,7 +107,16 @@ public class OrderGUI extends JFrame {
         menuTable = new JTable(tableModel);
         menuTable.setModel(tableModel);
         Object rowData[] = new Object[5];
-        // Adding the rows
+        // Mapping through all of the orders to create the rows
+        TreeSet<Item> itemList = manager.getMenu().getItemList();
+        for (Item item : itemList) {
+            rowData[0] = item.getItemID();
+            rowData[1] = item.getItemName();
+            rowData[2] = item.getItemCat();
+            rowData[3] = item.getItemPrice();
+            rowData[4] = item.getItemDesc();
+        }
+        // Adding each row to the table
         tableModel.addRow(rowData);
         menuTable.setSize(new Dimension(200, 400));
         return menuTable;

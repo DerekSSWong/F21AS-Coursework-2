@@ -1,8 +1,14 @@
 
 public class CafeDemo {
+    private Manager manager;
+    private OrderGUI gui;
+
+    public CafeDemo() {
+        manager = new Manager();
+    }
 
     public void showGUI() {
-        OrderGUI gui = new OrderGUI();
+        gui = new OrderGUI(manager);
         gui.setVisible(true);
     }
 

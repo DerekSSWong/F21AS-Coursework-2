@@ -24,8 +24,8 @@ public class BillTest {
     @BeforeEach
     public void setUp() throws Exception {
         LocalDateTime testDateTime = LocalDateTime.of(20, Month.JULY, 19, 20, 30, 40);
-        Item testItem1 = new Item("tst001", Item.ItemCat.COLDDRINK, "TestItem", "This is a test item", 12.99);
-        Item testItem2 = new Item("tst002", Item.ItemCat.HOTDRINK, "TestItem", "This is another test item", 2.99);
+        Item testItem1 = new Item("TestItem", "tst001", Item.ItemCat.COLDDRINK, 12.99, "This is a test item");
+        Item testItem2 = new Item("TestItem", "tst002", Item.ItemCat.HOTDRINK, 2.99, "This is another test item");
         testOrder1 = new Order(testDateTime, 1, testItem1);
         testOrder2 = new Order(testDateTime, 1, testItem2);
         orderList = new ArrayList<Order>();

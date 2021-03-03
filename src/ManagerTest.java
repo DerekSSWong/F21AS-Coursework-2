@@ -6,10 +6,10 @@ import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 
 class ManagerTest {
-	
+	Item testItem = new Item("Latte", "HTDK1", Item.ItemCat.HOTDRINK, 2.25, "Description");
 	Manager testManager = new Manager();
-	
-	//Quick test to print out all the item names in the text file
+
+	// Quick test to print out all the item names in the text file
 	@Test
 	void testReadMenuFile() {
 		testManager.readMenuFile("Menu.csv");
@@ -19,7 +19,13 @@ class ManagerTest {
 			String itemName = i.next().getItemName();
 			System.out.println(itemName);
 		}
-		
+
+	}
+
+	@Test
+	void testProcessLine() {
+		testManager.processMenuLine("Latte,HTDK1,HOTDRINK,2.25,DESCRIPTION");
+		assertEquals(testManager.getMenu().getItemList().first().getItemID(), testItem.getItemID());
 	}
 
 }
