@@ -94,8 +94,9 @@ public class Bill {
      * 
      * @param discount
      */
-    public void setDiscountedPrice(double discount) {
-        discountedPrice = calculateTotalPrice() - discount;
+    public void setDiscountedPrice() {
+        DiscountChecker discountChecker = new DiscountChecker(orderList, calculateTotalPrice());
+        discountedPrice = calculateTotalPrice() - discountChecker.overallDiscount();
     }
 
 }

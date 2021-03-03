@@ -11,7 +11,7 @@ public class Item {
 	private String itemID;
 
 	public static enum ItemCat {
-		HOTDRINK, COLDDRINK, MAIN, OTHER
+		HOTDRINK, COLDDRINK, MAIN, OTHER, SNACKS
 	};
 
 	private ItemCat itemCat;
