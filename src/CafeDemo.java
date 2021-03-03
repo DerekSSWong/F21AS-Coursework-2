@@ -1,8 +1,15 @@
 
 public class CafeDemo {
+    private Manager manager;
+    private OrderGUI gui;
+
+    public CafeDemo() {
+        manager = new Manager();
+        manager.readMenuFile("../Menu.csv");
+    }
 
     public void showGUI() {
-        OrderGUI gui = new OrderGUI();
+        gui = new OrderGUI(manager);
         gui.setVisible(true);
     }
 

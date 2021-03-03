@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 class ItemTest {
 
-	Item testItem = new Item("tst001", Item.ItemCat.COLDDRINK, "TestItem", "This is a test item", 12.99);
+	Item testItem = new Item("TestItem", "tst001", Item.ItemCat.COLDDRINK, 12.99, "This is a test item");
 
 	// Set and get itemID
 	@Test
