@@ -1,1 +1,14 @@
-*.class
+/AllItems.class
+/AllItemsTest.class
+/Bill.class
+/BillTest.class
+/CafeDemo.class
+/Item$ItemCat.class
+/Item.class
+/ItemTest.class
+/Order.class
+/OrderGUI.class
+/OrderTest.class
+/test.class
+/AllOrders.class
+/AllBills.class
