@@ -32,7 +32,7 @@ public class AllBills {
 	public double getNetIncome() {
 		Double netIncome = 0.00;
 		for (HashMap.Entry<Integer, Bill> entry : ab.entrySet()) {
-			netIncome += entry.getValue().calculateTotalPrice();
+			netIncome += entry.getValue().getDiscountedPrice();
 			
 		}//for
 		return netIncome;
