@@ -54,5 +54,13 @@ public class AllItems {
 	  }//while
 	  return searchResult;
   }//getItem
+  
+  /**
+   * returns the item list
+   * @return TreeSet<Item>
+   */
+  public TreeSet<Item> getItemList() {
+	  return itemList;
+  }
 
 }
