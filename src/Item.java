@@ -6,7 +6,7 @@
  * 
  */
 
-public class Item {
+public class Item implements Comparable<Item>{
 
 	private String itemID;
 
@@ -127,6 +127,14 @@ public class Item {
 	 */
 	public double getItemPrice() {
 		return itemPrice;
+	}
+	
+	/**
+	 * Comparator to sort Item by ID 
+	 */
+	@Override
+	public int compareTo(Item i) {
+		return this.getItemID().compareTo(i.getItemID());
 	}
 
 }
