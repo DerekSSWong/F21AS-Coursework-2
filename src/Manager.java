@@ -2,11 +2,7 @@
 //Imports
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Collections;
 
 public class Manager {
 
@@ -31,7 +27,7 @@ public class Manager {
 		}
 	}
 
-	public void processMenuLine(String line) {
+	public String processMenuLine(String line) {
 
 		try {
 			String parts[] = line.split(",");
@@ -50,7 +46,7 @@ public class Manager {
 			System.out.println(error);
 
 		}
-
+		return line;
 	}
 
 	public AllItems getMenu() {
