@@ -48,7 +48,7 @@ public class AllItems {
 	  Item searchResult = null;
 	  while (i.hasNext()) {
 		  Item currentItem = i.next();
-		  if (currentItem.getItemID() == itmID) {
+		  if (currentItem.getItemID().equals(itmID)) {
 			  searchResult = currentItem;
 		  }//if
 	  }//while
