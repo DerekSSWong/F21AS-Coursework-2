@@ -25,7 +25,7 @@ class ManagerTest {
 	@Test
 	void testProcessLine() {
 		testManager.processMenuLine("Latte,HTDK1,HOTDRINK,2.25,DESCRIPTION");
-		assertEquals(testManager.getMenu().getItemList().first().getItemID(), testItem.getItemID());
+		assertEquals(testManager.getMenu().getItem("HTDK1"), testItem.getItemID());
 	}
 
 }
