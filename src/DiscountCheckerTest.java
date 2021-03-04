@@ -97,7 +97,8 @@ public class DiscountCheckerTest {
     void testOverallDiscountChecker() {
         if (LocalDateTime.now().getHour() >= 14 && LocalDateTime.now().getHour() <= 16) {
             assertEquals(2.46, discountChecker2.overallDiscount());
+        } else {
+            assertEquals(2.0, discountChecker2.overallDiscount());
         }
-        assertEquals(2.0, discountChecker2.overallDiscount());
     }
 }
