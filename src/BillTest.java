@@ -31,7 +31,9 @@ public class BillTest {
         orderList = new ArrayList<Order>();
         orderList.add(testOrder1);
         orderList.add(testOrder2);
-        testBill = new Bill(orderList, 1);
+        testBill = new Bill(1);
+        testBill.addOrder(testOrder1);
+        testBill.addOrder(testOrder2);
     }
 
     // Testing getting the customer ID
@@ -49,8 +51,8 @@ public class BillTest {
     // Testing getting the discounted price on a bill
     @Test
     void testGetDiscountedPrice() {
-        testBill.setDiscountedPrice(1);
-        assertEquals(14.98, testBill.getDiscountedPrice());
+        testBill.setDiscountedPrice();
+        assertEquals(5.99, testBill.getDiscountedPrice());
     }
 
     // Testing calculating the total price
