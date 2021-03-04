@@ -96,6 +96,7 @@ public class Manager {
 			
 			if (item != null) {
 			Order newOrder = new Order(time, cusID, item);
+			System.out.println("Order from cus " + newOrder.getCustomerID() + " added");
 			orders.addOrder(newOrder);
 			}
 		} 
@@ -139,6 +140,11 @@ public class Manager {
 	public void addOrder(Order order) {
 		orders.addOrder(order);
 	}
+	
+	public AllOrders getOrders() {
+		return orders;
+	}
+	
 	/**
 	 * Adds a bill to the list of all bills
 	 * 
