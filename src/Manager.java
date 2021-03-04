@@ -2,14 +2,17 @@
 //Imports
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Manager {
 
 	private AllItems menu = new AllItems();
+	private AllOrders orders = new AllOrders();
 	private AllBills allBills = new AllBills();
 
-	public void readMenuFile(String filename) {
+	public void readFile(String filename) {
 
 		try {
 			File f = new File(filename);
@@ -18,7 +21,15 @@ public class Manager {
 				String inputLine = scanner.nextLine();
 				if (inputLine.length() != 0) {
 					// Could probably include processOrderLine here with Switch
-					processMenuLine(inputLine);
+					switch (filename) {
+						case "Menu.csv":
+							processMenuLine(inputLine);
+							break;
+						case "ExistingOrders.csv":
+							processOrderLine(inputLine);
+							break;
+					}
+					
 				}
 			}
 			scanner.close();
@@ -67,6 +78,36 @@ public class Manager {
 		} // catch
 
 	}
+	
+	public void processOrderLine(String line) {
+		
+		try {
+			String parts[] = line.split(",");
+			
+			String timeString = parts[0].trim();
+			LocalDateTime time = LocalDateTime.parse(timeString);
+			
+			int cusID = Integer.parseInt(parts[1].trim());
+			
+			String itemID = parts[2].trim();
+			Item item = menu.getItem(itemID);
+			
+			double price = Double.parseDouble(parts[3].trim());
+			
+			if (item != null) {
+			Order newOrder = new Order(time, cusID, item);
+			orders.addOrder(newOrder);
+			}
+		} 
+		catch (NumberFormatException nfe) {
+			String error = "Number conversion error in '" + line + "'  - " + nfe.getMessage();
+			System.out.println(error);
+		}
+		catch (DateTimeParseException dtpe) {
+			String error = "Error parsing order time in '" + line + "'  - " + dtpe.getMessage();
+			System.out.println(error);
+		}
+	}
 
 	/**
 	 * Method which compares the input string with the list of valid item categories
@@ -94,7 +135,10 @@ public class Manager {
 	public AllItems getMenu() {
 		return menu;
 	}
-
+	
+	public void addOrder(Order order) {
+		orders.addOrder(order);
+	}
 	/**
 	 * Adds a bill to the list of all bills
 	 * 

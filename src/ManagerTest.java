@@ -20,7 +20,7 @@ class ManagerTest {
 	// Quick test to print out all the item names in the text file
 	@Test
 	void testReadMenuFile() {
-		testManager.readMenuFile("Menu.csv");
+		testManager.readFile("Menu.csv");
 		testManager.getMenu().addItem(testItem);
 		TreeSet<Item> itemList = testManager.getMenu().getItemList();
 		Iterator<Item> i = itemList.iterator();
