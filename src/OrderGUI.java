@@ -190,6 +190,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         // Creating the buttons and adding to panel
         JPanel orderButtonPanel = new JPanel();
         deleteButton = new JButton("Delete item");
+        deleteButton.addActionListener(this);
         acceptButton = new JButton("Accept order");
         deleteButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         orderButtonPanel.add(acceptButton);
@@ -250,6 +251,8 @@ public class OrderGUI extends JFrame implements ActionListener {
             menuTable.getRowSorter().toggleSortOrder(3);
         } else if (event.getSource() == addButton) {
             addItem();
+        } else if (event.getSource() == deleteButton) {
+            removeItem();
         }
     }
 
@@ -260,9 +263,6 @@ public class OrderGUI extends JFrame implements ActionListener {
         Item item = manager.getMenu().getItem(itemId);
         Order order = new Order(LocalDateTime.now(), 10, item);
         bill.addOrder(order);
-        menuTable.addNotify();
-        menuTable.repaint();
-        menuTable.setAutoCreateColumnsFromModel(true);
         Object rowData[] = new Object[2];
         rowData[0] = order.getItem().getItemName();
         rowData[1] = order.getPrice();
@@ -273,7 +273,10 @@ public class OrderGUI extends JFrame implements ActionListener {
     // Adding an event listening to know which row a user selects and then creating
     // the order using the item ID and adding it to the bill
     public void removeItem() {
-        String itemId = orderTable.getValueAt(menuTable.getSelectedRow(), 0).toString();
+        int index = orderTable.getSelectedRow();
+        bill.getOrderList().remove(index);
+        // // Adding each row to the table
+        orderTableModel.removeRow(bill.getOrderList().size());
 
     };
 
