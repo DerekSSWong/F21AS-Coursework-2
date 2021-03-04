@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -204,6 +205,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         deleteButton = new JButton("Delete item");
         deleteButton.addActionListener(this);
         acceptButton = new JButton("Accept order");
+        acceptButton.addActionListener(this);
         deleteButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         orderButtonPanel.add(acceptButton);
         orderButtonPanel.add(deleteButton);
@@ -231,13 +233,15 @@ public class OrderGUI extends JFrame implements ActionListener {
 
     private JTable createOrderTable() {
         // Set the column header names
-        String[] orderColumns = new String[] { "Item", "Price" };
+        String[] orderColumns = new String[] { "Item", "Price", "ID" };
         // Create table with data
         orderTableModel = new DefaultTableModel(orderColumns, 0);
         orderTableModel.setColumnIdentifiers(orderColumns);
         orderTable = new JTable(orderTableModel);
         orderTable.setModel(orderTableModel);
         Object rowData[] = new Object[2];
+        // Adding autosort so column names can be clicked to sort
+        menuTable.setAutoCreateRowSorter(true);
         // Adding the rows
         orderTable.setSize(new Dimension(200, 400));
         for (Order order : bill.getOrderList()) {
@@ -245,8 +249,6 @@ public class OrderGUI extends JFrame implements ActionListener {
             rowData[1] = decimalFormat.format(order.getPrice());
             // Adding each row to the table
             orderTableModel.addRow(rowData);
-            // Adding autosort so column names can be clicked to sort
-            menuTable.setAutoCreateRowSorter(true);
         }
         return orderTable;
     }
@@ -265,36 +267,55 @@ public class OrderGUI extends JFrame implements ActionListener {
             addItem();
         } else if (event.getSource() == deleteButton) {
             removeItem();
+        } else if (event.getSource() == acceptButton) {
+            addBill();
         }
     }
 
     // Adding an event listening to know which row a user selects and then creating
     // the order using the item ID and adding it to the bill
     public void addItem() {
-        String itemId = menuTable.getValueAt(menuTable.getSelectedRow(), 0).toString();
-        Item item = manager.getMenu().getItem(itemId);
-        Order order = new Order(LocalDateTime.now(), 10, item);
-        bill.addOrder(order);
-        Object rowData[] = new Object[2];
-        rowData[0] = order.getItem().getItemName();
-        rowData[1] = order.getPrice();
-        // Adding each row to the table
-        orderTableModel.addRow(rowData);
-        // Updating the total price
-        totalBeforeAmount.setText("£" + decimalFormat.format(bill.calculateTotalPrice()));
-        totalAmount.setText("£" + decimalFormat.format(bill.getDiscountedPrice()));
-        discountAmount.setText("-£" + decimalFormat.format(bill.calculateTotalPrice() - bill.getDiscountedPrice()));
-        updatePrices();
+        try {
+
+            String itemId = menuTable.getValueAt(menuTable.getSelectedRow(), 0).toString();
+            menuTable.convertRowIndexToModel(menuTable.getSelectedRow());
+            Item item = manager.getMenu().getItem(itemId);
+            Order order = new Order(LocalDateTime.now(), 10, item);
+            bill.addOrder(order);
+            Object rowData[] = new Object[3];
+            rowData[0] = order.getItem().getItemName();
+            rowData[1] = order.getPrice();
+            rowData[2] = order.getItem().getItemID();
+            // Adding each row to the table
+            orderTableModel.addRow(rowData);
+            // Updating the total price
+            updatePrices();
+
+        } catch (
+
+        IndexOutOfBoundsException error) {
+            JOptionPane.showMessageDialog(null, "Please select something to add", "alert", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Adding an event listening to know which row a user selects and then creating
     // the order using the item ID and adding it to the bill
     public void removeItem() {
-        int index = orderTable.getSelectedRow();
-        bill.getOrderList().remove(index);
-        // // Adding each row to the table
-        orderTableModel.removeRow(bill.getOrderList().size());
-        updatePrices();
+
+        orderTable.convertRowIndexToModel(orderTable.getSelectedRow());
+
+        try {
+            int index = orderTable.getSelectedRow();
+            // Removing the order from the order list (need to reverse the index)
+            bill.removeOrderByIndex(index);
+            // Removing it from the table
+            orderTableModel.removeRow(index);
+            // Updating prices
+            updatePrices();
+
+        } catch (IndexOutOfBoundsException error) {
+            JOptionPane.showMessageDialog(null, "Oops - nothing to delete!", "alert", JOptionPane.ERROR_MESSAGE);
+        }
     };
 
     public void updatePrices() {
@@ -303,4 +324,9 @@ public class OrderGUI extends JFrame implements ActionListener {
         discountAmount.setText("- £" + decimalFormat.format(bill.calculateTotalPrice() - bill.getDiscountedPrice()));
     }
 
+    public void addBill() {
+        manager.addBill(bill);
+        JOptionPane.showMessageDialog(null, "Order placed", "success", JOptionPane.INFORMATION_MESSAGE);
+
+    }
 }

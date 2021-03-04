@@ -58,6 +58,17 @@ public class Bill {
      */
     public void removeOrder(Order order) {
         orderList.remove(order);
+        setDiscountedPrice();
+    }
+
+    /**
+     * Removes an order from the bill by index
+     * 
+     * @param index
+     */
+    public void removeOrderByIndex(int index) {
+        orderList.remove(index);
+        setDiscountedPrice();
     }
 
     /**
