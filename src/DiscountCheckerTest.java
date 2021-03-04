@@ -31,7 +31,7 @@ public class DiscountCheckerTest {
         Item testItem1 = new Item("TestItem1", "tst001", Item.ItemCat.COLDDRINK, 0.99, "This is a test item");
         Item testItem2 = new Item("TestItem2", "tst002", Item.ItemCat.HOTDRINK, 2.99, "This is another test item");
         Item testItem3 = new Item("TestItem3", "tst003", Item.ItemCat.HOTDRINK, 1.49, "This is another test item");
-        Item testItem4 = new Item("TestItem4", "tst004", Item.ItemCat.SNACKS, 1.99, "This is another test item");
+        Item testItem4 = new Item("TestItem4", "tst004", Item.ItemCat.SNACK, 1.99, "This is another test item");
         Item testItem5 = new Item("TestItem5", "tst005", Item.ItemCat.MAIN, 3.99, "This is another test item");
         testOrder1 = new Order(testDateTime, 1, testItem1);
         testOrder2 = new Order(testDateTime, 1, testItem2);
@@ -72,7 +72,7 @@ public class DiscountCheckerTest {
     @Test
     void testMealDeal() {
         // Multiple drinks
-        assertEquals(3.97, discountChecker1.mealDeal());
+        assertEquals(1.97, discountChecker1.mealDeal());
 
     }
 
@@ -90,5 +90,14 @@ public class DiscountCheckerTest {
         // Multiple drinks
         assertEquals(1.19, discountChecker2.categoryOfTheDay());
 
+    }
+
+    @Test
+    // Testing for the overall discount
+    void testOverallDiscountChecker() {
+        if (LocalDateTime.now().getHour() >= 14 && LocalDateTime.now().getHour() <= 16) {
+            assertEquals(2.46, discountChecker2.overallDiscount());
+        }
+        assertEquals(2.0, discountChecker2.overallDiscount());
     }
 }
