@@ -11,7 +11,7 @@ public class Item implements Comparable<Item> {
 	private String itemID;
 
 	public static enum ItemCat {
-		HOTDRINK, COLDDRINK, MAIN, OTHER, SNACKS
+		HOTDRINK, COLDDRINK, MAIN, OTHER, SNACK
 	};
 
 	private ItemCat itemCat;

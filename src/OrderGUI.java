@@ -38,11 +38,12 @@ public class OrderGUI extends JFrame implements ActionListener {
     JScrollPane menuScrollPane, orderScrollPane;
     JTable menuTable, orderTable;
     JTextArea dealsTextArea;
+    DefaultTableModel orderTableModel;
 
     // Constructor
     public OrderGUI(Manager manager) {
         this.manager = manager;
-        this.bill = bill;
+        this.bill = new Bill(10);
         // Set up title for window
         setTitle("Cafe");
         // Create container and add panels
@@ -83,7 +84,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         // Create filter panel
         JPanel filterPanel = new JPanel();
         // Array of categories
-        String categories[] = { "HOTDRINK", "COLDDRINK", "MAIN", "OTHER", "SNACKS" };
+        String categories[] = { "HOTDRINK", "COLDDRINK", "MAIN", "OTHER", "SNACK" };
         // Create the dropdown
         categoriesDropdown = new JComboBox<String>(categories);
         // Add label and dropdown to the panel and add border
@@ -181,7 +182,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         orderPanel.add(discountPanel);
         // Creating total and label and adding to order panel
         JPanel totalPanel = new JPanel();
-        totalAmount = new JLabel("£23.99");
+        totalAmount = new JLabel("£" + bill.calculateTotalPrice());
         totalLabel = new JLabel("Total price");
         totalPanel.add(totalLabel);
         totalPanel.add(totalAmount);
@@ -219,14 +220,21 @@ public class OrderGUI extends JFrame implements ActionListener {
         // Set the column header names
         String[] orderColumns = new String[] { "Item", "Price" };
         // Create table with data
-        DefaultTableModel orderTableModel = new DefaultTableModel(orderColumns, 0);
+        orderTableModel = new DefaultTableModel(orderColumns, 0);
         orderTableModel.setColumnIdentifiers(orderColumns);
         orderTable = new JTable(orderTableModel);
         orderTable.setModel(orderTableModel);
         Object rowData[] = new Object[2];
         // Adding the rows
-        orderTableModel.addRow(rowData);
         orderTable.setSize(new Dimension(200, 400));
+        for (Order order : bill.getOrderList()) {
+            rowData[0] = order.getItem().getItemName();
+            rowData[1] = order.getPrice();
+            // Adding each row to the table
+            orderTableModel.addRow(rowData);
+            // Adding autosort so column names can be clicked to sort
+            menuTable.setAutoCreateRowSorter(true);
+        }
         return orderTable;
     }
 
@@ -251,7 +259,16 @@ public class OrderGUI extends JFrame implements ActionListener {
         String itemId = menuTable.getValueAt(menuTable.getSelectedRow(), 0).toString();
         Item item = manager.getMenu().getItem(itemId);
         Order order = new Order(LocalDateTime.now(), 10, item);
-    };
+        bill.addOrder(order);
+        menuTable.addNotify();
+        menuTable.repaint();
+        menuTable.setAutoCreateColumnsFromModel(true);
+        Object rowData[] = new Object[2];
+        rowData[0] = order.getItem().getItemName();
+        rowData[1] = order.getPrice();
+        // Adding each row to the table
+        orderTableModel.addRow(rowData);
+    }
 
     // Adding an event listening to know which row a user selects and then creating
     // the order using the item ID and adding it to the bill
