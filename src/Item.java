@@ -6,7 +6,7 @@
  * 
  */
 
-public class Item {
+public class Item implements Comparable<Item> {
 
 	private String itemID;
 
@@ -30,13 +30,13 @@ public class Item {
 	 * @param itemDesc  A short description of the item
 	 * @param itemPrice The price of the item, non-negative, two d.p.
 	 */
-	public Item(String itemID, ItemCat itemCat, String itemName, String itemDesc, double itemPrice) {
+	public Item(String itemName, String itemID, ItemCat itemCat, double itemPrice, String itemDesc) {
 
+		this.itemName = itemName;
 		this.itemID = itemID;
 		this.itemCat = itemCat;
-		this.itemName = itemName;
-		this.itemDesc = itemDesc;
 		this.itemPrice = itemPrice;
+		this.itemDesc = itemDesc;
 	}
 
 	/**
@@ -127,6 +127,14 @@ public class Item {
 	 */
 	public double getItemPrice() {
 		return itemPrice;
+	}
+
+	/**
+	 * Comparator to sort Item by ID
+	 */
+	@Override
+	public int compareTo(Item i) {
+		return this.getItemID().compareTo(i.getItemID());
 	}
 
 }

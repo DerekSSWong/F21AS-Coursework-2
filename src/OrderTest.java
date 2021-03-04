@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class OrderTest {
     LocalDateTime testDateTime = LocalDateTime.of(20, Month.JULY, 19, 20, 30, 40);
-    Item testItem = new Item("tst001", Item.ItemCat.COLDDRINK, "TestItem", "This is a test item", 12.99);
+    Item testItem = new Item("TestItem", "tst001", Item.ItemCat.COLDDRINK, 12.99, "This is a test item");
     Order testOrder = new Order(testDateTime, 1, testItem);
 
     // Testing getting order date and time
@@ -42,7 +42,7 @@ class OrderTest {
     // Testing updating the customer ID of an order
     @Test
     void testSetItem() {
-        Item testItem2 = new Item("tst002", Item.ItemCat.HOTDRINK, "TestItem2", "This is also test item", 2.99);
+        Item testItem2 = new Item("TestItem2", "tst002", Item.ItemCat.HOTDRINK, 2.99, "This is also test item");
         testOrder.setItem(testItem2);
         assertEquals(testItem2, testOrder.getItem());
     }
