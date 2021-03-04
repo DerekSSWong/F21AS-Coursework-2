@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.TreeSet;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 import javax.swing.table.TableRowSorter;
@@ -32,17 +33,21 @@ public class OrderGUI extends JFrame implements ActionListener {
     private Bill bill;
 
     // The GUI components
-    JLabel menuSortLabel, categoryFilterLabel, discountLabel, totalLabel, discountAmount, totalAmount;
+    JLabel menuSortLabel, categoryFilterLabel, discountLabel, totalLabel, discountAmount, totalAmount, totalBeforeLabel,
+            totalBeforeAmount;
     JButton idButton, nameButton, categoryButton, priceButton, addButton, deleteButton, acceptButton;
     JComboBox categoriesDropdown;
     JScrollPane menuScrollPane, orderScrollPane;
     JTable menuTable, orderTable;
     JTextArea dealsTextArea;
+    DefaultTableModel orderTableModel;
+    DecimalFormat decimalFormat;
 
     // Constructor
     public OrderGUI(Manager manager) {
         this.manager = manager;
-        this.bill = bill;
+        this.bill = new Bill(10);
+        this.decimalFormat = new DecimalFormat("#.00");
         // Set up title for window
         setTitle("Cafe");
         // Create container and add panels
@@ -83,7 +88,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         // Create filter panel
         JPanel filterPanel = new JPanel();
         // Array of categories
-        String categories[] = { "HOTDRINK", "COLDDRINK", "MAIN", "OTHER", "SNACKS" };
+        String categories[] = { "HOTDRINK", "COLDDRINK", "MAIN", "OTHER", "SNACK" };
         // Create the dropdown
         categoriesDropdown = new JComboBox<String>(categories);
         // Add label and dropdown to the panel and add border
@@ -124,7 +129,7 @@ public class OrderGUI extends JFrame implements ActionListener {
             rowData[0] = item.getItemID();
             rowData[1] = item.getItemName();
             rowData[2] = item.getItemCat();
-            rowData[3] = item.getItemPrice();
+            rowData[3] = decimalFormat.format(item.getItemPrice());
             rowData[4] = item.getItemDesc();
             // Adding each row to the table
             tableModel.addRow(rowData);
@@ -172,23 +177,32 @@ public class OrderGUI extends JFrame implements ActionListener {
         orderScrollPane = new JScrollPane(orderTable);
         orderScrollPane.setPreferredSize(new Dimension(100, 300));
         orderPanel.add(orderScrollPane);
+        // Creating total and label and adding to order panel
+        JPanel totalBeforePanel = new JPanel();
+        totalBeforeAmount = new JLabel("£0.00");
+        totalBeforeLabel = new JLabel("Price before discounts: ");
+        totalBeforePanel.add(totalBeforeLabel);
+        totalBeforePanel.add(totalBeforeAmount);
+        orderPanel.add(totalBeforePanel);
         // Creating discount and label and adding to order panel
         JPanel discountPanel = new JPanel();
-        discountAmount = new JLabel("£3.99");
-        discountLabel = new JLabel("Discount");
+        discountAmount = new JLabel("£0.00");
+        discountLabel = new JLabel("Discount: ");
         discountPanel.add(discountLabel);
         discountPanel.add(discountAmount);
         orderPanel.add(discountPanel);
         // Creating total and label and adding to order panel
         JPanel totalPanel = new JPanel();
-        totalAmount = new JLabel("£23.99");
-        totalLabel = new JLabel("Total price");
+        totalAmount = new JLabel("£0.00");
+        totalLabel = new JLabel("Total price: ");
         totalPanel.add(totalLabel);
         totalPanel.add(totalAmount);
         orderPanel.add(totalPanel);
+
         // Creating the buttons and adding to panel
         JPanel orderButtonPanel = new JPanel();
         deleteButton = new JButton("Delete item");
+        deleteButton.addActionListener(this);
         acceptButton = new JButton("Accept order");
         deleteButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         orderButtonPanel.add(acceptButton);
@@ -219,14 +233,21 @@ public class OrderGUI extends JFrame implements ActionListener {
         // Set the column header names
         String[] orderColumns = new String[] { "Item", "Price" };
         // Create table with data
-        DefaultTableModel orderTableModel = new DefaultTableModel(orderColumns, 0);
+        orderTableModel = new DefaultTableModel(orderColumns, 0);
         orderTableModel.setColumnIdentifiers(orderColumns);
         orderTable = new JTable(orderTableModel);
         orderTable.setModel(orderTableModel);
         Object rowData[] = new Object[2];
         // Adding the rows
-        orderTableModel.addRow(rowData);
         orderTable.setSize(new Dimension(200, 400));
+        for (Order order : bill.getOrderList()) {
+            rowData[0] = order.getItem().getItemName();
+            rowData[1] = decimalFormat.format(order.getPrice());
+            // Adding each row to the table
+            orderTableModel.addRow(rowData);
+            // Adding autosort so column names can be clicked to sort
+            menuTable.setAutoCreateRowSorter(true);
+        }
         return orderTable;
     }
 
@@ -239,17 +260,47 @@ public class OrderGUI extends JFrame implements ActionListener {
         } else if (event.getSource() == categoryButton) {
             menuTable.getRowSorter().toggleSortOrder(2);
         } else if (event.getSource() == priceButton) {
-            menuTable.getRowSorter().toggleSortOrder(2);
+            menuTable.getRowSorter().toggleSortOrder(3);
         } else if (event.getSource() == addButton) {
-            getSelectedRow();
+            addItem();
+        } else if (event.getSource() == deleteButton) {
+            removeItem();
         }
     }
 
-    // Adding an event listening to know which row a use selects
-    public void getSelectedRow() {
+    // Adding an event listening to know which row a user selects and then creating
+    // the order using the item ID and adding it to the bill
+    public void addItem() {
         String itemId = menuTable.getValueAt(menuTable.getSelectedRow(), 0).toString();
         Item item = manager.getMenu().getItem(itemId);
         Order order = new Order(LocalDateTime.now(), 10, item);
+        bill.addOrder(order);
+        Object rowData[] = new Object[2];
+        rowData[0] = order.getItem().getItemName();
+        rowData[1] = order.getPrice();
+        // Adding each row to the table
+        orderTableModel.addRow(rowData);
+        // Updating the total price
+        totalBeforeAmount.setText("£" + decimalFormat.format(bill.calculateTotalPrice()));
+        totalAmount.setText("£" + decimalFormat.format(bill.getDiscountedPrice()));
+        discountAmount.setText("-£" + decimalFormat.format(bill.calculateTotalPrice() - bill.getDiscountedPrice()));
+        updatePrices();
+    }
+
+    // Adding an event listening to know which row a user selects and then creating
+    // the order using the item ID and adding it to the bill
+    public void removeItem() {
+        int index = orderTable.getSelectedRow();
+        bill.getOrderList().remove(index);
+        // // Adding each row to the table
+        orderTableModel.removeRow(bill.getOrderList().size());
+        updatePrices();
     };
+
+    public void updatePrices() {
+        totalBeforeAmount.setText("£" + decimalFormat.format(bill.calculateTotalPrice()));
+        totalAmount.setText("£" + decimalFormat.format(bill.getDiscountedPrice()));
+        discountAmount.setText("- £" + decimalFormat.format(bill.calculateTotalPrice() - bill.getDiscountedPrice()));
+    }
 
 }

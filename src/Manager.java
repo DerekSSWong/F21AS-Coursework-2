@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Manager {
 
 	private AllItems menu = new AllItems();
+	private AllBills allBills = new AllBills();
 
 	public void readMenuFile(String filename) {
 
@@ -93,4 +94,23 @@ public class Manager {
 	public AllItems getMenu() {
 		return menu;
 	}
+
+	/**
+	 * Adds a bill to the list of all bills
+	 * 
+	 * @param bill
+	 */
+	public void addBill(Bill bill) {
+		allBills.addBill(bill);
+	}
+
+	/**
+	 * Returns all of the bills
+	 * 
+	 * @return AllItems
+	 */
+	public AllBills getAllBills() {
+		return allBills;
+	}
+
 }

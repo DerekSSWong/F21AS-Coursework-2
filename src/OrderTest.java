@@ -47,10 +47,4 @@ class OrderTest {
         assertEquals(testItem2, testOrder.getItem());
     }
 
-    // Testing implementing the hashcode
-    @Test
-    void testHashCode() {
-        assertEquals(1, testOrder.hashCode());
-    }
-
 }

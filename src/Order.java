@@ -82,13 +82,4 @@ public class Order {
 		item = updatedItem;
 	}
 
-	/**
-	 * Gets the hashcode (which is the customer ID) of an order
-	 * 
-	 * @return int
-	 */
-	public int hashCode() {
-		return customerID;
-	}
-
 }
