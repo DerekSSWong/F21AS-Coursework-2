@@ -239,17 +239,25 @@ public class OrderGUI extends JFrame implements ActionListener {
         } else if (event.getSource() == categoryButton) {
             menuTable.getRowSorter().toggleSortOrder(2);
         } else if (event.getSource() == priceButton) {
-            menuTable.getRowSorter().toggleSortOrder(2);
+            menuTable.getRowSorter().toggleSortOrder(3);
         } else if (event.getSource() == addButton) {
-            getSelectedRow();
+            addItem();
         }
     }
 
-    // Adding an event listening to know which row a use selects
-    public void getSelectedRow() {
+    // Adding an event listening to know which row a user selects and then creating
+    // the order using the item ID and adding it to the bill
+    public void addItem() {
         String itemId = menuTable.getValueAt(menuTable.getSelectedRow(), 0).toString();
         Item item = manager.getMenu().getItem(itemId);
         Order order = new Order(LocalDateTime.now(), 10, item);
+    };
+
+    // Adding an event listening to know which row a user selects and then creating
+    // the order using the item ID and adding it to the bill
+    public void removeItem() {
+        String itemId = orderTable.getValueAt(menuTable.getSelectedRow(), 0).toString();
+
     };
 
 }
