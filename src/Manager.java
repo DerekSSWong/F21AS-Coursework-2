@@ -32,7 +32,7 @@ public class Manager {
 	 * 
 	 * @param line
 	 */
-	private void processMenuLine(String line) {
+	public void processMenuLine(String line) {
 
 		try {
 			String parts[] = line.split(",");

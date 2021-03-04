@@ -28,11 +28,11 @@ public class DiscountCheckerTest {
     @BeforeEach
     public void setUp() throws Exception {
         LocalDateTime testDateTime = LocalDateTime.of(20, Month.JULY, 19, 20, 30, 40);
-        Item testItem1 = new Item("tst001", Item.ItemCat.COLDDRINK, "TestItem1", "This is a test item", 0.99);
-        Item testItem2 = new Item("tst002", Item.ItemCat.HOTDRINK, "TestItem2", "This is another test item", 2.99);
-        Item testItem3 = new Item("tst003", Item.ItemCat.HOTDRINK, "TestItem3", "This is another test item", 1.49);
-        Item testItem4 = new Item("tst004", Item.ItemCat.SNACKS, "TestItem4", "This is another test item", 1.99);
-        Item testItem5 = new Item("tst005", Item.ItemCat.MAIN, "TestItem5", "This is another test item", 3.99);
+        Item testItem1 = new Item("TestItem1", "tst001", Item.ItemCat.COLDDRINK, 0.99, "This is a test item");
+        Item testItem2 = new Item("TestItem2", "tst002", Item.ItemCat.HOTDRINK, 2.99, "This is another test item");
+        Item testItem3 = new Item("TestItem3", "tst003", Item.ItemCat.HOTDRINK, 1.49, "This is another test item");
+        Item testItem4 = new Item("TestItem4", "tst004", Item.ItemCat.SNACKS, 1.99, "This is another test item");
+        Item testItem5 = new Item("TestItem5", "tst005", Item.ItemCat.MAIN, 3.99, "This is another test item");
         testOrder1 = new Order(testDateTime, 1, testItem1);
         testOrder2 = new Order(testDateTime, 1, testItem2);
         testOrder3 = new Order(testDateTime, 1, testItem3);
@@ -81,6 +81,14 @@ public class DiscountCheckerTest {
     void testAfterNoonTea() {
         // Multiple drinks
         assertEquals(2.46, discountChecker2.afternoonTea());
+
+    }
+
+    // Testing the category offer
+    @Test
+    void testCategoryDiscount() {
+        // Multiple drinks
+        assertEquals(1.19, discountChecker2.categoryOfTheDay());
 
     }
 }

@@ -1,5 +1,6 @@
 
 //Imports for class
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,8 +11,7 @@ import java.util.List;
  */
 
 public class Bill {
-
-    private List<Order> orderList;
+    private List<Order> orderList = new ArrayList<Order>();
     private int customerID;
     private double discountedPrice;
 
@@ -23,11 +23,8 @@ public class Bill {
      *                        belongs to e.g. 1
      * @param discountedPrice The price after discounts of ther bill e.g. £3.50
      */
-    public Bill(List<Order> orderList, int customerID) {
-
-        this.orderList = orderList;
+    public Bill(int customerID) {
         this.customerID = customerID;
-        this.discountedPrice = discountedPrice;
     }
 
     /**

@@ -1,5 +1,3 @@
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 //Imports for class
@@ -37,11 +35,16 @@ public class DiscountChecker {
             return spendOver();
         } else if (afternoonTea() > 0) {
             return afternoonTea();
+        } else if (categoryOfTheDay() > 0) {
+            return categoryOfTheDay();
         } else
             return 0.0;
+
     }
 
     /**
+     * Calculates the total discount if a bill has a cold drink, main and snack so
+     * that it costs £5
      * 
      * @return double
      */
@@ -62,12 +65,12 @@ public class DiscountChecker {
                 mealTotal += order.getItem().getItemPrice();
             }
         }
-        double discount = mealTotal - 3;
-        double roundedOff = Math.round(discount * 100.0) / 100.0;
-        return roundedOff;
+        double discount = mealTotal - 5;
+        return Math.round(discount * 100.0) / 100.0;
     }
 
     /**
+     * Calculates the total discount if an order is over £10 so that they get £2 off
      * 
      * @return double
      */
@@ -80,6 +83,8 @@ public class DiscountChecker {
     }
 
     /**
+     * Calculate the total discount if they have 2 hot drinks and 2 snacks on an
+     * order
      * 
      * @return double
      */
@@ -101,8 +106,23 @@ public class DiscountChecker {
         }
 
         double discount = hotDrinksTotal + snacksTotal - 6;
-        double roundedOff = Math.round(discount * 100.0) / 100.0;
-        return roundedOff;
+        return Math.round(discount * 100.0) / 100.0;
     };
+
+    /**
+     * Calculates the amount of discount when hot drinks are 20%
+     * 
+     * @return double
+     */
+    public double categoryOfTheDay() {
+        double hotDrinksTotal = 0.0;
+        for (Order order : orderList) {
+            if (order.getItem().getItemCat() == Item.ItemCat.HOTDRINK) {
+                hotDrinksTotal += order.getItem().getItemPrice();
+            }
+        }
+        double discount = hotDrinksTotal * 0.2;
+        return Math.round(discount * 100.0) / 100.0;
+    }
 
 }

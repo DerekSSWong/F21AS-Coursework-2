@@ -205,7 +205,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         JPanel dealsPanel = new JPanel();
         // Adding text area for deals and adding to panel
         dealsTextArea = new JTextArea("• Get a main, snack and cold drink for £5" + "\n\n" + "• 20% off hot drinks"
-                + "\n\n" + "• Spend over £10 and get £2 off" + "\n\n" + "• Get two hot drinks and two snacks for £10");
+                + "\n\n" + "• Spend over £10 and get £2 off" + "\n\n" + "• Get two hot drinks and two snacks for £6");
         dealsTextArea.setEditable(false);
         dealsTextArea.setMinimumSize(new Dimension(400, 200));
         dealsPanel.add(dealsTextArea);
