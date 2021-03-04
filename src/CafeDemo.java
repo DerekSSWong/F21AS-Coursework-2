@@ -5,6 +5,7 @@ public class CafeDemo {
 
     public CafeDemo() {
         manager = new Manager();
+        manager.readMenuFile("../Menu.csv");
     }
 
     public void showGUI() {

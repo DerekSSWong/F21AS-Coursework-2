@@ -46,18 +46,15 @@ public class AllItems {
   public Item getItem(String itmID) {
 
     Iterator<Item> i = itemList.iterator();
-    // Item sšarchResult = null;
+    Item searchResult = null;
     while (i.hasNext()) {
       Item currentItem = i.next();
-      if (currentItem.getItemID() == itmID) {
-        // searchResult = currentItem;
-        // } // if
-        // } // while
-        return currentItem;
-      }
-    } // getItem
-    return null;
-  }
+      if (currentItem.getItemID().equals(itmID)) {
+        searchResult = currentItem;
+      } // if
+    } // while
+    return searchResult;
+  }// getItem
 
   /**
    * returns the item list

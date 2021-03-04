@@ -16,15 +16,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.RowFilter;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.TreeSet;
+import java.awt.event.*;
+import java.time.LocalDateTime;
 
+import javax.swing.table.TableRowSorter;
 import javax.swing.table.DefaultTableModel;
 
-public class OrderGUI extends JFrame {
+public class OrderGUI extends JFrame implements ActionListener {
     private Manager manager;
+    private Bill bill;
 
     // The GUI components
     JLabel menuSortLabel, categoryFilterLabel, discountLabel, totalLabel, discountAmount, totalAmount;
@@ -37,6 +42,7 @@ public class OrderGUI extends JFrame {
     // Constructor
     public OrderGUI(Manager manager) {
         this.manager = manager;
+        this.bill = bill;
         // Set up title for window
         setTitle("Cafe");
         // Create container and add panels
@@ -59,9 +65,13 @@ public class OrderGUI extends JFrame {
         // Create button panel and buttons for each sort
         JPanel sortButtonPanel = new JPanel();
         idButton = new JButton("ID");
+        idButton.addActionListener(this);
         nameButton = new JButton("Name");
+        nameButton.addActionListener(this);
         categoryButton = new JButton("Category");
+        categoryButton.addActionListener(this);
         priceButton = new JButton("Price");
+        priceButton.addActionListener(this);
         // Create label for filter and add to the panel
         categoryFilterLabel = new JLabel("Choose a category to filter the menu:");
         sortButtonPanel.add(menuSortLabel);
@@ -73,7 +83,7 @@ public class OrderGUI extends JFrame {
         // Create filter panel
         JPanel filterPanel = new JPanel();
         // Array of categories
-        String categories[] = { "Hot drinks", "Cold drinks", "Main", "Other", "Snack" };
+        String categories[] = { "HOTDRINK", "COLDDRINK", "MAIN", "OTHER", "SNACKS" };
         // Create the dropdown
         categoriesDropdown = new JComboBox<String>(categories);
         // Add label and dropdown to the panel and add border
@@ -91,6 +101,7 @@ public class OrderGUI extends JFrame {
         // Create the add button and add it to the panel
         addButton = new JButton("Add item to order");
         addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addButton.addActionListener(this);
         menuPanel.add(addButton);
         // Setting border and title
         menuPanel.setBorder(
@@ -115,10 +126,32 @@ public class OrderGUI extends JFrame {
             rowData[2] = item.getItemCat();
             rowData[3] = item.getItemPrice();
             rowData[4] = item.getItemDesc();
+            // Adding each row to the table
+            tableModel.addRow(rowData);
+            // Adding autosort so column names can be clicked to sort
+            menuTable.setAutoCreateRowSorter(true);
+            menuTable.getColumnModel().getColumn(4).setMinWidth(150);
         }
-        // Adding each row to the table
-        tableModel.addRow(rowData);
         menuTable.setSize(new Dimension(200, 400));
+        // Adding an action listener on the categories dropdown so the table can be
+        // filtered
+        categoriesDropdown.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                // Creating the filter by using the value of the dropdown and index 3 of the
+                // table
+                RowFilter<DefaultTableModel, Object> filter = RowFilter
+                        .regexFilter(categoriesDropdown.getSelectedItem().toString(), 2);
+
+                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(tableModel);
+                // Adding the filter to the sorter
+                sorter.setRowFilter(filter);
+                // Adding the sorter to the table
+                menuTable.setRowSorter(sorter);
+
+            }
+
+        });
+
         return menuTable;
     }
 
@@ -196,5 +229,27 @@ public class OrderGUI extends JFrame {
         orderTable.setSize(new Dimension(200, 400));
         return orderTable;
     }
+
+    // When a button is clicked this will determine which one and what to do
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == idButton) {
+            menuTable.getRowSorter().toggleSortOrder(0);
+        } else if (event.getSource() == nameButton) {
+            menuTable.getRowSorter().toggleSortOrder(1);
+        } else if (event.getSource() == categoryButton) {
+            menuTable.getRowSorter().toggleSortOrder(2);
+        } else if (event.getSource() == priceButton) {
+            menuTable.getRowSorter().toggleSortOrder(2);
+        } else if (event.getSource() == addButton) {
+            getSelectedRow();
+        }
+    }
+
+    // Adding an event listening to know which row a use selects
+    public void getSelectedRow() {
+        String itemId = menuTable.getValueAt(menuTable.getSelectedRow(), 0).toString();
+        Item item = manager.getMenu().getItem(itemId);
+        Order order = new Order(LocalDateTime.now(), 10, item);
+    };
 
 }
