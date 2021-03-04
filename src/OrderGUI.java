@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.TreeSet;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 import javax.swing.table.TableRowSorter;
@@ -32,18 +33,21 @@ public class OrderGUI extends JFrame implements ActionListener {
     private Bill bill;
 
     // The GUI components
-    JLabel menuSortLabel, categoryFilterLabel, discountLabel, totalLabel, discountAmount, totalAmount;
+    JLabel menuSortLabel, categoryFilterLabel, discountLabel, totalLabel, discountAmount, totalAmount, totalBeforeLabel,
+            totalBeforeAmount;
     JButton idButton, nameButton, categoryButton, priceButton, addButton, deleteButton, acceptButton;
     JComboBox categoriesDropdown;
     JScrollPane menuScrollPane, orderScrollPane;
     JTable menuTable, orderTable;
     JTextArea dealsTextArea;
     DefaultTableModel orderTableModel;
+    DecimalFormat decimalFormat;
 
     // Constructor
     public OrderGUI(Manager manager) {
         this.manager = manager;
         this.bill = new Bill(10);
+        this.decimalFormat = new DecimalFormat("#.00");
         // Set up title for window
         setTitle("Cafe");
         // Create container and add panels
@@ -125,7 +129,7 @@ public class OrderGUI extends JFrame implements ActionListener {
             rowData[0] = item.getItemID();
             rowData[1] = item.getItemName();
             rowData[2] = item.getItemCat();
-            rowData[3] = item.getItemPrice();
+            rowData[3] = decimalFormat.format(item.getItemPrice());
             rowData[4] = item.getItemDesc();
             // Adding each row to the table
             tableModel.addRow(rowData);
@@ -173,20 +177,28 @@ public class OrderGUI extends JFrame implements ActionListener {
         orderScrollPane = new JScrollPane(orderTable);
         orderScrollPane.setPreferredSize(new Dimension(100, 300));
         orderPanel.add(orderScrollPane);
+        // Creating total and label and adding to order panel
+        JPanel totalBeforePanel = new JPanel();
+        totalBeforeAmount = new JLabel("£0.00");
+        totalBeforeLabel = new JLabel("Price before discounts: ");
+        totalBeforePanel.add(totalBeforeLabel);
+        totalBeforePanel.add(totalBeforeAmount);
+        orderPanel.add(totalBeforePanel);
         // Creating discount and label and adding to order panel
         JPanel discountPanel = new JPanel();
-        discountAmount = new JLabel("£3.99");
-        discountLabel = new JLabel("Discount");
+        discountAmount = new JLabel("£0.00");
+        discountLabel = new JLabel("Discount: ");
         discountPanel.add(discountLabel);
         discountPanel.add(discountAmount);
         orderPanel.add(discountPanel);
         // Creating total and label and adding to order panel
         JPanel totalPanel = new JPanel();
-        totalAmount = new JLabel("£" + bill.calculateTotalPrice());
-        totalLabel = new JLabel("Total price");
+        totalAmount = new JLabel("£0.00");
+        totalLabel = new JLabel("Total price: ");
         totalPanel.add(totalLabel);
         totalPanel.add(totalAmount);
         orderPanel.add(totalPanel);
+
         // Creating the buttons and adding to panel
         JPanel orderButtonPanel = new JPanel();
         deleteButton = new JButton("Delete item");
@@ -230,7 +242,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         orderTable.setSize(new Dimension(200, 400));
         for (Order order : bill.getOrderList()) {
             rowData[0] = order.getItem().getItemName();
-            rowData[1] = order.getPrice();
+            rowData[1] = decimalFormat.format(order.getPrice());
             // Adding each row to the table
             orderTableModel.addRow(rowData);
             // Adding autosort so column names can be clicked to sort
@@ -268,6 +280,11 @@ public class OrderGUI extends JFrame implements ActionListener {
         rowData[1] = order.getPrice();
         // Adding each row to the table
         orderTableModel.addRow(rowData);
+        // Updating the total price
+        totalBeforeAmount.setText("£" + decimalFormat.format(bill.calculateTotalPrice()));
+        totalAmount.setText("£" + decimalFormat.format(bill.getDiscountedPrice()));
+        discountAmount.setText("-£" + decimalFormat.format(bill.calculateTotalPrice() - bill.getDiscountedPrice()));
+        updatePrices();
     }
 
     // Adding an event listening to know which row a user selects and then creating
@@ -277,7 +294,13 @@ public class OrderGUI extends JFrame implements ActionListener {
         bill.getOrderList().remove(index);
         // // Adding each row to the table
         orderTableModel.removeRow(bill.getOrderList().size());
-
+        updatePrices();
     };
+
+    public void updatePrices() {
+        totalBeforeAmount.setText("£" + decimalFormat.format(bill.calculateTotalPrice()));
+        totalAmount.setText("£" + decimalFormat.format(bill.getDiscountedPrice()));
+        discountAmount.setText("- £" + decimalFormat.format(bill.calculateTotalPrice() - bill.getDiscountedPrice()));
+    }
 
 }

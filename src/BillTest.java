@@ -52,7 +52,7 @@ public class BillTest {
     @Test
     void testGetDiscountedPrice() {
         testBill.setDiscountedPrice();
-        assertEquals(5.99, testBill.getDiscountedPrice());
+        assertEquals(7.99, testBill.getDiscountedPrice());
     }
 
     // Testing calculating the total price

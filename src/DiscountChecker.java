@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.List;
 
 //Imports for class
@@ -25,21 +26,28 @@ public class DiscountChecker {
     }
 
     /**
+     * Calculates all of the discounts available and returns the highest
      * 
      * @return double
      */
     public double overallDiscount() {
-        if (mealDeal() > 0) {
-            return mealDeal();
-        } else if (spendOver() > 0) {
-            return spendOver();
-        } else if (afternoonTea() > 0) {
-            return afternoonTea();
-        } else if (categoryOfTheDay() > 0) {
-            return categoryOfTheDay();
-        } else
-            return 0.0;
-
+        double maxDiscount = 0.0;
+        if (mealDeal() > maxDiscount) {
+            maxDiscount = mealDeal();
+        }
+        if (spendOver() > maxDiscount) {
+            maxDiscount = spendOver();
+        }
+        // Checks to see if it's between 2pm and 4pm
+        if (LocalDateTime.now().getHour() >= 14 && LocalDateTime.now().getHour() <= 16) {
+            if (afternoonTea() > maxDiscount) {
+                maxDiscount = afternoonTea();
+            }
+        }
+        if (categoryOfTheDay() > maxDiscount) {
+            maxDiscount = categoryOfTheDay();
+        }
+        return maxDiscount;
     }
 
     /**
@@ -60,7 +68,7 @@ public class DiscountChecker {
             } else if (order.getItem().getItemCat() == Item.ItemCat.MAIN && !mainAdded) {
                 mainAdded = true;
                 mealTotal += order.getItem().getItemPrice();
-            } else if (order.getItem().getItemCat() == Item.ItemCat.SNACKS && !snackAdded) {
+            } else if (order.getItem().getItemCat() == Item.ItemCat.SNACK && !snackAdded) {
                 snackAdded = true;
                 mealTotal += order.getItem().getItemPrice();
             }
@@ -88,18 +96,17 @@ public class DiscountChecker {
      * 
      * @return double
      */
-    public
-
-            double afternoonTea() {
+    public double afternoonTea() {
         int hotDrinkCount = 0;
         int snacksCount = 0;
         double hotDrinksTotal = 0.0;
         double snacksTotal = 0.0;
+
         for (Order order : orderList) {
             if (order.getItem().getItemCat() == Item.ItemCat.HOTDRINK && hotDrinkCount < 2) {
                 hotDrinksTotal += order.getItem().getItemPrice();
                 ++hotDrinkCount;
-            } else if (order.getItem().getItemCat() == Item.ItemCat.SNACKS && snacksCount < 2) {
+            } else if (order.getItem().getItemCat() == Item.ItemCat.SNACK && snacksCount < 2) {
                 snacksTotal += order.getItem().getItemPrice();
                 ++snacksCount;
             }

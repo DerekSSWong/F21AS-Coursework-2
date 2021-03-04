@@ -47,6 +47,7 @@ public class Bill {
      */
     public void addOrder(Order order) {
         orderList.add(order);
+        setDiscountedPrice();
 
     }
 
