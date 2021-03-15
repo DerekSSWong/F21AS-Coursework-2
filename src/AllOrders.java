@@ -1,11 +1,13 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
  * 
  * Class for storing all orders
  * 
- * @author Dan Ryan
+ * @author Dan Ryan, Derek Wong
  *
  */
 
@@ -26,17 +28,20 @@ public class AllOrders {
 		i++;
 	}
 
-	/**
-	 * 
-	 * Creates a new arrayList used to overwrite arrayList when searching for Orders
-	 * with a customerID
-	 * 
-	 */
-
-	public void searchAllOrdersArrays() {
-		orderSearch = new ArrayList<Order>();
-	}
-
+	//Test method by Derek
+		//Prints cusID and itemName of all existing orders
+		public void printOrders() {
+			String[] order = new String[2];
+			System.out.println(ao.size());
+			
+			for (Map.Entry<Integer, Order> entry : ao.entrySet()) {
+				order[0] = Integer.toString(entry.getValue().getCustomerID());
+				order[1] = entry.getValue().getItem().getItemName();
+				System.out.println(Arrays.toString(order));
+			}
+				
+		}
+		
 	/**
 	 * Loops through ao treemap and checks if each value contains customerID adds
 	 * Order to an arrayList if Order contains customerID
@@ -44,12 +49,11 @@ public class AllOrders {
 	 * @param cusID
 	 * @return ArrayList<Order>
 	 */
-
 	public ArrayList<Order> findByID(int cusID) {
-		searchAllOrdersArrays();
-		for (int i = 1; ao.lastKey() < i; i++) {
-			if (ao.get(i).getCustomerID() == cusID) {
-				orderSearch.add(ao.get(i));
+		orderSearch = new ArrayList<Order>();
+		for (Map.Entry<Integer, Order> entry : ao.entrySet()) {
+			if (entry.getValue().getCustomerID() == cusID) {
+				orderSearch.add(entry.getValue());
 			} else if (orderSearch.size() > 0) {
 				break;
 			} // if
