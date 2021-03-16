@@ -55,6 +55,12 @@ public class BillTest {
         assertEquals(7.99, testBill.getDiscountedPrice());
     }
 
+    // Testing getting the status
+    @Test
+    void testGetProcessingStatus() {
+        assertEquals(false, testBill.getProcessedStatus());
+    }
+
     // Testing calculating the total price
     @Test
     void testCalculateTotalPrice() {
@@ -73,6 +79,13 @@ public class BillTest {
     void testRemoveOrder() {
         testBill.removeOrder(testOrder1);
         assertEquals(1, testBill.getOrderList().size());
+    }
+
+    // Testing setting the status
+    @Test
+    void testSetProcessingStatus() {
+        testBill.setProcessedStatus(true);
+        assertEquals(true, testBill.getProcessedStatus());
     }
 
 }
