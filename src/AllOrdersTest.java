@@ -1,5 +1,7 @@
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +27,9 @@ public class AllOrdersTest {
 
     @Test
     void testfindByID(){
-    	assertEquals(testOrder2, testAllOrders.findByID(2);
+    	ArrayList<Order> searchResult = testAllOrders.findByID(1);
+    	assertEquals(searchResult.get(0).getCustomerID(), 1);
+    	assertEquals(searchResult.get(0).getItem().getItemName(), "Latte");
     }
 
 }

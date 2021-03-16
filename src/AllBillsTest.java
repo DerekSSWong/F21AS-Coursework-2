@@ -2,6 +2,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -33,7 +35,10 @@ public class AllBillsTest {
 
     @Test
     void testfindBill() {
-        assertEquals(testBill, testAllBills.findBill(1));
+        Bill bill = testAllBills.findBill(1);
+        List<Order> billOrder = bill.getOrderList();
+        assertEquals(billOrder.get(0).getItem().getItemName(), "Latte");
+        assertEquals(billOrder.get(1).getItem().getItemName(), "Muesli Bircher");
     }
 
 }
