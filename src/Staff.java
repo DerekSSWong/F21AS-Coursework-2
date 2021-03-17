@@ -9,6 +9,7 @@ public class Staff {
 
     private int staffID;
     private String name;
+    private boolean working;
 
     /**
      * Constructor for the class
@@ -19,6 +20,7 @@ public class Staff {
 
         this.staffID = staffID;
         this.name = name;
+        this.working = false;
 
     }
 
@@ -48,11 +50,28 @@ public class Staff {
     public void processBill(Bill bill) {
         int amountOfItems = bill.getOrderList().size();
         try {
+        	working = true;
             Thread.sleep(amountOfItems * 100);
             bill.setProcessedStatus(true);
+            working = false;
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    /**
+     * Sets the working status of staff
+     * @param working
+     */
+    public void setWorking(boolean working) {
+    	this.working = working;
+    }
+    /**
+     * Checks if the staff is currently processing an order
+     * @return boolean
+     */
+    public boolean isWorking() {
+    	return working;
     }
 
 }
