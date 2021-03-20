@@ -14,14 +14,13 @@ public class Bill {
     private List<Order> orderList = new ArrayList<Order>();
     private int customerID;
     private double discountedPrice;
+    private boolean processed = false;
 
     /**
      * Constructor for the class
      * 
-     * @param orderList       The list of Order's made by a customer
-     * @param customerID      The unique identifier of the customer who the bill
-     *                        belongs to e.g. 1
-     * @param discountedPrice The price after discounts of ther bill e.g. £3.50
+     * @param customerID The unique identifier of the customer who the bill belongs
+     *                   to e.g. 1
      */
     public Bill(int customerID) {
         this.customerID = customerID;
@@ -81,6 +80,15 @@ public class Bill {
     }
 
     /**
+     * Returns the processing status of a bill
+     * 
+     * @return boolean
+     */
+    public boolean getProcessedStatus() {
+        return processed;
+    }
+
+    /**
      * Returns orders on a bill
      * 
      * @return List<Order>
@@ -106,6 +114,15 @@ public class Bill {
     public void setDiscountedPrice() {
         DiscountChecker discountChecker = new DiscountChecker(orderList, calculateTotalPrice());
         discountedPrice = calculateTotalPrice() - discountChecker.overallDiscount();
+    }
+
+    /**
+     * Sets the processing status
+     * 
+     * @param isProcessed
+     */
+    public void setProcessedStatus(boolean isProcessed) {
+        processed = isProcessed;
     }
 
 }
