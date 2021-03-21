@@ -31,5 +31,13 @@ public class AllOrdersTest {
     	assertEquals(searchResult.get(0).getCustomerID(), 1);
     	assertEquals(searchResult.get(0).getItem().getItemName(), "Latte");
     }
+    
+    @Test
+    void testfindByItem() {
+    	int Test1= testAllOrders.findByItem(testItem1);
+    	System.out.println(Test1);
+    	
+    }
+    
 
 }
