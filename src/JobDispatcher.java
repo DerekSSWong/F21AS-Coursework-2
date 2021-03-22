@@ -1,6 +1,10 @@
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -11,6 +15,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class JobDispatcher {
 	
 	public ReentrantLock lock = new ReentrantLock();
+	
+	public String log = "";
 	
 	private ArrayList<Staff> staffList = new ArrayList<Staff>();
 	public Queue q = new Queue();
@@ -28,6 +34,7 @@ public class JobDispatcher {
 	public void addStaff(Staff staff) {
 		lock.lock();
 			staffList.add(staff);
+			addToLog("Staff " + staff.getStaffID() + " added");
 			System.out.println("Staff " + staff.getStaffID() + " added");
 		lock.unlock();
 	}
@@ -112,12 +119,14 @@ public class JobDispatcher {
 				}
 				
 				//Report related methods can go here
+				addToLog("All jobs processed, producing report...");
 				System.out.println("All jobs processed, producing report...");
 				Manager manager = new Manager();
 		    	manager.readFile("Menu.csv");
 		    	manager.readFile("ExistingOrders.csv");
 		    	manager.toBills();
 				manager.writeFile();
+				writeLog();
 				
 				
 			}
@@ -138,9 +147,11 @@ public class JobDispatcher {
 				int sIndex = staffList.indexOf(s);
 				
 				staffList.get(sIndex).setWorking(true);
+				addToLog("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size " + b.getOrderList().size());
 				System.out.println("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size " + b.getOrderList().size());
 				s.processBill(b);
 				staffList.get(sIndex).setWorking(false);
+				addToLog("Bill " + b.getCustomerID() + " finished");
 				System.out.println("Bill " + b.getCustomerID() + " finished");
 				
 				//checks if the bill is the last one left
@@ -184,4 +195,29 @@ public class JobDispatcher {
 		};
     	lb.start();
     }
+	
+	public synchronized void addToLog(String str) {
+		str += "\n";
+		log += str;
+	}
+	
+	//Shamelessly ripped off Andrew's writeFile() method
+	public void writeLog() {
+        try {
+     	   FileWriter reportFile = new FileWriter("Log.csv");
+            reportFile.write(log);
+            reportFile.close();
+            
+        }
+        //Displays an error if the file isn't in the folder
+        catch (FileNotFoundException fnf){
+            System.out.println("log.csv" + " not found ");
+            System.exit(0);
+        }
+        //stack trace 
+        catch (IOException ioe){
+     	   ioe.printStackTrace();
+     	   System.exit(1);
+        }
+ }
 }
