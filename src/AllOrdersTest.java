@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 public class AllOrdersTest {
-
+	
+	private Item testItem1;
+	private Item testItem2;
     private Order testOrder1;
     private Order testOrder2;
     private AllOrders testAllOrders;
@@ -30,13 +32,6 @@ public class AllOrdersTest {
     	ArrayList<Order> searchResult = testAllOrders.findByID(1);
     	assertEquals(searchResult.get(0).getCustomerID(), 1);
     	assertEquals(searchResult.get(0).getItem().getItemName(), "Latte");
-    }
-    
-    @Test
-    void testfindByItem() {
-    	int Test1= testAllOrders.findByItem(testItem1);
-    	System.out.println(Test1);
-    	
     }
     
 

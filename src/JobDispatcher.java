@@ -106,6 +106,11 @@ public class JobDispatcher {
 				
 				//Report related methods can go here
 				System.out.println("All jobs processed, producing report...");
+				Manager manager = new Manager();
+		    	manager.readFile("Menu.csv");
+		    	manager.readFile("ExistingOrders.csv");
+		    	manager.toBills();
+				manager.writeFile();
 				
 				
 			}

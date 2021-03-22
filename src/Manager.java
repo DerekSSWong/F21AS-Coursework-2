@@ -144,7 +144,7 @@ public class Manager {
                 
                 if (item != null) {
                 Order newOrder = new Order(time, cusID, item);
-                System.out.println("Order from cus " + newOrder.getCustomerID() + " added");
+                //System.out.println("Order from cus " + newOrder.getCustomerID() + " added");
                 orders.addOrder(newOrder);
                 } else {throw new ClassCastException();}
             } 
