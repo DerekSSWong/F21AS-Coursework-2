@@ -20,6 +20,7 @@ public class JobDispatcherTest {
     private Bill testBill3;
     private Staff testStaff1;
     private Staff testStaff2;
+    private Staff testStaff3;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -47,6 +48,7 @@ public class JobDispatcherTest {
         
         testStaff1 = new Staff(1, "Joe Bloggs");
         testStaff2 = new Staff(2, "John Cena");
+        testStaff3 = new Staff(3, "Garfield");
         
     }
 
@@ -133,7 +135,7 @@ public class JobDispatcherTest {
     
     //Tests before this one are most likely broken
     @Test
-    void TestLoadBills() {
+    void testLoadBills() {
     	JobDispatcher dispatcher = JobDispatcher.getInstance();
     	dispatcher.addStaff(testStaff1);
     	dispatcher.addStaff(testStaff2);
@@ -146,6 +148,36 @@ public class JobDispatcherTest {
     	
     	dispatcher.loadBills();
     	dispatcher.dispatch();
+    	
+    	try {
+			Thread.sleep(100000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    @Test
+    void testAddingStaffMidProcess() {
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
+    	dispatcher.addStaff(testStaff1);
+    	dispatcher.addStaff(testStaff2);
+    	
+    	try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	dispatcher.loadBills();
+    	dispatcher.dispatch();
+    	
+    	//Adds a new staff after launching the dispatcher
+    	try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	dispatcher.addStaff(testStaff3);
     	
     	try {
 			Thread.sleep(100000);

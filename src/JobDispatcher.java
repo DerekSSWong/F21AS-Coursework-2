@@ -3,6 +3,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Gradually queues bills from AllBills for server(s) to process
+ * @author Derek
+ *
+ */
 public class JobDispatcher {
 	
 	public ReentrantLock lock = new ReentrantLock();
@@ -10,9 +15,9 @@ public class JobDispatcher {
 	private ArrayList<Staff> staffList = new ArrayList<Staff>();
 	public Queue q = new Queue();
 	
-	public int totalSize = 0;
-	public boolean isLast = false;
-	public int queueDelay = 100;
+	private int totalSize = 0;
+	private boolean isLast = false;
+	private int queueDelay = 100;
 	
 	static JobDispatcher dispatcher = new JobDispatcher();
 	
@@ -20,12 +25,14 @@ public class JobDispatcher {
 	private JobDispatcher() {}
 	public static JobDispatcher getInstance() {return dispatcher;}
 	
-	//not thread safe yet
 	public void addStaff(Staff staff) {
-		staffList.add(staff);
+		lock.lock();
+			staffList.add(staff);
+			System.out.println("Staff " + staff.getStaffID() + " added");
+		lock.unlock();
 	}
 	
-
+	//obsolete method
 	public void addBill(Bill bill) {
 		q.addQueueBill(bill);
 	}
@@ -160,7 +167,7 @@ public class JobDispatcher {
 		    	manager.toBills();
 		    	HashMap<Integer, Bill> allBills = manager.getAllBills().getBillList();
 		    	totalSize = allBills.size();
-		    	System.out.println(totalSize);
+		    	//System.out.println(totalSize);
 		    	
 		    	//Loads the bills into Queue with a set delay
 		    	for (Map.Entry<Integer, Bill> entry : allBills.entrySet()) {
