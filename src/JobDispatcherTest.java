@@ -52,7 +52,7 @@ public class JobDispatcherTest {
 
     @Test
     public void oneJobOneStaff() {
-    	JobDispatcher dispatcher = new JobDispatcher();
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
     	
     	dispatcher.addBill(testBill1);
     	dispatcher.addStaff(testStaff1);
@@ -73,7 +73,7 @@ public class JobDispatcherTest {
     
     @Test
     public void oneJobManyStaff() {
-    	JobDispatcher dispatcher = new JobDispatcher();
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
     	
     	dispatcher.addBill(testBill1);
     	dispatcher.addStaff(testStaff1);
@@ -95,7 +95,8 @@ public class JobDispatcherTest {
     
     @Test
     public void manyJobOneStaff() {
-    	JobDispatcher dispatcher = new JobDispatcher();
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
+    	int index = 0;
     	
     	dispatcher.addBill(testBill1);
     	dispatcher.addBill(testBill2);
@@ -103,23 +104,12 @@ public class JobDispatcherTest {
     	dispatcher.addStaff(testStaff1);
 
     	
-    	try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
     	
-    	dispatcher.dispatch();
-    	try {
-			Thread.sleep(700);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
     }
     
     @Test
     public void manyJobManyStaff() {
-    	JobDispatcher dispatcher = new JobDispatcher();
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
     	
     	dispatcher.addBill(testBill1);
     	dispatcher.addBill(testBill2);
@@ -136,6 +126,29 @@ public class JobDispatcherTest {
     	dispatcher.dispatch();
     	try {
 			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    //Tests before this one are most likely broken
+    @Test
+    void TestLoadBills() {
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
+    	dispatcher.addStaff(testStaff1);
+    	dispatcher.addStaff(testStaff2);
+    	
+    	try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	dispatcher.loadBills();
+    	dispatcher.dispatch();
+    	
+    	try {
+			Thread.sleep(100000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
