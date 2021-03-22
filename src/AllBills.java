@@ -49,4 +49,10 @@ public class AllBills {
 		return ab.get(cusID);
 	} 
 	
+
+	public HashMap<Integer, Bill> getBillList() {
+		return ab;
+	}
+
+	
 }

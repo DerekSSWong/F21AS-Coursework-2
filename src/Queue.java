@@ -1,5 +1,9 @@
 //Imports for class
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
@@ -8,7 +12,7 @@ import java.util.LinkedList;
  */
 
 public class Queue {
-
+	
     public LinkedList<Bill> QueueList = new LinkedList<Bill>();
 
     /**
@@ -17,11 +21,32 @@ public class Queue {
      *
      * @param bill
      */
-
-    public void addQueueBill(Bill bill){
-        QueueList.addLast(bill);
+    
+    public synchronized void addQueueBill(Bill bill){
+        	QueueList.addLast(bill);
+        	System.out.println("Queued bill " + bill.getCustomerID());
     }
-
+    
+    
+    public synchronized void setBillProcessedState(int index, boolean state) {
+    	QueueList.get(index).setProcessedStatus(state);
+    }
+    
+    public synchronized Bill getAvailableBill() {
+    	Bill bill = null;
+    	for (Bill b : QueueList) {
+    		if (b.getProcessedStatus() == false) {
+    			bill = b;
+    			break;
+    		}
+    	}
+    	return bill;
+    }
+    
+    public int getQsize() {
+    	return QueueList.size();
+    }
+    
     /**
      * Removes the first bill in the queue
      * equivalent of serving the first customer
@@ -63,4 +88,6 @@ public class Queue {
     public void removeBillAtIndex (int index){
         QueueList.remove(index);
     }
+    
+    
 }

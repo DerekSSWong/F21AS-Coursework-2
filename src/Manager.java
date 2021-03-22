@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeSet;
 
@@ -143,9 +144,9 @@ public class Manager {
                 
                 if (item != null) {
                 Order newOrder = new Order(time, cusID, item);
-                System.out.println("Order from cus " + newOrder.getCustomerID() + " added");
+                //System.out.println("Order from cus " + newOrder.getCustomerID() + " added");
                 orders.addOrder(newOrder);
-                }
+                } else {throw new ClassCastException();}
             } 
             catch (NumberFormatException nfe) {
                 String error = "Number conversion error in '" + line + "'  - " + nfe.getMessage();
@@ -155,7 +156,28 @@ public class Manager {
                 String error = "Error parsing order time in '" + line + "'  - " + dtpe.getMessage();
                 System.out.println(error);
             }
+    		catch (ClassCastException cce) {
+    			String error = "Error processing item in '" + line + "'  - " + cce.getMessage();
+    			System.out.println(error);
+    		}
+
+            
         }
+        
+    	public void toBills() {
+    		int cusIndex = 1;
+    		ArrayList<Order> orderList = orders.findByID(cusIndex);
+    		while(orderList.size() > 0) {
+    			Bill bill = new Bill(cusIndex);
+    			for (Order o : orderList) {
+    				bill.addOrder(o);
+    			}
+    			allBills.addBill(bill);
+    			cusIndex ++;
+    			orderList = orders.findByID(cusIndex);
+    		}
+    	}
+
 
         /**
          * Method which compares the input string with the list of valid item categories
