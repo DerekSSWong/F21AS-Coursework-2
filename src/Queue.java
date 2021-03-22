@@ -1,5 +1,7 @@
+
 //Imports for class
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -12,23 +14,22 @@ public class Queue {
     public LinkedList<Bill> QueueList = new LinkedList<Bill>();
 
     /**
-     * Adds new bills to the end of the queue list
-     * equivalent of a customer joining the back of a queue
+     * Adds new bills to the end of the queue list equivalent of a customer joining
+     * the back of a queue
      *
      * @param bill
      */
 
-    public void addQueueBill(Bill bill){
+    public void addQueueBill(Bill bill) {
         QueueList.addLast(bill);
     }
 
     /**
-     * Removes the first bill in the queue
-     * equivalent of serving the first customer
+     * Removes the first bill in the queue equivalent of serving the first customer
      *
      */
 
-    public void removeQueueBill(){
+    public void removeQueueBill() {
         QueueList.removeFirst();
     }
 
@@ -39,8 +40,18 @@ public class Queue {
      * @return int
      */
 
-    public int getQueueIndex(Bill bill){
+    public int getQueueIndex(Bill bill) {
         return QueueList.indexOf(bill);
+    }
+
+    /**
+     * Returns all of the Bills in the queue
+     *
+     * @return List<Bill>
+     */
+
+    public List<Bill> getQueueList() {
+        return QueueList;
     }
 
     /**
@@ -50,7 +61,7 @@ public class Queue {
      * @return Bill
      */
 
-    public Bill getQueueBill(int index){
+    public Bill getQueueBill(int index) {
         return QueueList.get(index);
     }
 
@@ -60,7 +71,7 @@ public class Queue {
      * @param index
      */
 
-    public void removeBillAtIndex (int index){
+    public void removeBillAtIndex(int index) {
         QueueList.remove(index);
     }
 }

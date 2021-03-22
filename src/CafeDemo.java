@@ -1,7 +1,7 @@
 
 public class CafeDemo {
     private Manager manager;
-    private OrderGUI gui;
+    private QueueGUI gui;
 
     public CafeDemo() {
         manager = new Manager();
@@ -9,7 +9,7 @@ public class CafeDemo {
     }
 
     public void showGUI() {
-        gui = new OrderGUI(manager);
+        gui = new QueueGUI(manager);
         gui.setVisible(true);
     }
 

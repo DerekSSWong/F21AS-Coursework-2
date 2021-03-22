@@ -11,6 +11,7 @@ public class Manager {
 	private AllItems menu = new AllItems();
 	private AllOrders orders = new AllOrders();
 	private AllBills allBills = new AllBills();
+	private Queue queue = new Queue();
 
 	public void readFile(String filename) {
 
@@ -29,7 +30,7 @@ public class Manager {
 							processOrderLine(inputLine);
 							break;
 					}
-					
+
 				}
 			}
 			scanner.close();
@@ -78,33 +79,31 @@ public class Manager {
 		} // catch
 
 	}
-	
+
 	public void processOrderLine(String line) {
-		
+
 		try {
 			String parts[] = line.split(",");
-			
+
 			String timeString = parts[0].trim();
 			LocalDateTime time = LocalDateTime.parse(timeString);
-			
+
 			int cusID = Integer.parseInt(parts[1].trim());
-			
+
 			String itemID = parts[2].trim();
 			Item item = menu.getItem(itemID);
-			
+
 			double price = Double.parseDouble(parts[3].trim());
-			
+
 			if (item != null) {
-			Order newOrder = new Order(time, cusID, item);
-			System.out.println("Order from cus " + newOrder.getCustomerID() + " added");
-			orders.addOrder(newOrder);
+				Order newOrder = new Order(time, cusID, item);
+				System.out.println("Order from cus " + newOrder.getCustomerID() + " added");
+				orders.addOrder(newOrder);
 			}
-		} 
-		catch (NumberFormatException nfe) {
+		} catch (NumberFormatException nfe) {
 			String error = "Number conversion error in '" + line + "'  - " + nfe.getMessage();
 			System.out.println(error);
-		}
-		catch (DateTimeParseException dtpe) {
+		} catch (DateTimeParseException dtpe) {
 			String error = "Error parsing order time in '" + line + "'  - " + dtpe.getMessage();
 			System.out.println(error);
 		}
@@ -136,15 +135,19 @@ public class Manager {
 	public AllItems getMenu() {
 		return menu;
 	}
-	
+
 	public void addOrder(Order order) {
 		orders.addOrder(order);
 	}
-	
+
 	public AllOrders getOrders() {
 		return orders;
 	}
-	
+
+	public Queue getQueue() {
+		return queue;
+	}
+
 	/**
 	 * Adds a bill to the list of all bills
 	 * 
