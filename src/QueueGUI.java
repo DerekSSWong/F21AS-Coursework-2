@@ -57,25 +57,26 @@ public class QueueGUI extends JFrame {
         // Creating the label for the list
         queueLabel = new JLabel("Here's everything currently in the queue:");
         // Array of headings for the table
-        String[] columns = new String[] { "Customer ID", "Number of items" };
+        String[] columns = new String[] { "Customer ID", "Number of items", "Total" };
         // Creating a table
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         tableModel.setColumnIdentifiers(columns);
         queueTable = new JTable(tableModel);
         queueTable.setModel(tableModel);
-        Object rowData[] = new Object[2];
+        Object rowData[] = new Object[3];
         // Mapping through the queue to get all of the orders
         List<Bill> queueList = manager.getQueue().getQueueList();
         for (Bill bill : queueList) {
             rowData[0] = bill.getCustomerID();
             rowData[1] = bill.getOrderList().size();
+            rowData[3] = bill.getDiscountedPrice();
             // Adding the rows to the table
             tableModel.addRow(rowData);
         }
         // Creating the table and adding it to a scroll pane
         queuePanel.add(queueTable);
         queueScrollPane = new JScrollPane(queueTable);
-        queueScrollPane.setPreferredSize(new Dimension(100, 300));
+        queueScrollPane.setPreferredSize(new Dimension(300, 100));
         queuePanel.add(queueScrollPane);
         // Returning the panel
         return queuePanel;
