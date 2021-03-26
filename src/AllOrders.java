@@ -7,7 +7,7 @@ import java.util.TreeMap;
  * 
  * Class for storing all orders
  * 
- * @author Dan Ryan, Derek Wong
+ * @author Dan Ryan, Derek Wong, Andrew Dalley
  *
  */
 
@@ -60,4 +60,28 @@ public class AllOrders {
 		} // for
 		return orderSearch;
 	}// findByID
+	
+	
+	/**
+	 * Loops through all the orders made and adds up how many times each item was
+	 * ordered, then returns this value.   
+	 * 
+	 * @param item
+	 * @return counter
+	 */
+	public int frequencyOfItem(Item item) {
+		orderSearch = new ArrayList<Order>();
+		int counter = 0 ;
+		for (Map.Entry<Integer, Order> entry : ao.entrySet()) {
+			if (entry.getValue().getItem().getItemID().equals( item.getItemID())) 
+				counter++;
+		} 
+		return counter;
+	} 
+	
+	
+	
+	
+	
+	
 }

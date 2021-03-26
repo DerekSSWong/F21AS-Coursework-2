@@ -20,6 +20,7 @@ public class JobDispatcherTest {
     private Bill testBill3;
     private Staff testStaff1;
     private Staff testStaff2;
+    private Staff testStaff3;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -47,12 +48,13 @@ public class JobDispatcherTest {
         
         testStaff1 = new Staff(1, "Joe Bloggs");
         testStaff2 = new Staff(2, "John Cena");
+        testStaff3 = new Staff(3, "Garfield");
         
     }
 
     @Test
     public void oneJobOneStaff() {
-    	JobDispatcher dispatcher = new JobDispatcher();
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
     	
     	dispatcher.addBill(testBill1);
     	dispatcher.addStaff(testStaff1);
@@ -73,7 +75,7 @@ public class JobDispatcherTest {
     
     @Test
     public void oneJobManyStaff() {
-    	JobDispatcher dispatcher = new JobDispatcher();
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
     	
     	dispatcher.addBill(testBill1);
     	dispatcher.addStaff(testStaff1);
@@ -95,7 +97,8 @@ public class JobDispatcherTest {
     
     @Test
     public void manyJobOneStaff() {
-    	JobDispatcher dispatcher = new JobDispatcher();
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
+    	int index = 0;
     	
     	dispatcher.addBill(testBill1);
     	dispatcher.addBill(testBill2);
@@ -103,23 +106,12 @@ public class JobDispatcherTest {
     	dispatcher.addStaff(testStaff1);
 
     	
-    	try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
     	
-    	dispatcher.dispatch();
-    	try {
-			Thread.sleep(700);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
     }
     
     @Test
     public void manyJobManyStaff() {
-    	JobDispatcher dispatcher = new JobDispatcher();
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
     	
     	dispatcher.addBill(testBill1);
     	dispatcher.addBill(testBill2);
@@ -136,6 +128,59 @@ public class JobDispatcherTest {
     	dispatcher.dispatch();
     	try {
 			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    //Tests before this one are most likely broken
+    @Test
+    void testLoadBills() {
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
+    	dispatcher.addStaff(testStaff1);
+    	dispatcher.addStaff(testStaff2);
+    	
+    	try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	dispatcher.loadBills();
+    	dispatcher.dispatch();
+    	
+    	try {
+			Thread.sleep(100000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    @Test
+    void testAddingStaffMidProcess() {
+    	JobDispatcher dispatcher = JobDispatcher.getInstance();
+    	dispatcher.addStaff(testStaff1);
+    	dispatcher.addStaff(testStaff2);
+    	
+    	try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	dispatcher.loadBills();
+    	dispatcher.dispatch();
+    	
+    	//Adds a new staff after launching the dispatcher
+    	try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	dispatcher.addStaff(testStaff3);
+    	
+    	try {
+			Thread.sleep(100000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

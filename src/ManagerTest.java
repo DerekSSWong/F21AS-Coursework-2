@@ -55,4 +55,19 @@ class ManagerTest {
 		assertEquals(testManager.getMenu().getItem("HTDK1"), testItem);
 	}
 
+	
+	@Test
+	// Test to see if final report generates
+	void testWriteFile() {
+		 	Manager manager = new Manager();
+	        manager.readFile("Menu.csv");
+	        manager.readFile("ExistingOrders.csv");
+	        manager.addOrder(testOrder1);
+	        manager.addOrder(testOrder2);
+	        manager.writeFile(); 
+		
+		//testManager.getMenu().addItem(testItem);
+		//assertEquals(testManager.getMenu().getItem("HTDK1"), testItem);
+	}
+	
 }

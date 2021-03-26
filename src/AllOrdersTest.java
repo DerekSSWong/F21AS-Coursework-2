@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 public class AllOrdersTest {
-
+	
+	private Item testItem1;
+	private Item testItem2;
     private Order testOrder1;
     private Order testOrder2;
     private AllOrders testAllOrders;
@@ -31,5 +33,6 @@ public class AllOrdersTest {
     	assertEquals(searchResult.get(0).getCustomerID(), 1);
     	assertEquals(searchResult.get(0).getItem().getItemName(), "Latte");
     }
+    
 
 }

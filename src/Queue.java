@@ -20,8 +20,28 @@ public class Queue {
      * @param bill
      */
 
-    public void addQueueBill(Bill bill) {
+    public synchronized void addQueueBill(Bill bill) {
         QueueList.addLast(bill);
+        System.out.println("Queued bill " + bill.getCustomerID());
+    }
+
+    public synchronized void setBillProcessedState(int index, boolean state) {
+        QueueList.get(index).setProcessedStatus(state);
+    }
+
+    public synchronized Bill getAvailableBill() {
+        Bill bill = null;
+        for (Bill b : QueueList) {
+            if (b.getProcessedStatus() == false) {
+                bill = b;
+                break;
+            }
+        }
+        return bill;
+    }
+
+    public int getQsize() {
+        return QueueList.size();
     }
 
     /**
@@ -74,4 +94,5 @@ public class Queue {
     public void removeBillAtIndex(int index) {
         QueueList.remove(index);
     }
+
 }

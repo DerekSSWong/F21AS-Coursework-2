@@ -10,6 +10,7 @@ public class Staff {
     private int staffID;
     private String name;
     private boolean working;
+    private int timePerItem = 100;
 
     /**
      * Constructor for the class
@@ -50,10 +51,8 @@ public class Staff {
     public void processBill(Bill bill) {
         int amountOfItems = bill.getOrderList().size();
         try {
-        	working = true;
-            Thread.sleep(amountOfItems * 100);
+            Thread.sleep(amountOfItems * timePerItem);
             bill.setProcessedStatus(true);
-            working = false;
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
@@ -73,5 +72,12 @@ public class Staff {
     public boolean isWorking() {
     	return working;
     }
-
+    
+    public int getTimePerItem() {
+    	return timePerItem;
+    }
+    public void setTimePerItem(int time) {
+    	timePerItem = time;
+    }
+    	
 }
