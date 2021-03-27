@@ -147,12 +147,16 @@ public class JobDispatcher {
 				int sIndex = staffList.indexOf(s);
 				
 				staffList.get(sIndex).setWorking(true);
+				staffList.get(sIndex).assignBill(b);
+				
 				addToLog("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size " + b.getOrderList().size());
 				System.out.println("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size " + b.getOrderList().size());
 				s.processBill(b);
 				staffList.get(sIndex).setWorking(false);
 				addToLog("Bill " + b.getCustomerID() + " finished");
 				System.out.println("Bill " + b.getCustomerID() + " finished");
+				
+				staffList.get(sIndex).removeBill();
 				
 				//checks if the bill is the last one left
 				if (q.getQueueIndex(b) == totalSize -1) {

@@ -11,6 +11,7 @@ public class Staff {
     private String name;
     private boolean working;
     private int timePerItem = 100;
+    private Bill currentlyProcessing = null;
 
     /**
      * Constructor for the class
@@ -78,6 +79,18 @@ public class Staff {
     }
     public void setTimePerItem(int time) {
     	timePerItem = time;
+    }
+    
+    public void assignBill(Bill bill) {
+    	currentlyProcessing = bill;
+    }
+    
+    public Bill getBill() {
+    	return currentlyProcessing;
+    }
+    
+    public void removeBill() {
+    	currentlyProcessing = null;
     }
     	
 }
