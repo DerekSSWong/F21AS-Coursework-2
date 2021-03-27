@@ -95,4 +95,34 @@ public class Queue {
         QueueList.remove(index);
     }
 
+    // Following the observer patter - Queue must be able to register, remove and
+    // notify observers
+
+    /**
+     * List to hold any observers
+     */
+    private List<Observer> registeredObservers = new LinkedList<Observer>();
+
+    /**
+     * Register an observer with this subject
+     */
+    public void registerObserver(Observer observer) {
+        registeredObservers.add(observer);
+    }
+
+    /**
+     * De-register an observer with this subject
+     */
+    public void removeObserver(Observer observer) {
+        registeredObservers.remove(observer);
+    }
+
+    /**
+     * Inform all registered observers that there's been an update
+     */
+    public void notifyObservers() {
+        for (Observer observer : registeredObservers)
+            observer.update();
+    }
+
 }
