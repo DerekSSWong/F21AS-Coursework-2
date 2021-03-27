@@ -1,21 +1,17 @@
 /**
- * The Subject part of the Observer pattern. All classes implementing this
- * interface MUST have these methods.
+ * This is the interface for the subject of the observer pattern, so all classes
+ * implementing this will need these methods.
+ * 
+ * @author Rose Ulldemolins
+ * 
  */
 public interface Subject {
+    // Register an observer with a subject
+    public void registerObserver(Observer observer);
 
-    /**
-     * Register an observer with this subject
-     */
-    public void registerObserver(Observer obs);
+    // Remove an observer of a subject
+    public void removeObserver(Observer observer);
 
-    /**
-     * De-register an observer with this subject
-     */
-    public void removeObserver(Observer obs);
-
-    /**
-     * Inform all registered observers that there's been an update
-     */
+    // Let all refistered observers know there's been an update
     public void notifyObservers();
 }

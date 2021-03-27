@@ -1,16 +1,19 @@
+
+/**
+ * The display (or panel) for the queue part of the GUI
+ * 
+ * @author Rose Ulldemolins
+ * 
+ */
+
 import java.awt.*;
 import java.util.List;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-/**
- * A digital clock display. This is an observer of the clock object.
- */
+// This is an observer of the queue so that when it changes te GUI updates
 public class QueueDisplay extends JPanel implements Observer {
-
     private Queue queue; // The queue which contains the current orders
-
     // The GUI components
     JLabel queueLabel;
     JTable queueTable;
