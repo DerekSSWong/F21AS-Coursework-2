@@ -1,9 +1,7 @@
+
 //Imports for class
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.List;
 
 /**
  *
@@ -12,48 +10,46 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 public class Queue {
-	
+
     public LinkedList<Bill> QueueList = new LinkedList<Bill>();
 
     /**
-     * Adds new bills to the end of the queue list
-     * equivalent of a customer joining the back of a queue
+     * Adds new bills to the end of the queue list equivalent of a customer joining
+     * the back of a queue
      *
      * @param bill
      */
-    
-    public synchronized void addQueueBill(Bill bill){
-        	QueueList.addLast(bill);
-        	System.out.println("Queued bill " + bill.getCustomerID());
+
+    public synchronized void addQueueBill(Bill bill) {
+        QueueList.addLast(bill);
+        System.out.println("Queued bill " + bill.getCustomerID());
     }
-    
-    
+
     public synchronized void setBillProcessedState(int index, boolean state) {
-    	QueueList.get(index).setProcessedStatus(state);
+        QueueList.get(index).setProcessedStatus(state);
     }
-    
+
     public synchronized Bill getAvailableBill() {
-    	Bill bill = null;
-    	for (Bill b : QueueList) {
-    		if (b.getProcessedStatus() == false) {
-    			bill = b;
-    			break;
-    		}
-    	}
-    	return bill;
+        Bill bill = null;
+        for (Bill b : QueueList) {
+            if (b.getProcessedStatus() == false) {
+                bill = b;
+                break;
+            }
+        }
+        return bill;
     }
-    
+
     public int getQsize() {
-    	return QueueList.size();
+        return QueueList.size();
     }
-    
+
     /**
-     * Removes the first bill in the queue
-     * equivalent of serving the first customer
+     * Removes the first bill in the queue equivalent of serving the first customer
      *
      */
 
-    public void removeQueueBill(){
+    public void removeQueueBill() {
         QueueList.removeFirst();
     }
 
@@ -64,8 +60,18 @@ public class Queue {
      * @return int
      */
 
-    public int getQueueIndex(Bill bill){
+    public int getQueueIndex(Bill bill) {
         return QueueList.indexOf(bill);
+    }
+
+    /**
+     * Returns all of the Bills in the queue
+     *
+     * @return List<Bill>
+     */
+
+    public List<Bill> getQueueList() {
+        return QueueList;
     }
 
     /**
@@ -75,7 +81,7 @@ public class Queue {
      * @return Bill
      */
 
-    public Bill getQueueBill(int index){
+    public Bill getQueueBill(int index) {
         return QueueList.get(index);
     }
 
@@ -85,9 +91,38 @@ public class Queue {
      * @param index
      */
 
-    public void removeBillAtIndex (int index){
+    public void removeBillAtIndex(int index) {
         QueueList.remove(index);
     }
-    
-    
+
+    // Following the observer patter - Queue must be able to register, remove and
+    // notify observers
+
+    /**
+     * List to hold any observers
+     */
+    private List<Observer> registeredObservers = new LinkedList<Observer>();
+
+    /**
+     * Register an observer with this subject
+     */
+    public void registerObserver(Observer observer) {
+        registeredObservers.add(observer);
+    }
+
+    /**
+     * De-register an observer with this subject
+     */
+    public void removeObserver(Observer observer) {
+        registeredObservers.remove(observer);
+    }
+
+    /**
+     * Inform all registered observers that there's been an update
+     */
+    public void notifyObservers() {
+        for (Observer observer : registeredObservers)
+            observer.update();
+    }
+
 }
