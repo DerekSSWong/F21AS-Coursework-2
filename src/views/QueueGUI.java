@@ -28,7 +28,7 @@ public class QueueGUI extends JFrame {
         // Setting title for window
         setTitle("Queue");
         // Setting the size of the window
-        setSize(500, 500);
+        setSize(1000, 500);
         pack();
     }
 
@@ -39,11 +39,13 @@ public class QueueGUI extends JFrame {
         this.add(panel, BorderLayout.NORTH);
     }
 
-    public void addSouthPanel(JPanel panel) {
-        // Creating the container
-        Container contentPane = getContentPane();
-        contentPane.add(panel, BorderLayout.SOUTH);
-        this.add(panel, BorderLayout.SOUTH);
+    public void addCenterPanel(JPanel panel1, JPanel panel2, JPanel panel3) {
+        // Adding each staff to the panel
+        JPanel staffPanel = new JPanel();
+        staffPanel.add(panel1, BorderLayout.WEST);
+        staffPanel.add(panel2, BorderLayout.CENTER);
+        staffPanel.add(panel3, BorderLayout.EAST);
+        this.add(staffPanel, BorderLayout.CENTER);
     }
 
 }

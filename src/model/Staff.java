@@ -17,7 +17,7 @@ public class Staff {
     private int staffID;
     private String name;
     private boolean working;
-    private int timePerItem = 100;
+    private int timePerItem = 1000;
     private Bill currentlyProcessing = null;
 
     /**
@@ -57,9 +57,11 @@ public class Staff {
      * @param bill
      */
     public void processBill(Bill bill) {
+
         int amountOfItems = bill.getOrderList().size();
         try {
             Thread.sleep(amountOfItems * timePerItem);
+            notifyObservers();
             bill.setProcessedStatus(true);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
@@ -94,6 +96,7 @@ public class Staff {
 
     public void assignBill(Bill bill) {
         currentlyProcessing = bill;
+
     }
 
     public Bill getBill() {
