@@ -3,7 +3,7 @@ package views;
 
 import interfaces.Observer;
 import java.awt.*;
-//import java.util.ArrayList;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -51,17 +51,24 @@ public class QueueDisplay extends JPanel implements Observer {
 	// Tells the Observer to update itself (to change the data in the table)
 
 	public void update() {
-		tableModel.fireTableDataChanged();
-		// ;
 
-		// Object rowData[] = new Object[3];
-		// // Mapping through the queue to get all of the orders
-		// for (int i = 0; i < queue.getTable().size(); i++) {
-		// for (int j = 0; j < queue.getTable().get(i).size(); j++) {
-		// rowData[j] = queue.getTable().get(i).get(j);
-		// }
-		// tableModel.addRow(rowData);
-		// }
+		tableModel.setRowCount(0);
+		System.out.println("Called update - queue");
+		// tableModel.fireTableDataChanged();
+		;
+
+		Object rowData[] = new Object[3];
+
+		ArrayList<ArrayList<String>> table = queue.getTable();
+		// Mapping through the queue to get all of the orders
+		for (int i = 0; i < table.size(); i++) {
+			for (int j = 0; j < table.get(i).size(); j++) {
+				rowData[j] = table.get(i).get(j);
+			}
+
+			tableModel.addRow(rowData);
+
+		}
 
 		// // repaint();
 
