@@ -15,8 +15,8 @@ import javax.swing.JTable;
 import java.awt.*;
 
 public class QueueGUI extends JFrame {
-   // private Manager manager;
-   // private Queue queue;
+    // private Manager manager;
+    // private Queue queue;
 
     // The GUI components
     JLabel queueLabel;
@@ -25,12 +25,10 @@ public class QueueGUI extends JFrame {
 
     // Constructor
     public QueueGUI() {
-      //  this.manager = manager;
-       // this.queue = queue;
         // Setting title for window
         setTitle("Queue");
         // Setting the size of the window
-        setSize(500, 500);
+        setSize(1000, 500);
         pack();
     }
 
@@ -39,6 +37,15 @@ public class QueueGUI extends JFrame {
         Container contentPane = getContentPane();
         contentPane.add(panel, BorderLayout.NORTH);
         this.add(panel, BorderLayout.NORTH);
+    }
+
+    public void addCenterPanel(JPanel panel1, JPanel panel2, JPanel panel3) {
+        // Adding each staff to the panel
+        JPanel staffPanel = new JPanel();
+        staffPanel.add(panel1, BorderLayout.WEST);
+        staffPanel.add(panel2, BorderLayout.CENTER);
+        staffPanel.add(panel3, BorderLayout.EAST);
+        this.add(staffPanel, BorderLayout.CENTER);
     }
 
 }

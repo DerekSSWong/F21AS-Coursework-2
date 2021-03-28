@@ -1,4 +1,10 @@
 package model;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import interfaces.Observer;
+
 /**
  * Class for a server
  * 
@@ -11,7 +17,7 @@ public class Staff {
     private int staffID;
     private String name;
     private boolean working;
-    private int timePerItem = 100;
+    private int timePerItem = 1000;
     private Bill currentlyProcessing = null;
 
     /**
@@ -51,47 +57,84 @@ public class Staff {
      * @param bill
      */
     public void processBill(Bill bill) {
+
         int amountOfItems = bill.getOrderList().size();
         try {
             Thread.sleep(amountOfItems * timePerItem);
+            notifyObservers();
             bill.setProcessedStatus(true);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     /**
      * Sets the working status of staff
+     * 
      * @param working
      */
     public void setWorking(boolean working) {
-    	this.working = working;
+        this.working = working;
     }
+
     /**
      * Checks if the staff is currently processing an order
+     * 
      * @return boolean
      */
     public boolean isWorking() {
-    	return working;
+        return working;
     }
-    
+
     public int getTimePerItem() {
-    	return timePerItem;
+        return timePerItem;
     }
+
     public void setTimePerItem(int time) {
-    	timePerItem = time;
+        timePerItem = time;
     }
-    
+
     public void assignBill(Bill bill) {
-    	currentlyProcessing = bill;
+        currentlyProcessing = bill;
+
     }
-    
+
     public Bill getBill() {
-    	return currentlyProcessing;
+        return currentlyProcessing;
     }
-    
+
     public void removeBill() {
-    	currentlyProcessing = null;
+        currentlyProcessing = null;
     }
-    	
+
+    // Following the observer patter - Staff must be able to register, remove and
+    // notify observers
+
+    /**
+     * List to hold any observers
+     */
+    private List<Observer> registeredObservers = new LinkedList<Observer>();
+
+    /**
+     * Register an observer with this subject
+     */
+    public void registerObserver(Observer observer) {
+        registeredObservers.add(observer);
+    }
+
+    /**
+     * De-register an observer with this subject
+     */
+    public void removeObserver(Observer observer) {
+        registeredObservers.remove(observer);
+    }
+
+    /**
+     * Inform all registered observers that there's been an update
+     */
+    public void notifyObservers() {
+        for (Observer observer : registeredObservers)
+            observer.update();
+    }
+
 }
