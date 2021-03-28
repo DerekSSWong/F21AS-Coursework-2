@@ -1,16 +1,14 @@
 package interfaces;
 
 /**
- * The Observer part of the Observer pattern.
- * All classes implementing this interface MUST have this method.
+ * The interface for the observer of the observer pattern - all classes that
+ * implement this will need to implement the method.
  * 
- * This Observer is taken from the MVCClockExample 
- *  given in the example under lectures Week 6: Design Patterns
+ * @author Rose Ulldemolins
+ * 
  */
+
 public interface Observer {
-	
-	/**
-	 * Tell Observer to update itself
-	 */
-	public void update();
+    // Telling the Observer to update
+    public void update();
 }
