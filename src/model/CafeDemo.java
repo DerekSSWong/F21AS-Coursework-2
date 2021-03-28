@@ -36,7 +36,7 @@ public class CafeDemo {
         StaffDisplay staffView3 = new StaffDisplay(staffModel3);
 
         gui = new QueueGUI();
-        gui.setSize(700, 500);
+        gui.setSize(1000, 500);
         gui.addNorthPanel(queueView);
         gui.addCenterPanel(staffView1, staffView2, staffView3);
         gui.setVisible(true);

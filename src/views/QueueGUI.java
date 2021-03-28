@@ -15,8 +15,6 @@ import javax.swing.JTable;
 import java.awt.*;
 
 public class QueueGUI extends JFrame {
-    // private Manager manager;
-    // private Queue queue;
 
     // The GUI components
     JLabel queueLabel;
@@ -28,7 +26,6 @@ public class QueueGUI extends JFrame {
         // Setting title for window
         setTitle("Queue");
         // Setting the size of the window
-        setSize(1000, 500);
         pack();
     }
 

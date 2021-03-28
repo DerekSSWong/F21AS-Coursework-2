@@ -51,20 +51,19 @@ public class QueueDisplay extends JPanel implements Observer {
 	// Tells the Observer to update itself (to change the data in the table)
 
 	public void update() {
-		System.out.println("Called update - queue");
-		// tableModel.fireTableDataChanged();
-		;
+		tableModel.fireTableDataChanged();
+		// ;
 
-		Object rowData[] = new Object[3];
-		// Mapping through the queue to get all of the orders
-		for (int i = 0; i < queue.getTable().size(); i++) {
-			for (int j = 0; j < queue.getTable().get(i).size(); j++) {
-				rowData[j] = queue.getTable().get(i).get(j);
-			}
-			tableModel.addRow(rowData);
-		}
+		// Object rowData[] = new Object[3];
+		// // Mapping through the queue to get all of the orders
+		// for (int i = 0; i < queue.getTable().size(); i++) {
+		// for (int j = 0; j < queue.getTable().get(i).size(); j++) {
+		// rowData[j] = queue.getTable().get(i).get(j);
+		// }
+		// tableModel.addRow(rowData);
+		// }
 
-		// repaint();
+		// // repaint();
 
 	}
 

@@ -32,7 +32,7 @@ public class Queue implements Subject {
     public synchronized void addQueueBill(Bill bill) {
         QueueList.addLast(bill);
         System.out.println("Queued bill " + bill.getCustomerID());
-        // notifyObservers();
+        notifyObservers();
     }
 
     public synchronized void setBillProcessedState(int index, boolean state) {
