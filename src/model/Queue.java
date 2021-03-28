@@ -61,6 +61,7 @@ public class Queue implements Subject {
 
     public void removeQueueBill() {
         QueueList.removeFirst();
+        //System.out.println
     }
 
     /**

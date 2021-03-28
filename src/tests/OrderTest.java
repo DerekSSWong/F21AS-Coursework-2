@@ -1,3 +1,6 @@
+package tests;
+
+import model.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.time.Month;
