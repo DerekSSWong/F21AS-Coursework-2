@@ -26,7 +26,7 @@ public class JobDispatcher {
 
 	private int totalSize = 0;
 	private boolean isLast = false;
-	private int queueDelay = 100;
+	private int queueDelay = 200;
 
 	static JobDispatcher dispatcher = new JobDispatcher();
 
@@ -234,5 +234,13 @@ public class JobDispatcher {
 			ioe.printStackTrace();
 			System.exit(1);
 		}
+	}
+
+	public void setQueueDelay(int time) {
+		queueDelay = time;
+	}
+	
+	public int getQueueDelay() {
+		return queueDelay;
 	}
 }
