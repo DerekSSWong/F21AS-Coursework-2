@@ -115,7 +115,6 @@ public class Bill {
     public void setDiscountedPrice() {
         DiscountChecker discountChecker = new DiscountChecker(orderList, calculateTotalPrice());
         discountedPrice = calculateTotalPrice() - discountChecker.overallDiscount();
-       // System.out.println("discounted price" +discountedPrice);
     }
 
     /**

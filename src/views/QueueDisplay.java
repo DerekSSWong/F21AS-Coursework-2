@@ -3,7 +3,6 @@ package views;
 
 import interfaces.Observer;
 import java.awt.*;
-//import java.util.ArrayList;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -24,7 +23,7 @@ public class QueueDisplay extends JPanel implements Observer {
 	JTable queueTable;
 	JScrollPane queueScrollPane;
 	DefaultTableModel tableModel;
-	int counter= 0; 
+	 
 
 	// Setting up the GUI
 	public QueueDisplay(Queue queue) {
