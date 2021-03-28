@@ -1,3 +1,5 @@
+package tests;
+import model.*;
 
 //Imports for unit test libraries
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,4 +1,5 @@
-
+package tests;
+import model.*;
 //Imports
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
