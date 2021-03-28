@@ -1,3 +1,4 @@
+package model;
 /**
  * This is the interface for the subject of the observer pattern, so all classes
  * implementing this will need these methods.

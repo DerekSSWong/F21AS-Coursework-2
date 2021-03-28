@@ -1,3 +1,4 @@
+package model;
 /**
  * Class for a server
  * 

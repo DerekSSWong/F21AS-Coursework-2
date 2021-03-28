@@ -1,3 +1,4 @@
+package model;
 
 /**
  * Class for storing information of items

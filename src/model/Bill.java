@@ -1,3 +1,4 @@
+package model;
 
 //Imports for class
 import java.util.ArrayList;
