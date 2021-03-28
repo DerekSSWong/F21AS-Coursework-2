@@ -1,3 +1,4 @@
+package model;
 
 //Imports
 import java.util.*;

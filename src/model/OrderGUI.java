@@ -1,3 +1,4 @@
+package model;
 /**
  * GUI for main application
  * 

@@ -1,3 +1,4 @@
+package model;
 
 /**
  * The interface for the observer of the observer pattern - all classes that
