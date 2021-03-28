@@ -3,6 +3,10 @@ package interfaces;
 /**
  * The Subject part of the Observer pattern.
  * All classes implementing this interface MUST have these methods.
+ * 
+ *  This subject is taken from the MVCClockExample 
+ *  given in the example under lectures Week 6: Design Patterns
+ * 
  */
 public interface Subject {
 	

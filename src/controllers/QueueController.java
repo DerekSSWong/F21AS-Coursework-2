@@ -1,5 +1,5 @@
 /**
- * The MVC clock example from the MVC lecture.
+ @author Andrew Dalley
  * This class is the Controller, which responds to user interaction.
  */
 

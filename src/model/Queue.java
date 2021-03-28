@@ -17,7 +17,7 @@ import java.util.List;
 /**
 *
 * Class for storing bills within a queue system
-*@author Andrew Dalley 
+*@author others, Andrew Dalley
 */
 
 

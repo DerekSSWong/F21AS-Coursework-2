@@ -16,7 +16,7 @@ import model.Queue;
 /**
  * using MVC pattern
  * 
- * @author Andrew Dalley ,Rose 
+ * @author Andrew Dalley , Rose Ulldemolins 
  *
  */
 
