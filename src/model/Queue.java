@@ -31,7 +31,6 @@ public class Queue implements Subject {
 
     public synchronized void addQueueBill(Bill bill) {
         QueueList.addLast(bill);
-        System.out.println("Queued bill " + bill.getCustomerID());
         notifyObservers();
     }
 
@@ -61,6 +60,7 @@ public class Queue implements Subject {
 
     public void removeQueueBill() {
         QueueList.removeFirst();
+        notifyObservers();
     }
 
     /**
@@ -103,6 +103,7 @@ public class Queue implements Subject {
 
     public void removeBillAtIndex(int index) {
         QueueList.remove(index);
+        notifyObservers();
     }
 
     public ArrayList<ArrayList<String>> getTable() {
