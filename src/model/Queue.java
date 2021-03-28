@@ -7,8 +7,6 @@ package model;
 //Imports for class
 import interfaces.Observer;
 import interfaces.Subject;
-import views.Bill;
-
 import java.util.*;
 import java.util.LinkedList;
 import java.util.List;
