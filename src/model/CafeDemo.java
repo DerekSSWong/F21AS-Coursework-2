@@ -35,6 +35,8 @@ public class CafeDemo {
         StaffDisplay staffView2 = new StaffDisplay(staffModel2);
         StaffDisplay staffView3 = new StaffDisplay(staffModel3);
 
+        
+        
         gui = new QueueGUI();
         gui.setSize(1000, 500);
         gui.addNorthPanel(queueView);
@@ -44,9 +46,10 @@ public class CafeDemo {
 
         // it needs to know about the view and the model
         QueueController controller = new QueueController(queueView, queueModel);
-
+        
     }
-
+       
+    
     public static void main(String arg[]) {
         CafeDemo cafeDemo = new CafeDemo();
         cafeDemo.showGUI();

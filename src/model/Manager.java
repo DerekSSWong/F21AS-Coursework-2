@@ -28,19 +28,22 @@ public class Manager {
 				if (inputLine.length() != 0) {
 					// Could probably include processOrderLine here with Switch
 					switch (filename) {
-						case "../Menu.csv":
+						case "Menu.csv":
 							processMenuLine(inputLine);
 							break;
-						case "../ExistingOrders.csv":
+						case "ExistingOrders.csv":
 							processOrderLine(inputLine);
 							break;
+						default:
+							throw new FileNotFoundException("At the switch statment in mangager");
 					}
 
 				}
 			}
 			scanner.close();
 		} catch (FileNotFoundException fnf) {
-			System.out.println(filename + " not found ");
+			
+			System.out.println(fnf );
 			System.exit(0);
 		}
 	}

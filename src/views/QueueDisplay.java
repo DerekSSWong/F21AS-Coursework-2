@@ -24,6 +24,7 @@ public class QueueDisplay extends JPanel implements Observer {
 	JTable queueTable = new JTable();
 	JScrollPane queueScrollPane;
 	DefaultTableModel tableModel = new DefaultTableModel(3, 0);
+	Vector<String>columns = new Vector<String>(3);
 
 	// Setting up the GUI
 	public QueueDisplay(Queue queue) {
@@ -32,7 +33,9 @@ public class QueueDisplay extends JPanel implements Observer {
 		// Creating the label for the list
 		queueLabel = new JLabel("Here's everything currently in the queue:");
 		// Array of headings for the table
-		String[] columns = new String[] { "Customer ID", "Number of items", "Total" };
+		columns.add(0,"Customer ID");
+		columns.add(1,"Number of items");
+		columns.add(2,"Total" );
 		// Creating a table
 		tableModel.setColumnIdentifiers(columns);
 		queueTable.setModel(tableModel);
@@ -48,12 +51,23 @@ public class QueueDisplay extends JPanel implements Observer {
 
 	// Tells the Observer to update itself (to change the data in the table)
 
-	public void update() {
-		System.out.println("updated");
+	public synchronized void update() {
+		
+		//Thread.currentThread().setName("updateThread");
+		System.out.println("Thread "+  Thread.currentThread().getName() + " is updating");
+		
+				
+		Vector<Vector<String>> table = queue.getTable();
+		System.out.println("Table is" + queue.getTable());
+		tableModel.setDataVector(table,columns);
+		
+		/*
+		//Old way
+		  System.out.println("updated");
 		tableModel.setRowCount(0);
 		queueTable.setModel(tableModel);
 		Object rowData[] = new Object[3];
-		ArrayList<ArrayList<String>> table = queue.getTable();
+		Vector<Vector<String>> table = queue.getTable();
 		// Mapping through the queue to get all of the orders
 		for (int i = 0; i < table.size(); i++) {
 			for (int j = 0; j < table.get(i).size(); j++) {
@@ -62,7 +76,10 @@ public class QueueDisplay extends JPanel implements Observer {
 			tableModel.addRow(rowData);
 			queueTable.setModel(tableModel);
 
-		}
+		} */
+			
 	}
-
+			
 }
+
+
