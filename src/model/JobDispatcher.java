@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.concurrent.locks.ReentrantLock;
 
+
 /**
  * Gradually queues bills from AllBills for server(s) to process
  * 
@@ -27,6 +28,7 @@ public class JobDispatcher {
 	private int totalSize = 0;
 	private boolean isLast = false;
 	private int queueDelay = 100;
+	private Bill lastBillItem;
 
 	static JobDispatcher dispatcher = new JobDispatcher();
 
@@ -114,7 +116,8 @@ public class JobDispatcher {
 
 					// Exits the while loop if the last job is processed
 					if (isLast) {
-						sleepTime = q.getQueueIndex(bill) * staffList.get(0).getTimePerItem();
+						System.out.println("Last Bill has this number of orders" + lastBillItem.getOrderList().size());
+						sleepTime = lastBillItem.getOrderList().size() * staffList.get(0).getTimePerItem();
 						break;
 					}
 
@@ -130,11 +133,19 @@ public class JobDispatcher {
 				addToLog("All jobs processed, producing report...");
 				System.out.println("All jobs processed, producing report...");
 				Manager manager = new Manager();
-				manager.readFile("../Menu.csv");
-				manager.readFile("../ExistingOrders.csv");
+				manager.readFile("Menu.csv");
+				manager.readFile("ExistingOrders.csv");
 				manager.toBills();
 				manager.writeFile();
 				writeLog();
+				
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				System.exit(0);
 
 			}
 		};
@@ -161,6 +172,10 @@ public class JobDispatcher {
 						+ b.getOrderList().size());
 				System.out.println("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size "
 						+ b.getOrderList().size());
+				
+				boolean LastBill = q.removeQueueBill(b);
+				
+				
 				s.processBill(b);
 				staffList.get(sIndex).setWorking(false);
 				addToLog("Bill " + b.getCustomerID() + " finished");
@@ -169,10 +184,17 @@ public class JobDispatcher {
 				staffList.get(sIndex).removeBill();
 
 				// checks if the bill is the last one left
-				if (q.getQueueIndex(b) == totalSize - 1) {
+				if (LastBill) {
 					isLast = true;
+					lastBillItem =b;
 				}
+				
+				// checks if the bill is the last one left
+				//if (q.getQueueIndex(b) == totalSize - 1) {
+				//	isLast = true;
+				//}
 
+		
 			}
 		};
 		task.start();
@@ -188,8 +210,8 @@ public class JobDispatcher {
 
 				// Reads files
 				Manager manager = new Manager();
-				manager.readFile("../Menu.csv");
-				manager.readFile("../ExistingOrders.csv");
+				manager.readFile("Menu.csv");
+				manager.readFile("ExistingOrders.csv");
 				manager.toBills();
 				HashMap<Integer, Bill> allBills = manager.getAllBills().getBillList();
 				totalSize = allBills.size();

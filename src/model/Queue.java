@@ -54,15 +54,23 @@ public class Queue implements Subject {
     }
 
     /**
-     * Removes the first bill in the queue equivalent of serving the first customer
+     * Removes the bill b from the queue 
      *
      */
 
-    public void removeQueueBill() {
-        QueueList.removeFirst();
-        notifyObservers();
+    public synchronized boolean removeQueueBill(Bill b) {
+      	boolean rtn = false; 
+    	QueueList.remove(b);
+    	
+    	if(QueueList.size()==0)
+    		rtn = true;
+    	
+    	notifyObservers();
+    	return rtn;
     }
 
+    
+    
     /**
      * Finds the Index of a searched bill
      *
@@ -80,7 +88,7 @@ public class Queue implements Subject {
      * @return List<Bill>
      */
 
-    public List<Bill> getQueueList() {
+    public synchronized List<Bill> getQueueList() {
         return QueueList;
     }
 
@@ -106,27 +114,28 @@ public class Queue implements Subject {
         notifyObservers();
     }
 
-    public ArrayList<ArrayList<String>> getTable() {
+    public synchronized Vector<Vector<String>> getTable() {
 
         int i = getQueueList().size();
 
         // an ArrayList of ArrayLists
-        ArrayList<ArrayList<String>> table = new ArrayList<ArrayList<String>>(i);
+        Vector<Vector<String>> table = new Vector<Vector<String>>(i);
 
         // Create n lists one by one and append to the
         // master list (ArrayList of ArrayList)
 
         List<Bill> queueList = getQueueList();
-
+        
         for (Bill bill : queueList) {
 
-            ArrayList<String> row = new ArrayList<String>();
+        	Vector<String> row = new Vector<String>();
             row.add(String.valueOf(bill.getCustomerID()));
             row.add(String.valueOf(bill.getOrderList().size()));
             row.add(String.valueOf(bill.getDiscountedPrice()));
             table.add(row);
         }
-
+        
+       
         return table;
 
     }
@@ -156,9 +165,21 @@ public class Queue implements Subject {
     /**
      * Inform all registered observers that there's been an update
      */
-    public void notifyObservers() {
+    public synchronized void notifyObservers() {
+    	
+    try {	
         for (Observer observer : registeredObservers)
             observer.update();
-    }
+    	}
+    
 
+    catch(Exception  jd ) {
+    	System.out.println("This is causing it /n/n/n/n");
+    }
+    }
+    
+    
 }
+
+
+
