@@ -1,9 +1,11 @@
 package model;
 
+import controllers.QueueController;
+import controllers.SlideController;
 import views.QueueDisplay;
 import views.QueueGUI;
+import views.SliderGUI;
 import views.StaffDisplay;
-import controllers.QueueController;
 
 public class CafeDemo {
     private QueueGUI gui;
@@ -35,7 +37,7 @@ public class CafeDemo {
         StaffDisplay staffView2 = new StaffDisplay(staffModel2);
         StaffDisplay staffView3 = new StaffDisplay(staffModel3);
 
-        
+        SliderGUI sliderView = new SliderGUI();
         
         gui = new QueueGUI();
         gui.setSize(1000, 500);
@@ -46,7 +48,7 @@ public class CafeDemo {
 
         // it needs to know about the view and the model
         QueueController controller = new QueueController(queueView, queueModel);
-        
+        SlideController controllr = new SlideController(sliderView, dispatcher);
     }
        
     

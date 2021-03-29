@@ -58,7 +58,7 @@ public class QueueDisplay extends JPanel implements Observer {
 		
 				
 		Vector<Vector<String>> table = queue.getTable();
-		System.out.println("Table is" + queue.getTable());
+		//System.out.println("Table is" + queue.getTable());
 		tableModel.setDataVector(table,columns);
 		
 		/*
