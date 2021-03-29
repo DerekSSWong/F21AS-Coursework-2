@@ -1,11 +1,20 @@
+package views;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
-public class UserCustomisationGUI extends JFrame implements ChangeListener {
+/**
+ * 
+ * 
+ * 
+ * @author Dan
+ *
+ */
 
-    int minSpeed = 0;
+public class SliderGUI extends JFrame {
+
+    int minSpeed = 25;
     int maxSpeed = 300;
     int initSpeed = 100;
     JFrame userCustomisationFrame;
@@ -13,11 +22,10 @@ public class UserCustomisationGUI extends JFrame implements ChangeListener {
     JLabel simulationSpeedLabel, numberOfStaff;
     JSlider simulationSpeedSlider;
     JButton addStaff, removeStaff;
-    Staff s;
-    JobDispatcher j;
+   
 
 
-    public UserCustomisationGUI () {
+    public SliderGUI () {
         userCustomisationFrame = new JFrame();
         userCustomisationPanel = new JPanel();
         userCustomisationPanel.setLayout(new BoxLayout(userCustomisationPanel, BoxLayout.Y_AXIS));
@@ -32,7 +40,7 @@ public class UserCustomisationGUI extends JFrame implements ChangeListener {
         simulationSpeedSlider.setSnapToTicks(true);
         simulationSpeedSlider.setPaintTicks(true);
         simulationSpeedSlider.setPaintLabels(true);
-        simulationSpeedSlider.addChangeListener(this);
+        //simulationSpeedSlider.addChangeListener(this);
 
         addStaff = new JButton("Add staff member");
         addStaff.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -59,16 +67,9 @@ public class UserCustomisationGUI extends JFrame implements ChangeListener {
         userCustomisationFrame.setVisible(true);
     }
 
-    public void stateChanged(ChangeEvent e) {
-        JSlider slider= (JSlider)e.getSource();
-        double value = slider.getValue();
-        if (value > 0) {
-            double newTime = 200 / (value/100);
-            int intNewTime = (int) newTime;
-        } else {
-            int intNewTime = 0;
-        }
-        s.setTimePerItem(intNewTime);
-        j.setQueueDelay(intNewTime);
-    }
+    public void addSetListener(ChangeListener al) {
+    	simulationSpeedSlider.addChangeListener(al);
+	}
+    
+   
 }

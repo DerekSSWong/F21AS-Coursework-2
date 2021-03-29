@@ -17,7 +17,7 @@ public class Staff {
     private int staffID;
     private String name;
     private boolean working;
-    private int timePerItem = 5000;
+    private static int timePerItem = 5000;
     private Bill currentlyProcessing = null;
 
     /**
@@ -90,7 +90,7 @@ public class Staff {
         return timePerItem;
     }
 
-    public void setTimePerItem(int time) {
+    public static void setTimePerItem(int time) {
         timePerItem = time;
     }
 

@@ -21,6 +21,8 @@ import java.util.List;
 public class Queue implements Subject {
 
     public LinkedList<Bill> QueueList = new LinkedList<Bill>();
+    private int NumberofBills;
+    private int billsRemoved=0;
 
     /**
      * Adds new bills to the end of the queue list equivalent of a customer joining
@@ -61,15 +63,27 @@ public class Queue implements Subject {
     public synchronized boolean removeQueueBill(Bill b) {
       	boolean rtn = false; 
     	QueueList.remove(b);
+    	System.out.println("QueueList size is " + QueueList.size());
+    	System.out.println("NumberofBills  is " + NumberofBills);
+    	System.out.println("billsRemoved  is " + billsRemoved);
     	
-    	if(QueueList.size()==0)
+    	System.out.println((NumberofBills-1) == billsRemoved);
+    	
+    	if((NumberofBills-1) == billsRemoved) {
+    		System.out.println("activated");
     		rtn = true;
-    	
+    	}
+    	billsRemoved++;
     	notifyObservers();
     	return rtn;
     }
 
-    
+    public void setQueueSize(int number){
+    	
+    	NumberofBills = number;
+    	
+    	
+    }
     
     /**
      * Finds the Index of a searched bill

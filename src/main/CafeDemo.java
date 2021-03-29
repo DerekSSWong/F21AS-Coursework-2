@@ -1,14 +1,15 @@
 package main;
 
+import controllers.QueueController;
+import controllers.SlideController;
 import views.QueueDisplay;
 import views.QueueGUI;
-
 import javax.swing.JOptionPane;
-
-import controllers.QueueController;
 import model.JobDispatcher;
 import model.Staff;
 import model.Queue;
+import views.SliderGUI;
+import views.StaffDisplay;
 
 public class CafeDemo {
     private QueueGUI gui;
@@ -49,6 +50,7 @@ public class CafeDemo {
 
         // it needs to know about the view and the model
         QueueController controller = new QueueController(queueView, queueModel);
+        SlideController controllr = new SlideController(sliderView, dispatcher);
 
     }
 

@@ -26,7 +26,7 @@ public class JobDispatcher {
 
 	private int totalSize = 0;
 	private boolean isLast = false;
-	private int queueDelay = 100;
+	private int queueDelay = 4500;
 	private Bill lastBillItem;
 
 	static JobDispatcher dispatcher = new JobDispatcher();
@@ -132,6 +132,8 @@ public class JobDispatcher {
 				addToLog("All jobs processed, producing report...");
 				System.out.println("All jobs processed, producing report...");
 				Manager manager = new Manager();
+				manager.readFile("Menu.csv");
+				manager.readFile("ExistingOrder.CSV");
 				manager.toBills();
 				manager.writeFile();
 				writeLog();
@@ -181,6 +183,7 @@ public class JobDispatcher {
 
 				// checks if the bill is the last one left
 				if (LastBill) {
+					System.out.print("Not meant to be here");
 					isLast = true;
 					lastBillItem = b;
 				}
@@ -210,10 +213,16 @@ public class JobDispatcher {
 				manager.toBills();
 				HashMap<Integer, Bill> allBills = manager.getAllBills().getBillList();
 				totalSize = allBills.size();
+
+				q.setQueueSize(allBills.size());
+
+				// System.out.println(totalSize);
+
 				// Loads the bills into Queue with a set delay
 				for (Map.Entry<Integer, Bill> entry : allBills.entrySet()) {
 					lock.lock();
 					q.addQueueBill(entry.getValue());
+
 					lock.unlock();
 					try {
 						Thread.sleep(queueDelay);
