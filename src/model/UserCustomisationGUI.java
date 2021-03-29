@@ -62,7 +62,7 @@ public class UserCustomisationGUI extends JFrame implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         JSlider slider= (JSlider)e.getSource();
         double value = slider.getValue();
-        double newTime = 200 * (value/100);
+        double newTime = 100 * (value/100);
         int intNewTime = (int) newTime;
         s.setTimePerItem(intNewTime);
         j.setQueueDelay(intNewTime);
