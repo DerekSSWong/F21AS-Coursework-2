@@ -132,8 +132,8 @@ public class JobDispatcher {
 				addToLog("All jobs processed, producing report...");
 				System.out.println("All jobs processed, producing report...");
 				Manager manager = new Manager();
-				manager.readFile("Menu.csv");
-				manager.readFile("ExistingOrder.CSV");
+				manager.readFile("/Menu.csv");
+				manager.readFile("/ExistingOrder.CSV");
 				manager.toBills();
 				manager.writeFile();
 				writeLog();
@@ -208,8 +208,8 @@ public class JobDispatcher {
 
 				// Reads files
 				Manager manager = new Manager();
-				manager.readFile("Menu.csv");
-				manager.readFile("ExistingOrders.csv");
+				manager.readFile("/Menu.csv");
+				manager.readFile("/ExistingOrders.csv");
 				manager.toBills();
 				HashMap<Integer, Bill> allBills = manager.getAllBills().getBillList();
 				totalSize = allBills.size();
