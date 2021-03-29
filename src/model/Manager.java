@@ -35,15 +35,15 @@ public class Manager {
 							processOrderLine(inputLine);
 							break;
 						default:
-							throw new FileNotFoundException("At the switch statment in mangager");
+							throw new FileNotFoundException("At the switch statement in mangager");
 					}
 
 				}
 			}
 			scanner.close();
 		} catch (FileNotFoundException fnf) {
-			
-			System.out.println(fnf );
+
+			System.out.println(fnf);
 			System.exit(0);
 		}
 	}
