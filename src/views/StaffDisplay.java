@@ -60,9 +60,9 @@ public class StaffDisplay extends JPanel implements Observer {
             double newTotal = newBill.calculateTotalPrice();
             double newDiscountedTotal = newBill.getDiscountedPrice();
             double newDiscount = newTotal - newDiscountedTotal;
-            totalLabel.setText("Total: £" + decimalFormat.format(newDiscount));
+            totalLabel.setText("Total: £" + decimalFormat.format(newTotal));
             discountLabel.setText("Discount: £" + decimalFormat.format(newDiscount));
-            discountedLabel.setText("Total: £" + decimalFormat.format(newDiscountedTotal));
+            discountedLabel.setText("Discounted Total: £" + decimalFormat.format(newDiscountedTotal));
             customerLabel.setText("Processing for customer: " + staff.getBill().getCustomerID());
             List<Order> orderList = staff.getBill().getOrderList();
             String itemList = "";
@@ -70,7 +70,6 @@ public class StaffDisplay extends JPanel implements Observer {
                 itemList += order.getItem().getItemName() + "\n";
                 itemLabel.setText(itemList);
             }
-
             this.add(totalLabel);
             this.add(discountLabel);
             this.add(discountedLabel);

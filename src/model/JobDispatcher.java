@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 /**
  * Gradually queues bills from AllBills for server(s) to process
  * 
@@ -133,18 +132,16 @@ public class JobDispatcher {
 				addToLog("All jobs processed, producing report...");
 				System.out.println("All jobs processed, producing report...");
 				Manager manager = new Manager();
-				manager.readFile("Menu.csv");
-				manager.readFile("ExistingOrders.csv");
 				manager.toBills();
 				manager.writeFile();
 				writeLog();
-				
+
 				try {
 					Thread.sleep(50);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				
+
 				System.exit(0);
 
 			}
@@ -172,10 +169,9 @@ public class JobDispatcher {
 						+ b.getOrderList().size());
 				System.out.println("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size "
 						+ b.getOrderList().size());
-				
+
 				boolean LastBill = q.removeQueueBill(b);
-				
-				
+
 				s.processBill(b);
 				staffList.get(sIndex).setWorking(false);
 				addToLog("Bill " + b.getCustomerID() + " finished");
@@ -186,15 +182,14 @@ public class JobDispatcher {
 				// checks if the bill is the last one left
 				if (LastBill) {
 					isLast = true;
-					lastBillItem =b;
+					lastBillItem = b;
 				}
-				
-				// checks if the bill is the last one left
-				//if (q.getQueueIndex(b) == totalSize - 1) {
-				//	isLast = true;
-				//}
 
-		
+				// checks if the bill is the last one left
+				// if (q.getQueueIndex(b) == totalSize - 1) {
+				// isLast = true;
+				// }
+
 			}
 		};
 		task.start();
@@ -215,8 +210,6 @@ public class JobDispatcher {
 				manager.toBills();
 				HashMap<Integer, Bill> allBills = manager.getAllBills().getBillList();
 				totalSize = allBills.size();
-				// System.out.println(totalSize);
-
 				// Loads the bills into Queue with a set delay
 				for (Map.Entry<Integer, Bill> entry : allBills.entrySet()) {
 					lock.lock();
@@ -261,7 +254,7 @@ public class JobDispatcher {
 	public void setQueueDelay(int time) {
 		queueDelay = time;
 	}
-	
+
 	public int getQueueDelay() {
 		return queueDelay;
 	}

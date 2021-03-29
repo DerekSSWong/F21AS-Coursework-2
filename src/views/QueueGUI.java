@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.*;
+import model.Queue;
+import model.Staff;
 
 public class QueueGUI extends JFrame {
 
@@ -22,10 +24,21 @@ public class QueueGUI extends JFrame {
     JScrollPane queueScrollPane;
 
     // Constructor
-    public QueueGUI() {
+    public QueueGUI(Queue queueModel, Staff staffModel, Staff staffModel2, Staff staffModel3) {
+
+        QueueDisplay queueView = new QueueDisplay(queueModel);
+        StaffDisplay staffView1 = new StaffDisplay(staffModel);
+        StaffDisplay staffView2 = new StaffDisplay(staffModel2);
+        StaffDisplay staffView3 = new StaffDisplay(staffModel3);
         // Setting title for window
         setTitle("Queue");
         // Setting the size of the window
+        setSize(1000, 500);
+        // Adding the panels
+        addNorthPanel(queueView);
+        addCenterPanel(staffView1, staffView2, staffView3);
+        // Making the GUI visible
+        setVisible(true);
         pack();
     }
 

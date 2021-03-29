@@ -1,4 +1,5 @@
 package tests;
+
 import model.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +7,6 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Iterator;
 import java.util.TreeSet;
-
 
 import org.junit.jupiter.api.Test;
 
@@ -58,19 +58,18 @@ class ManagerTest {
 		assertEquals(testManager.getMenu().getItem("HTDK1"), testItem);
 	}
 
-	
 	@Test
 	// Test to see if final report generates
 	void testWriteFile() {
-		 	Manager manager = new Manager();
-	        manager.readFile("Menu.csv");
-	        manager.readFile("ExistingOrders.csv");
-	        manager.addOrder(testOrder1);
-	        manager.addOrder(testOrder2);
-	        manager.writeFile(); 
-		
-		//testManager.getMenu().addItem(testItem);
-		//assertEquals(testManager.getMenu().getItem("HTDK1"), testItem);
+		Manager manager = new Manager();
+		manager.readFile("Menu.csv");
+		manager.readFile("ExistingOrders.csv");
+		manager.addOrder(testOrder1);
+		manager.addOrder(testOrder2);
+		manager.writeFile();
+
+		// testManager.getMenu().addItem(testItem);
+		// assertEquals(testManager.getMenu().getItem("HTDK1"), testItem);
 	}
-	
+
 }
