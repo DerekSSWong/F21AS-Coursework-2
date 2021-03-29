@@ -48,12 +48,7 @@ public class CafeDemo {
         QueueController controller = new QueueController(queueView, queueModel);
         
     }
-
-    QueueGUI getGUI() {
-    	
-    	return gui;
-    }
-    
+       
     
     public static void main(String arg[]) {
         CafeDemo cafeDemo = new CafeDemo();
