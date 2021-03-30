@@ -7,8 +7,6 @@ package controllers;
 
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-
 import model.JobDispatcher;
 import model.Staff;
 import views.StaffDisplay;
@@ -24,14 +22,18 @@ public class StaffController {
         this.staff = staff;
         this.view = view;
         // Specify the listeners for the view
-        view.addActionListener(new RemoveListener());
+        view.addActionListener(new ButtonListener());
     }
 
-    public class RemoveListener implements ActionListener {
+    public class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // Tells the dop dispatacher to remove the staff
-            JobDispatcher.getInstance().removeStaff(staff);
-
+            if (e.getSource() == view.getRemoveButton()) {
+                // Tells the job dispatcher to remove the staff
+                JobDispatcher.getInstance().removeStaff(staff);
+            } else if (e.getSource() == view.getAddButton()) {
+                // Tells the job dispatcher to add staff
+                JobDispatcher.getInstance().addStaff(staff);
+            }
         }
     }
 }

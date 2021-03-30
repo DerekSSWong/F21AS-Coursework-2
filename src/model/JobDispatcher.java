@@ -39,6 +39,8 @@ public class JobDispatcher {
 	}
 
 	public void addStaff(Staff staff) {
+		// Setting the staff to be working
+		staff.setOnShift(true);
 		lock.lock();
 		staffList.add(staff);
 		addToLog("Staff " + staff.getStaffID() + " added");
@@ -47,7 +49,7 @@ public class JobDispatcher {
 	}
 
 	public void removeStaff(Staff staff) {
-		// Setting the staff to beno longer working
+		// Setting the staff to be no longer working
 		staff.setOnShift(false);
 		lock.lock();
 		staffList.remove(staff);
