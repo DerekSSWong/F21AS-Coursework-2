@@ -104,6 +104,7 @@ public class Staff {
      */
     public void setOnShift(boolean onShift) {
         this.onShift = onShift;
+        notifyObservers();
     }
 
     public int getTimePerItem() {

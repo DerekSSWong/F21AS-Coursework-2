@@ -29,6 +29,7 @@ public class StaffController {
 
     public class RemoveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            // Tells the dop dispatacher to remove the staff
             JobDispatcher.getInstance().removeStaff(staff);
 
         }

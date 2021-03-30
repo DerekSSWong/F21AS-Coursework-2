@@ -34,6 +34,7 @@ public class StaffDisplay extends JPanel implements Observer {
     JTextArea itemLabel = new JTextArea();
     DecimalFormat decimalFormat;
     JButton removeStaff = new JButton("Remove");
+    JPanel processingPanel = new JPanel();
 
     // Setting up the GUI
     public StaffDisplay(Staff staff) {
@@ -57,30 +58,45 @@ public class StaffDisplay extends JPanel implements Observer {
     // Tells the Observer to update itself (to change the data in the labels)
 
     public void update() {
+        // Checking to see if the staff member is on shift and if not remove the
+        // relevant components
         if (!staff.isOnShift()) {
-            customerLabel.setText("Not currently working");
+            processingPanel.removeAll();
+            this.remove(itemLabel);
+            this.remove(customerLabel);
+            this.remove(removeStaff);
+            this.repaint();
+            // Checking to see if the staff has a bill
         } else if (staff.getBill() != null) {
             Bill newBill = staff.getBill();
+            // Variables for the calculations
             double newTotal = newBill.calculateTotalPrice();
             double newDiscountedTotal = newBill.getDiscountedPrice();
             double newDiscount = newTotal - newDiscountedTotal;
+            // Setting the labels with the values
             totalLabel.setText("Total: £" + decimalFormat.format(newTotal));
             discountLabel.setText("Discount: £" + decimalFormat.format(newDiscount));
             discountedLabel.setText("Discounted Total: £" + decimalFormat.format(newDiscountedTotal));
             customerLabel.setText("Processing for customer: " + staff.getBill().getCustomerID());
+            // Adding a list to the JTextAre for each order being processed
             List<Order> orderList = staff.getBill().getOrderList();
             String itemList = "";
             for (Order order : orderList) {
                 itemList += order.getItem().getItemName() + "\n";
                 itemLabel.setText(itemList);
             }
-            this.add(totalLabel);
-            this.add(discountLabel);
-            this.add(discountedLabel);
+            // Adding the labels to the panel
+            processingPanel.setLayout(new BoxLayout(processingPanel, BoxLayout.Y_AXIS));
+            processingPanel.add(totalLabel);
+            processingPanel.add(discountLabel);
+            processingPanel.add(discountedLabel);
+            // Adding the labels to the overall panel
+            this.add(processingPanel);
         }
     }
 
     public void addActionListener(ActionListener actionListener) {
+        // Listening for when the remove staff button is clicked
         removeStaff.addActionListener(actionListener);
     }
 
