@@ -36,8 +36,8 @@ public class CafeDemo {
         gui = new QueueGUI(queueModel, staffModel1, staffModel2, staffModel3);
 
         // it needs to know about the view and the model
-        QueueController controller = new QueueController(queueView, queueModel);
-        SlideController controllr = new SlideController(sliderView, dispatcher);
+        QueueController queueController = new QueueController(queueView, queueModel);
+        SlideController slideController = new SlideController(sliderView, dispatcher);
 
     }
 

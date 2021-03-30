@@ -19,6 +19,7 @@ public class Staff {
     private boolean working;
     private static int timePerItem = 5000;
     private Bill currentlyProcessing = null;
+    private boolean onShift;
 
     /**
      * Constructor for the class
@@ -30,6 +31,7 @@ public class Staff {
         this.staffID = staffID;
         this.name = name;
         this.working = false;
+        this.onShift = true;
 
     }
 
@@ -84,6 +86,25 @@ public class Staff {
      */
     public boolean isWorking() {
         return working;
+    }
+
+    /**
+     * Checks if the staff is currently on shift
+     * 
+     * @return boolean
+     */
+    public boolean isOnShift() {
+        return onShift;
+    }
+
+    /**
+     * Sets whether the staff is on shift
+     * 
+     * @param working
+     */
+    public void setOnShift(boolean onShift) {
+        this.onShift = onShift;
+        notifyObservers();
     }
 
     public int getTimePerItem() {

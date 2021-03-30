@@ -12,7 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import controllers.StaffController;
+
 import java.awt.*;
+
 import model.Queue;
 import model.Staff;
 
@@ -30,6 +34,9 @@ public class QueueGUI extends JFrame {
         StaffDisplay staffView1 = new StaffDisplay(staffModel);
         StaffDisplay staffView2 = new StaffDisplay(staffModel2);
         StaffDisplay staffView3 = new StaffDisplay(staffModel3);
+        StaffController staffController1 = new StaffController(staffView1, staffModel);
+        StaffController staffController2 = new StaffController(staffView2, staffModel2);
+        StaffController staffController3 = new StaffController(staffView3, staffModel3);
         // Setting title for window
         setTitle("Queue");
         // Setting the size of the window

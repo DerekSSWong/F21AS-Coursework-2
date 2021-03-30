@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -40,10 +39,22 @@ public class JobDispatcher {
 	}
 
 	public void addStaff(Staff staff) {
+		// Setting the staff to be working
+		staff.setOnShift(true);
 		lock.lock();
 		staffList.add(staff);
 		addToLog("Staff " + staff.getStaffID() + " added");
 		System.out.println("Staff " + staff.getStaffID() + " added");
+		lock.unlock();
+	}
+
+	public void removeStaff(Staff staff) {
+		// Setting the staff to be no longer working
+		staff.setOnShift(false);
+		lock.lock();
+		staffList.remove(staff);
+		addToLog("Staff " + staff.getStaffID() + " removed");
+		System.out.println("Staff " + staff.getStaffID() + " removed");
 		lock.unlock();
 	}
 
