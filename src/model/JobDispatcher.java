@@ -24,6 +24,7 @@ public class JobDispatcher {
 	private int queueDelay = 2000;
 	private Bill lastBillItem;
 	static JobDispatcher dispatcher = new JobDispatcher();
+	
 
 	// Singleton
 	private JobDispatcher() {
@@ -139,11 +140,8 @@ public class JobDispatcher {
 				// Report related methods can go here
 				addToLog("All jobs processed, producing report...");
 				System.out.println("All jobs processed, producing report...");
-				Manager manager = new Manager();
-				manager.readFile("Menu.csv");
-				manager.readFile("../ExistingOrder.CSV");
-				manager.toBills();
-				manager.writeFile();
+				
+				Manager.getInstance().writeFile();
 				writeLog();
 				System.exit(0);
 
@@ -203,11 +201,7 @@ public class JobDispatcher {
 		Thread lb = new Thread() {
 			public void run() {
 				// Reads files
-				Manager manager = new Manager();
-				manager.readFile("Menu.csv");
-				manager.readFile("ExistingOrders.csv");
-				manager.toBills();
-				HashMap<Integer, Bill> allBills = manager.getAllBills().getBillList();
+				HashMap<Integer, Bill> allBills = Manager.getInstance().getAllBills().getBillList();
 				totalSize = allBills.size();
 				q.setQueueSize(allBills.size());
 
