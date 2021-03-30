@@ -23,16 +23,16 @@ public class SliderGUI extends JFrame {
     // GUI components
     JFrame userCustomisationFrame;
     JPanel userCustomisationPanel;
-    JLabel simulationSpeedLabel, numberOfStaff;
+    JLabel simulationSpeedLabel, timeLabelOne, timeLabelTwo;
     JSlider simulationSpeedSlider;
-    JButton addStaff, removeStaff, startSimulation;
+    JButton startSimulation;
 
     public SliderGUI() {
         // Create new frame for the slider display
         userCustomisationFrame = new JFrame();
         // Create new panel for the slider
         userCustomisationPanel = new JPanel();
-        // Setting the layour and border of the panel
+        // Setting the layout and border of the panel
         userCustomisationPanel.setLayout(new BoxLayout(userCustomisationPanel, BoxLayout.Y_AXIS));
         userCustomisationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         // Creating a new label for the speed % and setting the alignment
@@ -48,15 +48,12 @@ public class SliderGUI extends JFrame {
         // Painting the labels and ticks
         simulationSpeedSlider.setPaintTicks(true);
         simulationSpeedSlider.setPaintLabels(true);
-        // Creating and aligning the button to add a member of staff
-        addStaff = new JButton("Add staff member");
-        addStaff.setAlignmentX(Component.CENTER_ALIGNMENT);
-        // Creating and aligning the button to remove a member of staff
-        removeStaff = new JButton("Remove staff member");
-        removeStaff.setAlignmentX(Component.CENTER_ALIGNMENT);
-        // Creating a label for the number of staff
-        numberOfStaff = new JLabel("Number of staff: 5");
-        numberOfStaff.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Creating a label detailing the default times of the programme running at 100%
+        // speed
+        timeLabelOne = new JLabel("Default times are 2 seconds for incoming orders to be");
+        timeLabelOne.setAlignmentX(Component.CENTER_ALIGNMENT);
+        timeLabelTwo = new JLabel("added to the queue and 4 seconds to process items");
+        timeLabelTwo.setAlignmentX(Component.CENTER_ALIGNMENT);
         // Creating and aligning the button to start the simulation
         startSimulation = new JButton("Start simulation");
         startSimulation.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -64,13 +61,10 @@ public class SliderGUI extends JFrame {
         userCustomisationPanel.add(simulationSpeedLabel);
         userCustomisationPanel.add(Box.createVerticalStrut(10));
         userCustomisationPanel.add(simulationSpeedSlider);
+        userCustomisationPanel.add(Box.createVerticalStrut(20));
+        userCustomisationPanel.add(timeLabelOne);
+        userCustomisationPanel.add(timeLabelTwo);
         userCustomisationPanel.add(Box.createVerticalStrut(30));
-        userCustomisationPanel.add(addStaff);
-        userCustomisationPanel.add(Box.createVerticalStrut(10));
-        userCustomisationPanel.add(removeStaff);
-        userCustomisationPanel.add(Box.createVerticalStrut(10));
-        userCustomisationPanel.add(numberOfStaff);
-        userCustomisationPanel.add(Box.createVerticalStrut(10));
         userCustomisationPanel.add(startSimulation);
         // Adding the panel to the frame and setting to exit on close
         userCustomisationFrame.add(userCustomisationPanel);
@@ -78,7 +72,7 @@ public class SliderGUI extends JFrame {
         // Setting the title of the window
         userCustomisationFrame.setTitle("User Customisation");
         // Setting the size of the window
-        userCustomisationFrame.setSize(600, 300);
+        userCustomisationFrame.setSize(600, 265);
         // Setting the GUI to show
         userCustomisationFrame.setVisible(true);
         // Setting the location of the frame

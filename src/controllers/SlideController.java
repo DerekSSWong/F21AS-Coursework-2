@@ -34,13 +34,13 @@ public class SlideController {
 			JSlider slider = (JSlider) e.getSource();
 			double value = slider.getValue();
 			// Calculating the new time
-			double newTime = 5000 / (value / 100);
+			double newTime = 4000 / (value / 100);
 			// Casting it to an integer
 			int intNewTime = (int) newTime;
 			// Set the time a staff member takes to process an item
 			Staff.setTimePerItem(intNewTime);
 			// Set the delay in the queue to add an item
-			disp.setQueueDelay(intNewTime);
+			disp.setQueueDelay(intNewTime / 2);
 		}
 	}
 
