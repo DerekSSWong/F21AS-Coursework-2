@@ -17,7 +17,7 @@ public class Staff {
     private int staffID;
     private String name;
     private boolean working;
-    private static int timePerItem = 5000;
+    private static int timePerItem = 4000;
     private Bill currentlyProcessing = null;
     private boolean onShift;
 
