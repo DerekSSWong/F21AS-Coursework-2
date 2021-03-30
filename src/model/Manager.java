@@ -28,10 +28,10 @@ public class Manager {
 				if (inputLine.length() != 0) {
 					// Could probably include processOrderLine here with Switch
 					switch (filename) {
-						case "Menu.csv":
+						case "/Menu.csv":
 							processMenuLine(inputLine);
 							break;
-						case "ExistingOrders.csv":
+						case "/ExistingOrders.csv":
 							processOrderLine(inputLine);
 							break;
 						default:

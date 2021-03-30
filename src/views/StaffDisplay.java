@@ -15,6 +15,8 @@ import model.Staff;
 import java.awt.*;
 import java.text.DecimalFormat;
 
+import java.awt.event.ActionListener;
+
 /**
  * using MVC pattern
  * 
@@ -30,9 +32,8 @@ public class StaffDisplay extends JPanel implements Observer {
     JLabel discountedLabel = new JLabel();
     JLabel customerLabel = new JLabel();
     JTextArea itemLabel = new JTextArea();
-    JTable queueTable;
-    JScrollPane queueScrollPane;
     DecimalFormat decimalFormat;
+    JButton removeStaff = new JButton("Remove");
 
     // Setting up the GUI
     public StaffDisplay(Staff staff) {
@@ -49,13 +50,16 @@ public class StaffDisplay extends JPanel implements Observer {
         customerLabel.setText("Not currently processing an order");
         this.add(customerLabel);
         this.add(itemLabel);
+        this.add(removeStaff);
 
     }
 
     // Tells the Observer to update itself (to change the data in the labels)
 
     public void update() {
-        if (staff.getBill() != null) {
+        if (!staff.isOnShift()) {
+            customerLabel.setText("Not currently working");
+        } else if (staff.getBill() != null) {
             Bill newBill = staff.getBill();
             double newTotal = newBill.calculateTotalPrice();
             double newDiscountedTotal = newBill.getDiscountedPrice();
@@ -74,6 +78,10 @@ public class StaffDisplay extends JPanel implements Observer {
             this.add(discountLabel);
             this.add(discountedLabel);
         }
+    }
+
+    public void addActionListener(ActionListener actionListener) {
+        removeStaff.addActionListener(actionListener);
     }
 
 }

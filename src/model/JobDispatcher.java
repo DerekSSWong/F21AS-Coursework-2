@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -44,6 +43,15 @@ public class JobDispatcher {
 		staffList.add(staff);
 		addToLog("Staff " + staff.getStaffID() + " added");
 		System.out.println("Staff " + staff.getStaffID() + " added");
+		lock.unlock();
+	}
+
+	public void removeStaff(Staff staff) {
+		staff.setOnShift(false);
+		lock.lock();
+		staffList.remove(staff);
+		addToLog("Staff " + staff.getStaffID() + " removed");
+		System.out.println("Staff " + staff.getStaffID() + " removed");
 		lock.unlock();
 	}
 
@@ -132,8 +140,8 @@ public class JobDispatcher {
 				addToLog("All jobs processed, producing report...");
 				System.out.println("All jobs processed, producing report...");
 				Manager manager = new Manager();
-				manager.readFile("Menu.csv");
-				manager.readFile("ExistingOrder.CSV");
+				manager.readFile("/Menu.csv");
+				manager.readFile("/ExistingOrder.CSV");
 				manager.toBills();
 				manager.writeFile();
 				writeLog();
@@ -208,8 +216,8 @@ public class JobDispatcher {
 
 				// Reads files
 				Manager manager = new Manager();
-				manager.readFile("Menu.csv");
-				manager.readFile("ExistingOrders.csv");
+				manager.readFile("/Menu.csv");
+				manager.readFile("/ExistingOrders.csv");
 				manager.toBills();
 				HashMap<Integer, Bill> allBills = manager.getAllBills().getBillList();
 				totalSize = allBills.size();
