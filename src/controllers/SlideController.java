@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 public class SlideController {
 
 	private SliderGUI view; // GUI to allow user to set the time
-	private JobDispatcher disp; // queue of bills
+	private JobDispatcher disp; // dispatcher that holds the queue of bills
 
 	public SlideController(SliderGUI view, JobDispatcher disp) {
 		this.disp = disp;
@@ -27,34 +27,20 @@ public class SlideController {
 		view.addActionListener(new StartListener());
 	}
 
-	// Needs to be edited, when we add buttons or events
-	// inner class SetListener responds when user sets the time
+	// Responds when the user changes the time
 	public class SlideListener implements ChangeListener {
-
-		/*
-		 * @Override public void stateChanged(ChangeEvent e) { // TODO Auto-generated
-		 * method stub //disp.SetQueueDelay(10000); System.out.println("Working");
-		 * //QueueDisplayTest.sendSpeed(10000)
-		 */
-
 		public void stateChanged(ChangeEvent e) {
-			// Setting the initial time
-			int intNewTime;
 			// Getting the value from the slider
 			JSlider slider = (JSlider) e.getSource();
 			double value = slider.getValue();
-			// If the value is greater than 0
-			if (value > 0) {
-				double newTime = 4000 / (value / 100);
-				intNewTime = (int) newTime;
-			} else {
-				// So it doesn't divide by 0
-				intNewTime = 100000000;
-			}
+			// Calculating the new time
+			double newTime = 4000 / (value / 100);
+			// Casting it to an integer
+			int intNewTime = (int) newTime;
 			// Set the time a staff member takes to process an item
 			Staff.setTimePerItem(intNewTime);
 			// Set the delay in the queue to add an item
-			disp.setQueueDelay(intNewTime/2);
+			disp.setQueueDelay(intNewTime / 2);
 		}
 	}
 

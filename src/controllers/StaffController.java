@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 public class StaffController {
 
     private StaffDisplay view; // GUI to show staff members
-    private Staff staff; // queue of bills
+    private Staff staff; // staff member the display is of
 
     public StaffController(StaffDisplay view, Staff staff) {
         this.staff = staff;

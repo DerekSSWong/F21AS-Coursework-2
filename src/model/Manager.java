@@ -35,7 +35,7 @@ public class Manager {
 							processOrderLine(inputLine);
 							break;
 						default:
-							throw new FileNotFoundException("At the switch statement in mangager");
+							throw new FileNotFoundException("File could not be found");
 					}
 
 				}
@@ -53,9 +53,6 @@ public class Manager {
 	 * closes.
 	 */
 	public void writeFile() {
-
-		// System.out.println("The total income for all orders: " +
-		// allBills.getNetIncome());
 		report = "The total income for all orders: " + allBills.getNetIncome() + "\n\n";
 
 		TreeSet<Item> list = menu.getItemList();
@@ -74,8 +71,6 @@ public class Manager {
 			FileWriter reportFile = new FileWriter("Report.csv");
 			reportFile.write(report);
 			reportFile.close();
-			// Exit Program
-			// System.exit(0);
 		}
 		// Displays an error if the file isn't in the folder
 		catch (FileNotFoundException fnf) {
@@ -146,7 +141,6 @@ public class Manager {
 
 			if (item != null) {
 				Order newOrder = new Order(time, cusID, item);
-				// System.out.println("Order from cus " + newOrder.getCustomerID() + " added");
 				orders.addOrder(newOrder);
 			} else {
 				throw new ClassCastException();

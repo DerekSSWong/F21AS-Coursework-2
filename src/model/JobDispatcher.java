@@ -15,19 +15,14 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  */
 public class JobDispatcher {
-
-	public ReentrantLock lock = new ReentrantLock();
-
-	public String log = "";
-
+	private ReentrantLock lock = new ReentrantLock();
+	private String log = "";
 	private ArrayList<Staff> staffList = new ArrayList<Staff>();
 	public Queue q = new Queue();
-
 	private int totalSize = 0;
 	private boolean isLast = false;
 	private int queueDelay = 2000;
 	private Bill lastBillItem;
-
 	static JobDispatcher dispatcher = new JobDispatcher();
 
 	// Singleton
@@ -38,41 +33,77 @@ public class JobDispatcher {
 		return dispatcher;
 	}
 
-	public void addStaff(Staff staff) {
+	public synchronized void addStaff(Staff staff) {
 		// Setting the staff to be working
 		staff.setOnShift(true);
-		lock.lock();
+		// Adding the staff to the staff list
 		staffList.add(staff);
+		// Adding to log and printing
 		addToLog("Staff " + staff.getStaffID() + " added");
 		System.out.println("Staff " + staff.getStaffID() + " added");
-		lock.unlock();
 	}
 
-	public void removeStaff(Staff staff) {
+	public synchronized void removeStaff(Staff staff) {
 		// Setting the staff to be no longer working
 		staff.setOnShift(false);
-		lock.lock();
+		// Removing from the staff list
 		staffList.remove(staff);
+		// Adding to log and printing
 		addToLog("Staff " + staff.getStaffID() + " removed");
 		System.out.println("Staff " + staff.getStaffID() + " removed");
-		lock.unlock();
 	}
 
-	// obsolete method
+	// Adds a bill to the queue
 	public void addBill(Bill bill) {
 		q.addQueueBill(bill);
 	}
 
+	// A method to find an available bill and staff member, assign them to each
+	// other and set the working/processed boolean for each
+	private void findStaffAndBill() {
+		Staff staff = null;
+		Integer sIndex = null;
+
+		// Attempts to find an available bill
+		Bill bill = q.getAvailableBill();
+		if (bill != null) {
+			q.setBillProcessedState(q.getQueueIndex(bill), true); // Marks the bill to be processed
+		}
+
+		// Attempts to find an available staff
+		for (Staff s : staffList) {
+			if (s.isWorking() == false) {
+				s.setWorking(true); // Marks the staff to be assigned
+				sIndex = staffList.indexOf(s);
+				staff = s;
+				break;
+			}
+		}
+
+		// Clears the marks if no bill is available for worker, or no worker is
+		// available for bill
+		if (bill == null && staff != null) {
+			staffList.get(sIndex).setWorking(false);
+		}
+		if (bill != null && staff == null) {
+			q.setBillProcessedState(q.getQueueIndex(bill), false);
+		}
+
+		// If available bill and staff is found, a job is created
+		if (bill != null && staff != null) {
+			job(staff, bill);
+		}
+	}
+
 	/**
-	 * Checks the availabilities of staff and bills If both are available, assigned
+	 * Checks the availabilities of staff and bills - if both are available, assigns
 	 * a bill to a staff
 	 */
-	public void dispatch() {
+	public synchronized void dispatch() {
+
+		// Creates a new thread
 		Thread thread = new Thread() {
 			public void run() {
-
-				Bill bill = null;
-				Staff staff;
 				int sleepTime = 100;
 
 				// Waits for the totalSize to be loaded
@@ -86,43 +117,9 @@ public class JobDispatcher {
 
 				// Keep checking for available tasks as long as nobody's processing the last
 				// bill
-				while (true) {
-
-					lock.lock();
-					staff = null;
-					Integer sIndex = null;
-
-					// Attempts to find an available bill
-					bill = q.getAvailableBill();
-					if (bill != null) {
-						q.setBillProcessedState(q.getQueueIndex(bill), true); // Marks the bill to be processed
-					}
-
-					// Attempts to find an available staff
-					for (Staff s : staffList) {
-						if (s.isWorking() == false) {
-							s.setWorking(true); // Marks the staff to be assigned
-							sIndex = staffList.indexOf(s);
-							staff = s;
-							break;
-						}
-					}
-
-					// Clears the marks if no bill is available for worker, or no worker is
-					// available for bill
-					if (bill == null & staff != null) {
-						staffList.get(sIndex).setWorking(false);
-					}
-					if (bill != null & staff == null) {
-						q.setBillProcessedState(q.getQueueIndex(bill), false);
-					}
-
-					lock.unlock();
-
-					// If available bill and staff is found, a job is created
-					if (bill != null & staff != null) {
-						job(staff, bill);
-					}
+				while (!isLast) {
+					// Calls the method to find an available staff and bill
+					findStaffAndBill();
 
 					// Exits the while loop if the last job is processed
 					if (isLast) {
@@ -144,24 +141,17 @@ public class JobDispatcher {
 				System.out.println("All jobs processed, producing report...");
 				Manager manager = new Manager();
 				manager.readFile("Menu.csv");
-				manager.readFile("ExistingOrder.CSV");
+				manager.readFile("../ExistingOrder.CSV");
 				manager.toBills();
 				manager.writeFile();
 				writeLog();
-
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-
 				System.exit(0);
 
 			}
 		};
 		thread.start();
 
-	} // start()
+	}
 
 	/**
 	 * Where a staff processes a bill
@@ -175,34 +165,30 @@ public class JobDispatcher {
 
 				int sIndex = staffList.indexOf(s);
 
+				// Set the staff to be working as assign them the bill
 				staffList.get(sIndex).setWorking(true);
 				staffList.get(sIndex).assignBill(b);
-
+				// Add this to the log and print
 				addToLog("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size "
 						+ b.getOrderList().size());
 				System.out.println("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size "
 						+ b.getOrderList().size());
 
-				boolean LastBill = q.removeQueueBill(b);
-
+				boolean lastBill = q.removeQueueBill(b);
+				// Start the staff processing the bill and set them to be working
 				s.processBill(b);
 				staffList.get(sIndex).setWorking(false);
+				// Add this to the log and print
 				addToLog("Bill " + b.getCustomerID() + " finished");
 				System.out.println("Bill " + b.getCustomerID() + " finished");
-
 				staffList.get(sIndex).removeBill();
 
-				// checks if the bill is the last one left
-				if (LastBill) {
-					System.out.print("Not meant to be here");
+				// Checks if the bill is the last one left
+				if (lastBill) {
+					System.out.print("Bill + " + b.getCustomerID() + "was the last one");
 					isLast = true;
 					lastBillItem = b;
 				}
-
-				// checks if the bill is the last one left
-				// if (q.getQueueIndex(b) == totalSize - 1) {
-				// isLast = true;
-				// }
 
 			}
 		};
@@ -216,7 +202,6 @@ public class JobDispatcher {
 	public void loadBills() {
 		Thread lb = new Thread() {
 			public void run() {
-
 				// Reads files
 				Manager manager = new Manager();
 				manager.readFile("Menu.csv");
@@ -224,16 +209,13 @@ public class JobDispatcher {
 				manager.toBills();
 				HashMap<Integer, Bill> allBills = manager.getAllBills().getBillList();
 				totalSize = allBills.size();
-
 				q.setQueueSize(allBills.size());
-
-				// System.out.println(totalSize);
 
 				// Loads the bills into Queue with a set delay
 				for (Map.Entry<Integer, Bill> entry : allBills.entrySet()) {
+					// Locking while the bill is added
 					lock.lock();
 					q.addQueueBill(entry.getValue());
-
 					lock.unlock();
 					try {
 						Thread.sleep(queueDelay);
@@ -251,7 +233,7 @@ public class JobDispatcher {
 		log += str;
 	}
 
-	// Shamelessly ripped off Andrew's writeFile() method
+	// Method to write to the log
 	public void writeLog() {
 		try {
 			FileWriter reportFile = new FileWriter("Log.csv");
@@ -261,7 +243,7 @@ public class JobDispatcher {
 		}
 		// Displays an error if the file isn't in the folder
 		catch (FileNotFoundException fnf) {
-			System.out.println("log.csv" + " not found ");
+			System.out.println("Log.csv" + " not found ");
 			System.exit(0);
 		}
 		// stack trace

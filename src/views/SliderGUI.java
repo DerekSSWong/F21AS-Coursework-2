@@ -23,7 +23,7 @@ public class SliderGUI extends JFrame {
     // GUI components
     JFrame userCustomisationFrame;
     JPanel userCustomisationPanel;
-    JLabel simulationSpeedLabel, timeLabelOne, timeLabelTwo ;
+    JLabel simulationSpeedLabel, timeLabelOne, timeLabelTwo;
     JSlider simulationSpeedSlider;
     JButton startSimulation;
 
@@ -36,10 +36,10 @@ public class SliderGUI extends JFrame {
         userCustomisationPanel.setLayout(new BoxLayout(userCustomisationPanel, BoxLayout.Y_AXIS));
         userCustomisationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         // Creating a new label for the speed % and setting the alignment
-        simulationSpeedLabel = new JLabel("Simulation Speed Percentage", JLabel.CENTER);
+        simulationSpeedLabel = new JLabel("Simulation Speed Percentage");
         simulationSpeedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         // Creating the slider
-        simulationSpeedSlider = new JSlider(JSlider.HORIZONTAL, minSpeed, maxSpeed, initSpeed);
+        simulationSpeedSlider = new JSlider(minSpeed, maxSpeed, initSpeed);
         // Setting the tick measures on the sliders
         simulationSpeedSlider.setMajorTickSpacing(25);
         simulationSpeedSlider.setMinorTickSpacing(5);
@@ -48,7 +48,8 @@ public class SliderGUI extends JFrame {
         // Painting the labels and ticks
         simulationSpeedSlider.setPaintTicks(true);
         simulationSpeedSlider.setPaintLabels(true);
-        // Creating a label detailing the default times of the programme running at 100% speed
+        // Creating a label detailing the default times of the programme running at 100%
+        // speed
         timeLabelOne = new JLabel("Default times are 2 seconds for incoming orders to be");
         timeLabelOne.setAlignmentX(Component.CENTER_ALIGNMENT);
         timeLabelTwo = new JLabel("added to the queue and 4 seconds to process items");
@@ -67,7 +68,7 @@ public class SliderGUI extends JFrame {
         userCustomisationPanel.add(startSimulation);
         // Adding the panel to the frame and setting to exit on close
         userCustomisationFrame.add(userCustomisationPanel);
-        userCustomisationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        userCustomisationFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Setting the title of the window
         userCustomisationFrame.setTitle("User Customisation");
         // Setting the size of the window

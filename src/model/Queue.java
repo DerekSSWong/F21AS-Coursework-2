@@ -22,7 +22,7 @@ public class Queue implements Subject {
 
     public LinkedList<Bill> QueueList = new LinkedList<Bill>();
     private int NumberofBills;
-    private int billsRemoved=0;
+    private int billsRemoved = 0;
 
     /**
      * Adds new bills to the end of the queue list equivalent of a customer joining
@@ -56,35 +56,34 @@ public class Queue implements Subject {
     }
 
     /**
-     * Removes the bill b from the queue 
+     * Removes the bill b from the queue
      *
      */
 
     public synchronized boolean removeQueueBill(Bill b) {
-      	boolean rtn = false; 
-    	QueueList.remove(b);
-    	System.out.println("QueueList size is " + QueueList.size());
-    	System.out.println("NumberofBills  is " + NumberofBills);
-    	System.out.println("billsRemoved  is " + billsRemoved);
-    	
-    	System.out.println((NumberofBills-1) == billsRemoved);
-    	
-    	if((NumberofBills-1) == billsRemoved) {
-    		System.out.println("activated");
-    		rtn = true;
-    	}
-    	billsRemoved++;
-    	notifyObservers();
-    	return rtn;
+        boolean rtn = false;
+        QueueList.remove(b);
+        System.out.println("QueueList size is " + QueueList.size());
+        System.out.println("NumberofBills  is " + NumberofBills);
+        System.out.println("billsRemoved  is " + billsRemoved);
+
+        System.out.println((NumberofBills - 1) == billsRemoved);
+
+        if ((NumberofBills - 1) == billsRemoved) {
+            System.out.println("activated");
+            rtn = true;
+        }
+        billsRemoved++;
+        notifyObservers();
+        return rtn;
     }
 
-    public void setQueueSize(int number){
-    	
-    	NumberofBills = number;
-    	
-    	
+    public void setQueueSize(int number) {
+
+        NumberofBills = number;
+
     }
-    
+
     /**
      * Finds the Index of a searched bill
      *
@@ -139,17 +138,16 @@ public class Queue implements Subject {
         // master list (ArrayList of ArrayList)
 
         List<Bill> queueList = getQueueList();
-        
+
         for (Bill bill : queueList) {
 
-        	Vector<String> row = new Vector<String>();
+            Vector<String> row = new Vector<String>();
             row.add(String.valueOf(bill.getCustomerID()));
             row.add(String.valueOf(bill.getOrderList().size()));
             row.add(String.valueOf(bill.getDiscountedPrice()));
             table.add(row);
         }
-        
-       
+
         return table;
 
     }
@@ -180,20 +178,15 @@ public class Queue implements Subject {
      * Inform all registered observers that there's been an update
      */
     public synchronized void notifyObservers() {
-    	
-    try {	
-        for (Observer observer : registeredObservers)
-            observer.update();
-    	}
-    
 
-    catch(Exception  jd ) {
-    	System.out.println("This is causing it /n/n/n/n");
+        try {
+            for (Observer observer : registeredObservers)
+                observer.update();
+        }
+
+        catch (Exception jd) {
+            System.out.println(jd.getMessage());
+        }
     }
-    }
-    
-    
+
 }
-
-
-
