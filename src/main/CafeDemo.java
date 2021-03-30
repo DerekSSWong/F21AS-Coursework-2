@@ -3,6 +3,7 @@ package main;
 import controllers.SlideController;
 import views.QueueGUI;
 import model.JobDispatcher;
+import model.Manager;
 import model.Staff;
 import model.Queue;
 import views.SliderGUI;
@@ -14,6 +15,12 @@ public class CafeDemo {
     private Staff staff3 = new Staff(3, "Dennis");;
 
     public void setUpGUI() {
+    	
+    	Manager.getInstance().readFile("Menu.csv");
+    	Manager.getInstance().readFile("ExistingOrders.csv");
+    	Manager.getInstance().toBills();
+    	    	
+    	
         JobDispatcher dispatcher = JobDispatcher.getInstance();
         dispatcher.addStaff(staff1);
         dispatcher.addStaff(staff2);

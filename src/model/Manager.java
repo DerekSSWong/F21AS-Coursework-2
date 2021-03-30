@@ -13,10 +13,20 @@ import java.util.TreeSet;
 
 public class Manager {
 
+	static Manager manager = new Manager();
 	private AllItems menu = new AllItems();
 	private AllOrders orders = new AllOrders();
 	private AllBills allBills = new AllBills();
 	private String report;
+	
+	//Singleton
+	private Manager() {}
+	
+	
+	public static Manager getInstance() {
+		return manager;
+	}	
+	
 
 	public void readFile(String filename) {
 
