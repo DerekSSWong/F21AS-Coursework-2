@@ -1,8 +1,6 @@
 package main;
 
-import controllers.QueueController;
 import controllers.SlideController;
-import views.QueueDisplay;
 import views.QueueGUI;
 import model.JobDispatcher;
 import model.Staff;
@@ -30,13 +28,11 @@ public class CafeDemo {
         Staff staffModel1 = staff1;
         Staff staffModel2 = staff2;
         Staff staffModel3 = staff3;
-        QueueDisplay queueView = new QueueDisplay(queueModel);
         SliderGUI sliderView = new SliderGUI();
 
         gui = new QueueGUI(queueModel, staffModel1, staffModel2, staffModel3);
 
         // it needs to know about the view and the model
-        QueueController queueController = new QueueController(queueView, queueModel);
         SlideController slideController = new SlideController(sliderView, dispatcher);
 
     }

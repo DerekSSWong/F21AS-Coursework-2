@@ -112,7 +112,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         menuPanel.add(addButton);
         // Setting border and title
         menuPanel.setBorder(
-                new CompoundBorder(new EmptyBorder(20, 20, 20, 20), BorderFactory.createTitledBorder("Menu")));
+                new CompoundBorder(new EmptyBorder(20, 20, 20, 20), BorderFactory.createTitledBorder("../Menu")));
         return menuPanel;
     }
 

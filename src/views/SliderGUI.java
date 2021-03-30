@@ -36,10 +36,10 @@ public class SliderGUI extends JFrame {
         userCustomisationPanel.setLayout(new BoxLayout(userCustomisationPanel, BoxLayout.Y_AXIS));
         userCustomisationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         // Creating a new label for the speed % and setting the alignment
-        simulationSpeedLabel = new JLabel("Simulation Speed Percentage", JLabel.CENTER);
+        simulationSpeedLabel = new JLabel("Simulation Speed Percentage");
         simulationSpeedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         // Creating the slider
-        simulationSpeedSlider = new JSlider(JSlider.HORIZONTAL, minSpeed, maxSpeed, initSpeed);
+        simulationSpeedSlider = new JSlider(minSpeed, maxSpeed, initSpeed);
         // Setting the tick measures on the sliders
         simulationSpeedSlider.setMajorTickSpacing(25);
         simulationSpeedSlider.setMinorTickSpacing(5);
@@ -55,7 +55,7 @@ public class SliderGUI extends JFrame {
         removeStaff = new JButton("Remove staff member");
         removeStaff.setAlignmentX(Component.CENTER_ALIGNMENT);
         // Creating a label for the number of staff
-        numberOfStaff = new JLabel("Number of staff: 5", JLabel.CENTER);
+        numberOfStaff = new JLabel("Number of staff: 5");
         numberOfStaff.setAlignmentX(Component.CENTER_ALIGNMENT);
         // Creating and aligning the button to start the simulation
         startSimulation = new JButton("Start simulation");
@@ -74,7 +74,7 @@ public class SliderGUI extends JFrame {
         userCustomisationPanel.add(startSimulation);
         // Adding the panel to the frame and setting to exit on close
         userCustomisationFrame.add(userCustomisationPanel);
-        userCustomisationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        userCustomisationFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Setting the title of the window
         userCustomisationFrame.setTitle("User Customisation");
         // Setting the size of the window
