@@ -43,9 +43,9 @@ public class SlideController {
 			// Getting the value from the slider
 			JSlider slider = (JSlider) e.getSource();
 			double value = slider.getValue();
-			// If the value is greate than 0
+			// If the value is greater than 0
 			if (value > 0) {
-				double newTime = 5000 / (value / 100);
+				double newTime = 4000 / (value / 100);
 				intNewTime = (int) newTime;
 			} else {
 				// So it doesn't divide by 0
@@ -54,7 +54,7 @@ public class SlideController {
 			// Set the time a staff member takes to process an item
 			Staff.setTimePerItem(intNewTime);
 			// Set the delay in the queue to add an item
-			disp.setQueueDelay(intNewTime);
+			disp.setQueueDelay(intNewTime/2);
 		}
 	}
 

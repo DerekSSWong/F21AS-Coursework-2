@@ -25,7 +25,7 @@ public class JobDispatcher {
 
 	private int totalSize = 0;
 	private boolean isLast = false;
-	private int queueDelay = 4500;
+	private int queueDelay = 2000;
 	private Bill lastBillItem;
 
 	static JobDispatcher dispatcher = new JobDispatcher();
