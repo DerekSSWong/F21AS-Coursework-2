@@ -18,15 +18,15 @@ public class Manager {
 	private AllOrders orders = new AllOrders();
 	private AllBills allBills = new AllBills();
 	private String report;
-	
-	//Singleton
-	private Manager() {}
-	
-	
+
+	// Singleton
+
+	private Manager() {
+	}
+
 	public static Manager getInstance() {
 		return manager;
-	}	
-	
+	}
 
 	public void readFile(String filename) {
 
@@ -38,14 +38,14 @@ public class Manager {
 				if (inputLine.length() != 0) {
 					// Could probably include processOrderLine here with Switch
 					switch (filename) {
-						case "Menu.csv":
-							processMenuLine(inputLine);
-							break;
-						case "ExistingOrders.csv":
-							processOrderLine(inputLine);
-							break;
-						default:
-							throw new FileNotFoundException("File could not be found");
+					case "Menu.csv":
+						processMenuLine(inputLine);
+						break;
+					case "ExistingOrders.csv":
+						processOrderLine(inputLine);
+						break;
+					default:
+						throw new FileNotFoundException("File could not be found");
 					}
 
 				}

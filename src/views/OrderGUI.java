@@ -1,4 +1,4 @@
-package model;
+package views;
 /**
  * GUI for main application
  * 
@@ -28,6 +28,10 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 import javax.swing.table.TableRowSorter;
+
+import model.Bill;
+import model.Manager;
+
 import javax.swing.table.DefaultTableModel;
 
 public class OrderGUI extends JFrame implements ActionListener {

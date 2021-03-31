@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -16,6 +17,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class JobDispatcher {
 	private ReentrantLock lock = new ReentrantLock();
+	final static ReentrantLock cookLock = new ReentrantLock();
+	final Condition lock1Condition = cookLock.newCondition();
 	private String log = "";
 	private ArrayList<Staff> staffList = new ArrayList<Staff>();
 	private ArrayList<Job> jobList = new ArrayList<Job>();
@@ -25,7 +28,8 @@ public class JobDispatcher {
 	private int queueDelay = 2000;
 	private Bill lastBillItem;
 	static JobDispatcher dispatcher = new JobDispatcher();
-	boolean lastBill=false;
+	boolean lastBill = false;
+	private static ArrayList<KitchenStaff> cookStaffList = new ArrayList<KitchenStaff>();
 
 	// Singleton
 	private JobDispatcher() {
@@ -53,34 +57,33 @@ public class JobDispatcher {
 		// Removing from the staff list
 		staffList.remove(staff);
 		// Adding to log and printing
-		for(Job jb : jobList) {
-			
-			if(jb.getStaff()== staff){
-				
-				if(jb.getStatus() == true) {
-				
-				
-				jb.decatiavteJob();
-				q.addQueueBill(jb.getBill());
-				q.decrementBillsRemoved();
-				jb.getBill().setProcessedStatus(false);
-				lastBill=false;
-				System.out.println("Bill being added back on queue");
-				System.out.println("Bill with customer id " + jb.getBill().getCustomerID() + " was not finished by staff "+ staff.getStaffID() + " so is put back on stafflist "   );
-				addToLog("Bill with customer id " + jb.getBill().getCustomerID() + " was not finished by staff "+ staff.getStaffID() + " so is put back on stafflist "   );
-				q.notifyObservers();
+		for (Job jb : jobList) {
+
+			if (jb.getStaff() == staff) {
+
+				if (jb.getStatus() == true) {
+
+					jb.decatiavteJob();
+					q.addQueueBill(jb.getBill());
+					q.decrementBillsRemoved();
+					jb.getBill().setProcessedStatus(false);
+					lastBill = false;
+					System.out.println("Bill being added back on queue");
+					System.out.println("Bill with customer id " + jb.getBill().getCustomerID()
+							+ " was not finished by staff " + staff.getStaffID() + " so is put back on stafflist ");
+					addToLog("Bill with customer id " + jb.getBill().getCustomerID() + " was not finished by staff "
+							+ staff.getStaffID() + " so is put back on stafflist ");
+					q.notifyObservers();
 				}
 			}
-			
+
 		}
-		
+
 		addToLog("Staff " + staff.getStaffID() + " removed");
 		System.out.println("Staff " + staff.getStaffID() + " removed");
 		lock.unlock();
 	}
 
-		
-	
 	// Adds a bill to the queue
 	public void addBill(Bill bill) {
 		q.addQueueBill(bill);
@@ -119,51 +122,46 @@ public class JobDispatcher {
 
 		// If available bill and staff is found, a job is created
 		if (bill != null && staff != null) {
-			Job jb = new Job(staff,bill);
+			Job jb = new Job(staff, bill);
 			jobList.add(jb);
-			
-			job(staff, bill,jb);
-			
-			 
+
+			job(staff, bill, jb);
+
 		}
 	}
 
-	
 	private class Job {
 
 		private Staff staff;
 		private Bill bill;
 		boolean running = true;
-		
+
 		public Job(Staff staff, Bill bill) {
-			
-			this.staff =staff;
-			this.bill =bill;
-			
+
+			this.staff = staff;
+			this.bill = bill;
+
 		}
-		
+
 		public Bill getBill() {
 			return bill;
-			
+
 		}
 
 		void decatiavteJob() {
-			running= false;
+			running = false;
 		}
-		
+
 		boolean getStatus() {
 			return running;
 		}
-		
-		 
-		private Staff getStaff(){
+
+		private Staff getStaff() {
 			return staff;
-		}		
-		
+		}
+
 	}
-	
-	
-	
+
 	/**
 	 * Checks the availabilities of staff and bills - if both are available, assigns
 	 * a bill to a staff
@@ -208,7 +206,7 @@ public class JobDispatcher {
 				// Report related methods can go here
 				addToLog("All jobs processed, producing report...");
 				System.out.println("All jobs processed, producing report...");
-				
+
 				Manager.getInstance().writeFile();
 				writeLog();
 				System.exit(0);
@@ -218,20 +216,6 @@ public class JobDispatcher {
 		thread.start();
 
 	}
-	
-	//public void setStaffJob(staff) {
-		
-	//	b
-		
-	//}
-	
-	
-	//public void takeningJob(staff st, bill bill) {
-		
-	//	Bill currentBill = bill;
-		
-		
-	//}
 
 	/**
 	 * Where a staff processes a bill
@@ -257,57 +241,45 @@ public class JobDispatcher {
 				lastBill = q.removeQueueBill(b);
 				// Start the staff processing the bill and set them to be working
 				s.processBill(b);
-				
-				//System.out.println("staff" + s.getStaffID() +"is here");
-				
-								
-				
-				if(!j.getStatus()) {
+
+				if (!j.getStatus()) {
 					lock.lock();
-					//lastBill=false;
 					jobList.remove(j);
-					
-					//q.addQueueBill(b);
-					//q.decrementBillsRemoved();
+
 					b.setProcessedStatus(false);
-					//lastBill=false;
-					//System.out.println("Bill being added back on queue");
-					//System.out.println("Bill with customer id " + b.getCustomerID() + " was not finished by staff "+ s.getStaffID() + " so is put back on stafflist "   );
+
 					q.notifyObservers();
 					jobList.remove(j);
-					
+
+					lock.unlock();
+				} else {
+					lock.lock();
+					s.setWorking(false);
+					// Add this to the log and print
+
+					addToLog("Bill " + b.getCustomerID() + " finished");
+					System.out.println("Bill " + b.getCustomerID() + " finished by staff" + s.getStaffID());
+					s.removeBill();
+					jobList.remove(j);
+
+					// Checks if the bill is the last one left
+					if (lastBill) {
+						System.out.print("Bill + " + b.getCustomerID() + "was the last one");
+						isLast = true;
+						lastBillItem = b;
+
+					}
 					lock.unlock();
 				}
-				else {
-				lock.lock();
-				s.setWorking(false);
-				// Add this to the log and print
-				
-				addToLog("Bill " + b.getCustomerID() + " finished");
-				System.out.println("Bill " + b.getCustomerID() + " finished by staff" + s.getStaffID() );
-				s.removeBill();
-				jobList.remove(j);
 
-				// Checks if the bill is the last one left
-				if (lastBill) {
-					System.out.print("Bill + " + b.getCustomerID() + "was the last one");
-					isLast = true;
-					lastBillItem = b;
-				
-				}
-				lock.unlock();
-				}
-				
 			}
 		};
 		task.start();
 	}
-	
-	
-	public synchronized Staff getList(int sIndex){
+
+	public synchronized Staff getList(int sIndex) {
 		return staffList.get(sIndex);
-		
-		
+
 	}
 
 	/**
@@ -371,4 +343,55 @@ public class JobDispatcher {
 	public int getQueueDelay() {
 		return queueDelay;
 	}
+
+	public static void getAvailableCooks() {
+		boolean staffFound = true;
+		cookLock.lock();
+		System.out.println("cookStaffList is " + cookStaffList.size());
+
+		while (staffFound) {
+
+			if (cookStaffList.size() > 0) {
+				staffFound = false;
+			} else {
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+		}
+		System.out.println("cookStaffList is " + cookStaffList.size());
+		KitchenStaff ks1 = cookStaffList.get(0);
+		cookStaffList.get(0).getName();
+		Condition condition = cookStaffList.get(0).getAlert();
+		ReentrantLock cookPersonLock = cookStaffList.get(0).getLock();
+		cookStaffList.remove(0);
+
+		cookPersonLock.lock();
+
+		condition.signal();
+		try {
+			condition.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("Now back in hands of server");
+		cookPersonLock.unlock();
+
+		cookStaffList.add(ks1);
+
+		cookLock.unlock();
+
+	}
+
+	public void addCookStaffList(KitchenStaff staff1) {
+		cookStaffList.add(staff1);
+	}
+
 }

@@ -3,6 +3,7 @@ package main;
 import controllers.SlideController;
 import views.QueueGUI;
 import model.JobDispatcher;
+import model.KitchenStaff;
 import model.Manager;
 import model.Staff;
 import model.Queue;
@@ -12,19 +13,20 @@ public class CafeDemo {
     private QueueGUI gui;
     private Staff staff1 = new Staff(1, "Charlie");
     private Staff staff2 = new Staff(2, "Mac");
-    private Staff staff3 = new Staff(3, "Dennis");;
+    private Staff staff3 = new Staff(3, "Dennis");
+    private KitchenStaff cook1 = new KitchenStaff(4, "Mike");
 
     public void setUpGUI() {
-    	
-    	Manager.getInstance().readFile("Menu.csv");
-    	Manager.getInstance().readFile("ExistingOrders.csv");
-    	Manager.getInstance().toBills();
-    	    	
-    	
+
+        Manager.getInstance().readFile("../Menu.csv");
+        Manager.getInstance().readFile("../ExistingOrders.csv");
+        Manager.getInstance().toBills();
+
         JobDispatcher dispatcher = JobDispatcher.getInstance();
         dispatcher.addStaff(staff1);
         dispatcher.addStaff(staff2);
         dispatcher.addStaff(staff3);
+        dispatcher.addCookStaffList(cook1);
         // model maintains the queue and broadcasts changes
         Queue queueModel = dispatcher.q;
         /*
@@ -35,9 +37,10 @@ public class CafeDemo {
         Staff staffModel1 = staff1;
         Staff staffModel2 = staff2;
         Staff staffModel3 = staff3;
+        KitchenStaff kitchenStaffModel = cook1;
         SliderGUI sliderView = new SliderGUI();
 
-        gui = new QueueGUI(queueModel, staffModel1, staffModel2, staffModel3);
+        gui = new QueueGUI(queueModel, staffModel1, staffModel2, staffModel3, kitchenStaffModel);
 
         // it needs to know about the view and the model
         SlideController slideController = new SlideController(sliderView, dispatcher);
