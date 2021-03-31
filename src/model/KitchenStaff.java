@@ -1,7 +1,10 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+
+import model.Item.ItemCat;
 
 public class KitchenStaff extends Staff {
 
@@ -10,6 +13,7 @@ public class KitchenStaff extends Staff {
 	private KitchenStaff thisStaff;
 	String cookingState = "";
 	Order currentlyCooking = null;
+	Bill currentlyWorking;
 
 	public ReentrantLock getLock() {
 		return personallock;
@@ -38,8 +42,20 @@ public class KitchenStaff extends Staff {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
-					cookingState = "Cooking the meal";
+					
+					ArrayList<String> thingsBeingHeatedup = new ArrayList<String>();
+					for(Order od: currentlyWorking.getOrderList()) {
+			        	if(od.getItem().getItemCat() == ItemCat.MAIN) {
+			        		thingsBeingHeatedup.add(od.getItem().getItemName());
+			        		
+			        	}
+					}
+					cookingState = "Currently cooking " +  currentlyWorking.getCustomerID() ; 
+					for(String str :thingsBeingHeatedup)
+						cookingState += str + "  ";
+						
+						
+					//cookingState = "Cooking the meal";
 					notifyObservers();
 					System.out.println("kitchen staff " + name + " is cooking the meal");
 
@@ -72,8 +88,9 @@ public class KitchenStaff extends Staff {
 		return cookingState;
 	}
 
-	public void storeStaff() {
+	public void storeStaff(Bill currentlyWorking) {
 		thisStaff = this;
+		this.currentlyWorking = currentlyWorking;
 	}
 
 	/**
@@ -85,5 +102,7 @@ public class KitchenStaff extends Staff {
 		this.currentlyCooking = order;
 		notifyObservers();
 	}
+	
+	
 
 }

@@ -73,7 +73,7 @@ public class Staff {
         notifyObservers();
         if(ToCook) {
         	System.out.println("Staff" + staffID + "waiting for the cook");
-        	JobDispatcher.getAvailableCooks(Order od.getItem());
+        	JobDispatcher.getAvailableCooks(bill);
         } 
         	
         	try {

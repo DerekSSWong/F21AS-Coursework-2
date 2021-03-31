@@ -344,7 +344,7 @@ public class JobDispatcher {
 		return queueDelay;
 	}
 
-	public static void getAvailableCooks() {
+	public static void getAvailableCooks(Bill workingBill) {
 		boolean staffFound = true;
 		
 		System.out.println("cookStaffList is " + cookStaffList.size());
@@ -372,7 +372,8 @@ public class JobDispatcher {
 		Condition condition = cookStaffList.get(0).getAlert();
 		ReentrantLock cookPersonLock = cookStaffList.get(0).getLock();
 		cookStaffList.remove(0);
-		ks1.storeStaff();
+		ks1.storeStaff(workingBill);
+		
 		cookLock.unlock();
 		
 		

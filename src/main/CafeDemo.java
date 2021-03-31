@@ -19,8 +19,8 @@ public class CafeDemo {
 
     public void setUpGUI() {
 
-        Manager.getInstance().readFile("../Menu.csv");
-        Manager.getInstance().readFile("../ExistingOrders.csv");
+        Manager.getInstance().readFile("Menu.csv");
+        Manager.getInstance().readFile("ExistingOrders.csv");
         Manager.getInstance().toBills();
 
         JobDispatcher dispatcher = JobDispatcher.getInstance();
