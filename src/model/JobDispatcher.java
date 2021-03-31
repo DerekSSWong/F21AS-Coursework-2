@@ -37,6 +37,7 @@ public class JobDispatcher {
 	public synchronized void addStaff(Staff staff) {
 		// Setting the staff to be working
 		staff.setOnShift(true);
+		staff.setWorking(false);
 		// Adding the staff to the staff list
 		staffList.add(staff);
 		// Adding to log and printing
@@ -175,6 +176,19 @@ public class JobDispatcher {
 				boolean lastBill = q.removeQueueBill(b);
 				// Start the staff processing the bill and set them to be working
 				s.processBill(b);
+				
+				
+				if(!s.getOnShift()) {
+					
+					q.addQueueBill(b);
+					b.setProcessedStatus(false);
+					lastBill=false;
+					System.out.println("Bill being added back on queue");
+					System.out.println("StaffList still has bill on list " + staffList.get(sIndex) );
+					
+				}
+				else {
+				
 				staffList.get(sIndex).setWorking(false);
 				// Add this to the log and print
 				addToLog("Bill " + b.getCustomerID() + " finished");
@@ -186,11 +200,20 @@ public class JobDispatcher {
 					System.out.print("Bill + " + b.getCustomerID() + "was the last one");
 					isLast = true;
 					lastBillItem = b;
+				
+				}
 				}
 
 			}
 		};
 		task.start();
+	}
+	
+	
+	public synchronized Staff get(int sIndex){
+		return staffList.get(sIndex);
+		
+		
 	}
 
 	/**
