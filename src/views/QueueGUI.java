@@ -17,6 +17,7 @@ import controllers.StaffController;
 
 import java.awt.*;
 
+import model.KitchenStaff;
 import model.Queue;
 import model.Staff;
 
@@ -28,7 +29,8 @@ public class QueueGUI extends JFrame {
     JScrollPane queueScrollPane;
 
     // Constructor
-    public QueueGUI(Queue queueModel, Staff staffModel, Staff staffModel2, Staff staffModel3) {
+    public QueueGUI(Queue queueModel, Staff staffModel, Staff staffModel2, Staff staffModel3,
+            KitchenStaff kitchenStaffModel) {
 
         QueueDisplay queueView = new QueueDisplay(queueModel);
         StaffDisplay staffView1 = new StaffDisplay(staffModel);
@@ -37,6 +39,7 @@ public class QueueGUI extends JFrame {
         StaffController staffController1 = new StaffController(staffView1, staffModel);
         StaffController staffController2 = new StaffController(staffView2, staffModel2);
         StaffController staffController3 = new StaffController(staffView3, staffModel3);
+        KitchenStaffDisplay kitchenStaffView = new KitchenStaffDisplay(kitchenStaffModel);
         // Setting title for window
         setTitle("Queue");
         // Setting the size of the window
@@ -44,6 +47,7 @@ public class QueueGUI extends JFrame {
         // Adding the panels
         addNorthPanel(queueView);
         addCenterPanel(staffView1, staffView2, staffView3);
+        addSouthPanel(kitchenStaffView);
         // Making the GUI visible
         setVisible(true);
         pack();
@@ -63,6 +67,13 @@ public class QueueGUI extends JFrame {
         staffPanel.add(panel2, BorderLayout.CENTER);
         staffPanel.add(panel3, BorderLayout.EAST);
         this.add(staffPanel, BorderLayout.CENTER);
+    }
+
+    public void addSouthPanel(JPanel panel) {
+        // Creating the container
+        Container contentPane = getContentPane();
+        contentPane.add(panel, BorderLayout.SOUTH);
+        this.add(panel, BorderLayout.SOUTH);
     }
 
 }

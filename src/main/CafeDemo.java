@@ -18,8 +18,8 @@ public class CafeDemo {
 
     public void setUpGUI() {
 
-        Manager.getInstance().readFile("Menu.csv");
-        Manager.getInstance().readFile("ExistingOrders.csv");
+        Manager.getInstance().readFile("../Menu.csv");
+        Manager.getInstance().readFile("../ExistingOrders.csv");
         Manager.getInstance().toBills();
 
         JobDispatcher dispatcher = JobDispatcher.getInstance();
@@ -37,9 +37,10 @@ public class CafeDemo {
         Staff staffModel1 = staff1;
         Staff staffModel2 = staff2;
         Staff staffModel3 = staff3;
+        KitchenStaff kitchenStaffModel = cook1;
         SliderGUI sliderView = new SliderGUI();
 
-        gui = new QueueGUI(queueModel, staffModel1, staffModel2, staffModel3);
+        gui = new QueueGUI(queueModel, staffModel1, staffModel2, staffModel3, kitchenStaffModel);
 
         // it needs to know about the view and the model
         SlideController slideController = new SlideController(sliderView, dispatcher);
