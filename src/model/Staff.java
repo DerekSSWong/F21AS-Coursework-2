@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import interfaces.Observer;
+import model.Item.ItemCat;
 
 /**
  * Class for a server
@@ -61,15 +62,38 @@ public class Staff {
     public void processBill(Bill bill) {
 
         int amountOfItems = bill.getOrderList().size();
-        try {
-            notifyObservers();
-            Thread.sleep(amountOfItems * timePerItem);
-            bill.setProcessedStatus(true);
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
+        boolean ToCook = false;
+        for(Order od: bill.getOrderList()) {
+        	if(od.getItem().getItemCat() == ItemCat.MAIN) {
+        		
+        		ToCook = true;
+        		break;
+        	}
         }
-    }
-
+        notifyObservers();
+        if(ToCook) {
+        	System.out.println("Server giving cook the main");
+        	JobDispatcher.getAvailableCooks();
+        } 
+        
+       
+        	
+        	try {
+                
+                
+                Thread.sleep(amountOfItems * timePerItem);
+                bill.setProcessedStatus(true);
+                		
+                }
+                
+             catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        	
+        
+    
+    
     /**
      * Sets the working status of staff
      * 
