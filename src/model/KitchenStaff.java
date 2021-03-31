@@ -9,6 +9,7 @@ public class KitchenStaff extends Staff {
 	final private ReentrantLock personallock;
 	private KitchenStaff thisStaff;
 	String cookingState = "";
+	Order currentlyCooking = null;
 
 	public ReentrantLock getLock() {
 		return personallock;
@@ -25,7 +26,6 @@ public class KitchenStaff extends Staff {
 	private void moveToKitchen(int staffID) {
 		Thread ks = new Thread() {
 			public void run() {
-				System.out.println("staff ID: " + staffID);
 				while (true) {
 					personallock.lock();
 					cookingState = "Waiting to cook";
@@ -54,11 +54,7 @@ public class KitchenStaff extends Staff {
 					System.out.println("kitchen staff " + getName() + "has cooked the meal, returning it to server");
 					alert.signal();
 					personallock.unlock();
-					
-					
-					//JobDispatcher.cookLock.lock();
 					JobDispatcher.getInstance().addCookStaffList(thisStaff);
-					//JobDispatcher.cookLock.unlock();
 					notifyObservers();
 				}
 			}
@@ -75,12 +71,19 @@ public class KitchenStaff extends Staff {
 	public String getCookingState() {
 		return cookingState;
 	}
-	
+
 	public void storeStaff() {
-		//System.out.println("This is " + this.getName());
 		thisStaff = this;
 	}
 
+	/**
+	 * Sets whether the order the staff is cooking
+	 * 
+	 * @param order
+	 */
+	public void setCurrentlyCooking(Order order) {
+		this.currentlyCooking = order;
+		notifyObservers();
+	}
+
 }
-
-

@@ -73,10 +73,8 @@ public class Staff {
         notifyObservers();
         if(ToCook) {
         	System.out.println("Staff" + staffID + "waiting for the cook");
-        	JobDispatcher.getAvailableCooks();
+        	JobDispatcher.getAvailableCooks(Order od.getItem());
         } 
-        
-       
         	
         	try {
                 
@@ -90,10 +88,7 @@ public class Staff {
                 System.out.println(e.getMessage());
             }
         }
-        	
-        
-    
-    
+
     /**
      * Sets the working status of staff
      * 
@@ -130,12 +125,11 @@ public class Staff {
         this.onShift = onShift;
         notifyObservers();
     }
-    
+
     public boolean getOnShift() {
-    	return onShift; 
+        return onShift;
     }
-    
-    
+
     public int getTimePerItem() {
         return timePerItem;
     }

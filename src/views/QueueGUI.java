@@ -30,7 +30,7 @@ public class QueueGUI extends JFrame {
 
     // Constructor
     public QueueGUI(Queue queueModel, Staff staffModel, Staff staffModel2, Staff staffModel3,
-            KitchenStaff kitchenStaffModel) {
+            KitchenStaff kitchenStaffModel, KitchenStaff kitchenStaffModel2) {
 
         QueueDisplay queueView = new QueueDisplay(queueModel);
         StaffDisplay staffView1 = new StaffDisplay(staffModel);
@@ -40,6 +40,7 @@ public class QueueGUI extends JFrame {
         StaffController staffController2 = new StaffController(staffView2, staffModel2);
         StaffController staffController3 = new StaffController(staffView3, staffModel3);
         KitchenStaffDisplay kitchenStaffView = new KitchenStaffDisplay(kitchenStaffModel);
+        KitchenStaffDisplay kitchenStaffView2 = new KitchenStaffDisplay(kitchenStaffModel2);
         // Setting title for window
         setTitle("Queue");
         // Setting the size of the window
@@ -47,7 +48,7 @@ public class QueueGUI extends JFrame {
         // Adding the panels
         addNorthPanel(queueView);
         addCenterPanel(staffView1, staffView2, staffView3);
-        addSouthPanel(kitchenStaffView);
+        addSouthPanel(kitchenStaffView, kitchenStaffView2);
         // Making the GUI visible
         setVisible(true);
         pack();
@@ -69,11 +70,12 @@ public class QueueGUI extends JFrame {
         this.add(staffPanel, BorderLayout.CENTER);
     }
 
-    public void addSouthPanel(JPanel panel) {
-        // Creating the container
-        Container contentPane = getContentPane();
-        contentPane.add(panel, BorderLayout.SOUTH);
-        this.add(panel, BorderLayout.SOUTH);
+    public void addSouthPanel(JPanel panel1, JPanel panel2) {
+        // Adding kitchen staff to panel
+        JPanel kitchenStaffPanel = new JPanel();
+        kitchenStaffPanel.add(panel1, BorderLayout.NORTH);
+        kitchenStaffPanel.add(panel2, BorderLayout.SOUTH);
+        this.add(kitchenStaffPanel, BorderLayout.SOUTH);
     }
 
 }
