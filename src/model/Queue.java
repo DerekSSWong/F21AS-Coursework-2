@@ -31,6 +31,10 @@ public class Queue implements Subject {
      * @param bill
      */
 
+    
+    
+    
+    
     public synchronized void addQueueBill(Bill bill) {
         QueueList.addLast(bill);
         notifyObservers();
@@ -78,6 +82,14 @@ public class Queue implements Subject {
         return rtn;
     }
 
+    
+    
+    public synchronized void decrementBillsRemoved() {
+    	billsRemoved--;
+    }
+    
+    
+    
     public void setQueueSize(int number) {
 
         NumberofBills = number;

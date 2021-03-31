@@ -85,7 +85,7 @@ public class JobDispatcher {
 		// Clears the marks if no bill is available for worker, or no worker is
 		// available for bill
 		if (bill == null && staff != null) {
-			staffList.get(sIndex).setWorking(false);
+			staff.setWorking(false);
 		}
 		if (bill != null && staff == null) {
 			q.setBillProcessedState(q.getQueueIndex(bill), false);
@@ -126,7 +126,7 @@ public class JobDispatcher {
 					// Exits the while loop if the last job is processed
 					if (isLast) {
 						System.out.println("Last Bill has this number of orders" + lastBillItem.getOrderList().size());
-						sleepTime = lastBillItem.getOrderList().size() * staffList.get(0).getTimePerItem();
+						sleepTime = lastBillItem.getOrderList().size() * getList(0).getTimePerItem();
 						break;
 					}
 
@@ -165,8 +165,8 @@ public class JobDispatcher {
 				int sIndex = staffList.indexOf(s);
 
 				// Set the staff to be working as assign them the bill
-				staffList.get(sIndex).setWorking(true);
-				staffList.get(sIndex).assignBill(b);
+				s.setWorking(true);
+				s.assignBill(b);
 				// Add this to the log and print
 				addToLog("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size "
 						+ b.getOrderList().size());
@@ -181,19 +181,20 @@ public class JobDispatcher {
 				if(!s.getOnShift()) {
 					
 					q.addQueueBill(b);
+					q.decrementBillsRemoved();
 					b.setProcessedStatus(false);
 					lastBill=false;
 					System.out.println("Bill being added back on queue");
-					System.out.println("StaffList still has bill on list " + staffList.get(sIndex) );
+					System.out.println("StaffList still has bill on list " + s );
 					
 				}
 				else {
 				
-				staffList.get(sIndex).setWorking(false);
+				s.setWorking(false);
 				// Add this to the log and print
 				addToLog("Bill " + b.getCustomerID() + " finished");
 				System.out.println("Bill " + b.getCustomerID() + " finished");
-				staffList.get(sIndex).removeBill();
+				s.removeBill();
 
 				// Checks if the bill is the last one left
 				if (lastBill) {
@@ -210,7 +211,7 @@ public class JobDispatcher {
 	}
 	
 	
-	public synchronized Staff get(int sIndex){
+	public synchronized Staff getList(int sIndex){
 		return staffList.get(sIndex);
 		
 		
