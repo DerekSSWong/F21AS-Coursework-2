@@ -14,7 +14,8 @@ public class CafeDemo {
     private Staff staff1 = new Staff(1, "Charlie");
     private Staff staff2 = new Staff(2, "Mac");
     private Staff staff3 = new Staff(3, "Dennis");
-    private KitchenStaff cook1 = new KitchenStaff(4, "Mike");
+    private KitchenStaff cook1 = new KitchenStaff(4, "Frank");
+    private KitchenStaff cook2 = new KitchenStaff(5, "Dee");
 
     public void setUpGUI() {
 
@@ -27,6 +28,7 @@ public class CafeDemo {
         dispatcher.addStaff(staff2);
         dispatcher.addStaff(staff3);
         dispatcher.addCookStaffList(cook1);
+        dispatcher.addCookStaffList(cook2);
         // model maintains the queue and broadcasts changes
         Queue queueModel = dispatcher.q;
         /*
@@ -38,9 +40,10 @@ public class CafeDemo {
         Staff staffModel2 = staff2;
         Staff staffModel3 = staff3;
         KitchenStaff kitchenStaffModel = cook1;
+        KitchenStaff kitchenStaffModel2 = cook2;
         SliderGUI sliderView = new SliderGUI();
 
-        gui = new QueueGUI(queueModel, staffModel1, staffModel2, staffModel3, kitchenStaffModel);
+        gui = new QueueGUI(queueModel, staffModel1, staffModel2, staffModel3, kitchenStaffModel, kitchenStaffModel2);
 
         // it needs to know about the view and the model
         SlideController slideController = new SlideController(sliderView, dispatcher);
