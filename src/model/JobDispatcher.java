@@ -25,7 +25,7 @@ public class JobDispatcher {
 	private int queueDelay = 2000;
 	private Bill lastBillItem;
 	static JobDispatcher dispatcher = new JobDispatcher();
-	
+	boolean lastBill=false;
 
 	// Singleton
 	private JobDispatcher() {
@@ -56,7 +56,20 @@ public class JobDispatcher {
 		for(Job jb : jobList) {
 			
 			if(jb.getStaff()== staff){
+				
+				if(jb.getStatus() == true) {
+				
+				
 				jb.decatiavteJob();
+				q.addQueueBill(jb.getBill());
+				q.decrementBillsRemoved();
+				jb.getBill().setProcessedStatus(false);
+				lastBill=false;
+				System.out.println("Bill being added back on queue");
+				System.out.println("Bill with customer id " + jb.getBill().getCustomerID() + " was not finished by staff "+ staff.getStaffID() + " so is put back on stafflist "   );
+				addToLog("Bill with customer id " + jb.getBill().getCustomerID() + " was not finished by staff "+ staff.getStaffID() + " so is put back on stafflist "   );
+				q.notifyObservers();
+				}
 			}
 			
 		}
@@ -66,6 +79,8 @@ public class JobDispatcher {
 		lock.unlock();
 	}
 
+		
+	
 	// Adds a bill to the queue
 	public void addBill(Bill bill) {
 		q.addQueueBill(bill);
@@ -127,6 +142,11 @@ public class JobDispatcher {
 			
 		}
 		
+		public Bill getBill() {
+			return bill;
+			
+		}
+
 		void decatiavteJob() {
 			running= false;
 		}
@@ -234,24 +254,28 @@ public class JobDispatcher {
 				System.out.println("Staff " + s.getStaffID() + " is processing bill " + b.getCustomerID() + " size "
 						+ b.getOrderList().size());
 
-				boolean lastBill = q.removeQueueBill(b);
+				lastBill = q.removeQueueBill(b);
 				// Start the staff processing the bill and set them to be working
 				s.processBill(b);
 				
-				System.out.println("staff" + s.getStaffID() +"is here");
+				//System.out.println("staff" + s.getStaffID() +"is here");
 				
+								
 				
 				if(!j.getStatus()) {
 					lock.lock();
+					//lastBill=false;
+					jobList.remove(j);
 					
-					q.addQueueBill(b);
-					q.decrementBillsRemoved();
+					//q.addQueueBill(b);
+					//q.decrementBillsRemoved();
 					b.setProcessedStatus(false);
-					lastBill=false;
-					System.out.println("Bill being added back on queue");
-					System.out.println("Bill with customer id " + b.getCustomerID() + " was not finished by staff "+ s.getStaffID() + " so is put back on stafflist "   );
+					//lastBill=false;
+					//System.out.println("Bill being added back on queue");
+					//System.out.println("Bill with customer id " + b.getCustomerID() + " was not finished by staff "+ s.getStaffID() + " so is put back on stafflist "   );
 					q.notifyObservers();
 					jobList.remove(j);
+					
 					lock.unlock();
 				}
 				else {
