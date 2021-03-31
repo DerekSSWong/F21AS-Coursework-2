@@ -346,14 +346,17 @@ public class JobDispatcher {
 
 	public static void getAvailableCooks() {
 		boolean staffFound = true;
-		cookLock.lock();
+		
 		System.out.println("cookStaffList is " + cookStaffList.size());
 
 		while (staffFound) {
-
+			cookLock.lock();
 			if (cookStaffList.size() > 0) {
+				
+				System.out.println("cookStaffList is " + cookStaffList.size());
 				staffFound = false;
-			} else {
+			
+			} else { cookLock.unlock();
 				try {
 					Thread.sleep(5);
 				} catch (InterruptedException e) {
@@ -364,13 +367,15 @@ public class JobDispatcher {
 			}
 
 		}
-		System.out.println("cookStaffList is " + cookStaffList.size());
 		KitchenStaff ks1 = cookStaffList.get(0);
 		cookStaffList.get(0).getName();
 		Condition condition = cookStaffList.get(0).getAlert();
 		ReentrantLock cookPersonLock = cookStaffList.get(0).getLock();
 		cookStaffList.remove(0);
-
+		ks1.storeStaff();
+		cookLock.unlock();
+		
+		
 		cookPersonLock.lock();
 
 		condition.signal();
@@ -383,15 +388,15 @@ public class JobDispatcher {
 
 		System.out.println("Now back in hands of server");
 		cookPersonLock.unlock();
-
-		cookStaffList.add(ks1);
-
-		cookLock.unlock();
+		
+		
 
 	}
 
 	public void addCookStaffList(KitchenStaff staff1) {
+		cookLock.lock();
 		cookStaffList.add(staff1);
+		cookLock.unlock();
 	}
 
 }
