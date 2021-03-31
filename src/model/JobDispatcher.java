@@ -18,6 +18,7 @@ public class JobDispatcher {
 	private ReentrantLock lock = new ReentrantLock();
 	private String log = "";
 	private ArrayList<Staff> staffList = new ArrayList<Staff>();
+	private ArrayList<Job> jobList = new ArrayList<Job>();
 	public Queue q = new Queue();
 	private int totalSize = 0;
 	private boolean isLast = false;
@@ -46,13 +47,23 @@ public class JobDispatcher {
 	}
 
 	public synchronized void removeStaff(Staff staff) {
+		lock.lock();
 		// Setting the staff to be no longer working
 		staff.setOnShift(false);
 		// Removing from the staff list
 		staffList.remove(staff);
 		// Adding to log and printing
+		for(Job jb : jobList) {
+			
+			if(jb.getStaff()== staff){
+				jb.decatiavteJob();
+			}
+			
+		}
+		
 		addToLog("Staff " + staff.getStaffID() + " removed");
 		System.out.println("Staff " + staff.getStaffID() + " removed");
+		lock.unlock();
 	}
 
 	// Adds a bill to the queue
@@ -93,10 +104,46 @@ public class JobDispatcher {
 
 		// If available bill and staff is found, a job is created
 		if (bill != null && staff != null) {
-			job(staff, bill);
+			Job jb = new Job(staff,bill);
+			jobList.add(jb);
+			
+			job(staff, bill,jb);
+			
+			 
 		}
 	}
 
+	
+	private class Job {
+
+		private Staff staff;
+		private Bill bill;
+		boolean running = true;
+		
+		public Job(Staff staff, Bill bill) {
+			
+			this.staff =staff;
+			this.bill =bill;
+			
+		}
+		
+		void decatiavteJob() {
+			running= false;
+		}
+		
+		boolean getStatus() {
+			return running;
+		}
+		
+		 
+		private Staff getStaff(){
+			return staff;
+		}		
+		
+	}
+	
+	
+	
 	/**
 	 * Checks the availabilities of staff and bills - if both are available, assigns
 	 * a bill to a staff
@@ -151,6 +198,20 @@ public class JobDispatcher {
 		thread.start();
 
 	}
+	
+	//public void setStaffJob(staff) {
+		
+	//	b
+		
+	//}
+	
+	
+	//public void takeningJob(staff st, bill bill) {
+		
+	//	Bill currentBill = bill;
+		
+		
+	//}
 
 	/**
 	 * Where a staff processes a bill
@@ -158,7 +219,7 @@ public class JobDispatcher {
 	 * @param s Staff
 	 * @param b Bill
 	 */
-	public void job(Staff s, Bill b) {
+	public void job(Staff s, Bill b, Job j) {
 		Thread task = new Thread() {
 			public void run() {
 
@@ -177,24 +238,31 @@ public class JobDispatcher {
 				// Start the staff processing the bill and set them to be working
 				s.processBill(b);
 				
+				System.out.println("staff" + s.getStaffID() +"is here");
 				
-				if(!s.getOnShift()) {
+				
+				if(!j.getStatus()) {
+					lock.lock();
 					
 					q.addQueueBill(b);
 					q.decrementBillsRemoved();
 					b.setProcessedStatus(false);
 					lastBill=false;
 					System.out.println("Bill being added back on queue");
-					System.out.println("StaffList still has bill on list " + s );
-					
+					System.out.println("Bill with customer id " + b.getCustomerID() + " was not finished by staff "+ s.getStaffID() + " so is put back on stafflist "   );
+					q.notifyObservers();
+					jobList.remove(j);
+					lock.unlock();
 				}
 				else {
-				
+				lock.lock();
 				s.setWorking(false);
 				// Add this to the log and print
+				
 				addToLog("Bill " + b.getCustomerID() + " finished");
-				System.out.println("Bill " + b.getCustomerID() + " finished");
+				System.out.println("Bill " + b.getCustomerID() + " finished by staff" + s.getStaffID() );
 				s.removeBill();
+				jobList.remove(j);
 
 				// Checks if the bill is the last one left
 				if (lastBill) {
@@ -203,8 +271,9 @@ public class JobDispatcher {
 					lastBillItem = b;
 				
 				}
+				lock.unlock();
 				}
-
+				
 			}
 		};
 		task.start();
