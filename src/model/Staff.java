@@ -16,7 +16,7 @@ import model.Item.ItemCat;
 public class Staff {
 
     private int staffID;
-    private String name;
+    protected String name;
     private boolean working;
     private static int timePerItem = 4000;
     private Bill currentlyProcessing = null;
@@ -72,7 +72,7 @@ public class Staff {
         }
         notifyObservers();
         if(ToCook) {
-        	System.out.println("Server giving cook the main");
+        	System.out.println("Staff" + staffID + "waiting for the cook");
         	JobDispatcher.getAvailableCooks();
         } 
         
