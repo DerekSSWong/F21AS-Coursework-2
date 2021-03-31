@@ -1,15 +1,20 @@
+// Stating the package
 package model;
 
+//Importing the components
 import java.util.LinkedList;
 import java.util.List;
 
+// Importing the interface
 import interfaces.Observer;
+
+//Importing the model
 import model.Item.ItemCat;
 
 /**
  * Class for a server
  * 
- * @author Rose Ulldemolins
+ * @author Rose Ulldemolins, Andrew Daley
  * 
  */
 
@@ -28,7 +33,6 @@ public class Staff {
      * @param serverID The unique ID of a server e.g. 1
      */
     public Staff(int staffID, String name) {
-
         this.staffID = staffID;
         this.name = name;
         this.working = false;
@@ -60,34 +64,39 @@ public class Staff {
      * @param bill
      */
     public void processBill(Bill bill) {
-
+        // Gets the size of the order list
         int amountOfItems = bill.getOrderList().size();
-        boolean ToCook = false;
-        for(Order od: bill.getOrderList()) {
-        	if(od.getItem().getItemCat() == ItemCat.MAIN) {
-        		
-        		ToCook = true;
-        		break;
-        	}
-        }
-        notifyObservers();
-        if(ToCook) {
-        	System.out.println("Staff" + staffID + "waiting for the cook");
-        	JobDispatcher.getAvailableCooks(bill);
-        } 
-        	
-        	try {
-                
-                
-                Thread.sleep(amountOfItems * timePerItem);
-                bill.setProcessedStatus(true);
-                		
-                }
-                
-             catch (InterruptedException e) {
-                System.out.println(e.getMessage());
+        // Starts cooking status off as false
+        boolean toCook = false;
+        // Loops through all of the orders in the list
+        for (Order od : bill.getOrderList()) {
+            // If the item is a main
+            if (od.getItem().getItemCat() == ItemCat.MAIN) {
+                // Then set the staff to be cooking
+                toCook = true;
+                break;
             }
         }
+        // Notify the observers of this change
+        notifyObservers();
+        // If the staff is cooking
+        if (toCook) {
+            System.out.println("Staff" + staffID + "waiting for the cook");
+            // Get an available cook for the bill
+            JobDispatcher.getAvailableCooks(bill);
+        }
+
+        try {
+            // Make the thread sleep for a variable amount of time and then set the bill to
+            // be processed
+            Thread.sleep(amountOfItems * timePerItem);
+            bill.setProcessedStatus(true);
+
+        } catch (InterruptedException e) {
+            // Because the thread is sleeping
+            System.out.println(e.getMessage());
+        }
+    }
 
     /**
      * Sets the working status of staff
@@ -126,29 +135,53 @@ public class Staff {
         notifyObservers();
     }
 
+    /**
+     * Returns if the staff is on shift
+     * 
+     * @return boolean
+     */
     public boolean getOnShift() {
         return onShift;
     }
 
+    /**
+     * Returns the time it takes to process an item
+     * 
+     * @return int
+     */
     public int getTimePerItem() {
         return timePerItem;
     }
 
+    /**
+     * Sets the time it takes to process an item
+     * 
+     * @param int
+     */
     public static void setTimePerItem(int time) {
         timePerItem = time;
     }
 
+    /**
+     * Assigns a given bill (to the staff)
+     * 
+     * @param Bill
+     */
     public void assignBill(Bill bill) {
         currentlyProcessing = bill;
 
     }
 
+    /**
+     * Returns the bill a staff member is currently processing
+     * 
+     * @return int
+     */
     public Bill getBill() {
-
         return currentlyProcessing;
-
     }
 
+    // Removes the bill from the staff
     public void removeBill() {
         currentlyProcessing = null;
     }

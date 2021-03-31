@@ -1,21 +1,22 @@
-
+// Setting the package
 package views;
 
-import interfaces.Observer;
+//Importing the GUI components
 import java.util.List;
-
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.text.DecimalFormat;
+import java.awt.event.ActionListener;
 
+//Importing the interface
+import interfaces.Observer;
+
+//Importing the models
 import model.Bill;
 import model.Order;
 import model.Staff;
-
-import java.awt.*;
-import java.text.DecimalFormat;
-
-import java.awt.event.ActionListener;
 
 /**
  * using MVC pattern
@@ -41,23 +42,23 @@ public class StaffDisplay extends JPanel implements Observer {
     public StaffDisplay(Staff staff) {
 
         this.staff = staff;
+        // Creating a decimal format for currency
         this.decimalFormat = new DecimalFormat("#.00");
-        this.setPreferredSize(new Dimension(250, 300));
+        // Setting the size of the window
+        this.setPreferredSize(new Dimension(275, 300));
         staff.registerObserver(this);
-
-        // Creating a label for the heading at the top of a page
         // Setting border and title
         this.setBorder(new CompoundBorder(new EmptyBorder(20, 20, 20, 20),
                 BorderFactory.createTitledBorder("Server " + staff.getStaffID())));
-
+        // Setting the label text
         customerLabel.setText("Not currently processing an order");
+        // Adding all of the components to the JPanel
         this.add(customerLabel);
         this.add(itemLabel);
         this.add(removeStaff);
     }
 
     // Tells the Observer to update itself (to change the data in the labels)
-
     public void update() {
         // Checking to see if the staff member is on shift and if not remove the
         // relevant components
@@ -68,8 +69,8 @@ public class StaffDisplay extends JPanel implements Observer {
             customerLabel.setText("Not currently working");
             this.remove(removeStaff);
             this.repaint();
-            // Checking to see if the staff has a bill
         } else {
+            // Checking to see if the staff has a bill
             if (staff.getBill() != null) {
                 Bill newBill = staff.getBill();
                 // Variables for the calculations
@@ -110,10 +111,12 @@ public class StaffDisplay extends JPanel implements Observer {
         addStaff.addActionListener(actionListener);
     }
 
+    // Returning the remove button
     public JButton getRemoveButton() {
         return removeStaff;
     }
 
+    // Returning the add button
     public JButton getAddButton() {
         return addStaff;
     }

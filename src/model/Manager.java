@@ -1,6 +1,6 @@
 package model;
 
-//Imports
+//Imports for classes
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -19,8 +19,7 @@ public class Manager {
 	private AllBills allBills = new AllBills();
 	private String report;
 
-	// Singleton
-
+	// As it's a singleton
 	private Manager() {
 	}
 
@@ -28,15 +27,17 @@ public class Manager {
 		return manager;
 	}
 
+	// Reads a file given a filename
 	public void readFile(String filename) {
-
 		try {
+			// Tries to find the file
 			File f = new File(filename);
 			Scanner scanner = new Scanner(f);
+			// Whilst there are more lines
 			while (scanner.hasNextLine()) {
 				String inputLine = scanner.nextLine();
 				if (inputLine.length() != 0) {
-					// Could probably include processOrderLine here with Switch
+					// Calls a different method depending on the file
 					switch (filename) {
 					case "Menu.csv":
 						processMenuLine(inputLine);
@@ -51,8 +52,8 @@ public class Manager {
 				}
 			}
 			scanner.close();
+			// Exception if the file can't be found and closes
 		} catch (FileNotFoundException fnf) {
-
 			System.out.println(fnf);
 			System.exit(0);
 		}
@@ -63,12 +64,13 @@ public class Manager {
 	 * closes.
 	 */
 	public void writeFile() {
+		// Starts of the report
 		report = "The total income for all orders: " + allBills.getNetIncome() + "\n\n";
-
 		TreeSet<Item> list = menu.getItemList();
+		// Adds the items to the report and amount of times ordered
 		report += String.format("%-50s", "All the items in the menu ");
 		report += String.format("%-25s", "The number of times item was ordered\n\n");
-
+		// Loops through the items in the list
 		for (Item it : list) {
 			// This adds each item from the menu
 			report += String.format("%-50s", it.getItemName());
@@ -78,6 +80,7 @@ public class Manager {
 		}
 
 		try {
+			// Trying to read the file, if so writes the report and closes it
 			FileWriter reportFile = new FileWriter("Report.csv");
 			reportFile.write(report);
 			reportFile.close();
@@ -100,82 +103,94 @@ public class Manager {
 	 * @param line
 	 */
 	public void processMenuLine(String line) {
-
 		try {
+			// Splits up the columns
 			String parts[] = line.split(",");
-
 			String itemName = parts[0].trim();
 			String itemID = parts[1].trim();
-
 			// Checks if the category is a part of ItemCat
-			// Throws exception if not
 			String catString = parts[2].trim();
 			Item.ItemCat itemCat;
 			if (checkEnum(catString) == true) {
+				// If it is then converts it to an enum
 				itemCat = Item.ItemCat.valueOf(catString);
 			} else {
+				// Throws exception if not
 				throw new ClassCastException();
 			}
-
+			// Trims and converts the price to a double
 			double itemPrice = Double.parseDouble(parts[3].trim());
+			// Prepares the item description
 			String itemDesc = parts[4].trim();
-
+			// Makes a new item from the parts
 			Item newItem = new Item(itemName, itemID, itemCat, itemPrice, itemDesc);
+			// Adds it to the menu
 			menu.addItem(newItem);
 
 		} catch (NumberFormatException nfe) {
+			// Catches if a number is not given
 			String error = "Number conversion error in '" + line + "'  - " + nfe.getMessage();
 			System.out.println(error);
-		} // catch
-		catch (ClassCastException cce) {
+		} catch (ClassCastException cce) {
+			// Catches if the category isn't an enum
 			String error = "Trouble reading item category in '" + line + "'  - " + cce.getMessage();
 			System.out.println(error);
-		} // catch
+		}
 
 	}
 
+	/**
+	 * Attempts to create an Order instance from data provided as input
+	 * 
+	 * @param line
+	 */
 	public void processOrderLine(String line) {
-
 		try {
+			// Splits up and prepares the columns
 			String parts[] = line.split(",");
-
 			String timeString = parts[0].trim();
 			LocalDateTime time = LocalDateTime.parse(timeString);
-
 			int cusID = Integer.parseInt(parts[1].trim());
-
 			String itemID = parts[2].trim();
 			Item item = menu.getItem(itemID);
-
 			double price = Double.parseDouble(parts[3].trim());
-
+			// If the item is found create and add an order
 			if (item != null) {
 				Order newOrder = new Order(time, cusID, item);
 				orders.addOrder(newOrder);
 			} else {
+				// Throw exception if cannot be found
 				throw new ClassCastException();
 			}
 		} catch (NumberFormatException nfe) {
+			// Catch if a number isn't entered
 			String error = "Number conversion error in '" + line + "'  - " + nfe.getMessage();
 			System.out.println(error);
 		} catch (DateTimeParseException dtpe) {
+			// Catch if a valid date/time isn't entered
 			String error = "Error parsing order time in '" + line + "'  - " + dtpe.getMessage();
 			System.out.println(error);
 		} catch (ClassCastException cce) {
+			// Catch the cast exception thrown
 			String error = "Error processing item in '" + line + "'  - " + cce.getMessage();
 			System.out.println(error);
 		}
 
 	}
 
+	// Converts the orders to bills
 	public void toBills() {
 		int cusIndex = 1;
 		ArrayList<Order> orderList = orders.findByID(cusIndex);
+		// Whilst there are orders in the list
 		while (orderList.size() > 0) {
 			Bill bill = new Bill(cusIndex);
+			// Loop through them
 			for (Order o : orderList) {
+				// Add each to the bill
 				bill.addOrder(o);
 			}
+			// Add the bill to all bills
 			allBills.addBill(bill);
 			cusIndex++;
 			orderList = orders.findByID(cusIndex);

@@ -4,12 +4,13 @@
 
 package model;
 
-//Imports for class
-import interfaces.Observer;
-import interfaces.Subject;
+// Component imports
 import java.util.*;
 import java.util.LinkedList;
 import java.util.List;
+// Interface imports
+import interfaces.Observer;
+import interfaces.Subject;
 
 /**
  *
@@ -31,22 +32,34 @@ public class Queue implements Subject {
      * @param bill
      */
 
-    
-    
-    
-    
     public synchronized void addQueueBill(Bill bill) {
         QueueList.addLast(bill);
         notifyObservers();
     }
 
+    /**
+     * Takes in an index (for the bill) and whether or not it's processed and set's
+     * it
+     * 
+     * @param state
+     * @param index
+     */
+
     public synchronized void setBillProcessedState(int index, boolean state) {
         QueueList.get(index).setProcessedStatus(state);
     }
 
+    /**
+     * Takes in an index (for the bill) and whether or not it's processed and set's
+     * it
+     * 
+     * @return Bill
+     */
     public synchronized Bill getAvailableBill() {
+        // Loops through the bills
         Bill bill = null;
         for (Bill b : QueueList) {
+            // If one hasn't been processed
             if (b.getProcessedStatus() == false) {
                 bill = b;
                 break;
@@ -55,45 +68,51 @@ public class Queue implements Subject {
         return bill;
     }
 
+    /**
+     * Returns how many bills are in the queue
+     * 
+     * @return int
+     */
     public int getQsize() {
         return QueueList.size();
     }
 
     /**
-     * Removes the bill b from the queue
-     *
+     * Removes the bill from the queue
+     * 
+     * @param b
      */
-
     public synchronized boolean removeQueueBill(Bill b) {
         boolean rtn = false;
+        // Removed the bill from the list
         QueueList.remove(b);
         System.out.println("QueueList size is " + QueueList.size());
         System.out.println("NumberofBills  is " + NumberofBills);
         System.out.println("billsRemoved  is " + billsRemoved);
 
-        System.out.println((NumberofBills - 1) == billsRemoved);
-
+        // If the bill removed was the last one
         if ((NumberofBills - 1) == billsRemoved) {
             System.out.println("activated");
             rtn = true;
         }
+        // Adds 1 onto bills removed
         billsRemoved++;
         notifyObservers();
         return rtn;
     }
 
-    
-    
+    // Takes 1 away from bills removed
     public synchronized void decrementBillsRemoved() {
-    	billsRemoved--;
+        billsRemoved--;
     }
-    
-    
-    
+
+    /**
+     * Sets the queue size to be a given integer
+     * 
+     * @param number
+     */
     public void setQueueSize(int number) {
-
         NumberofBills = number;
-
     }
 
     /**
@@ -129,7 +148,7 @@ public class Queue implements Subject {
     }
 
     /**
-     * removes at a bill from the queue list at an index position
+     * Removes at a bill from the queue list at an index position
      *
      * @param index
      */
@@ -139,6 +158,7 @@ public class Queue implements Subject {
         notifyObservers();
     }
 
+    // Gets the table for the GUI
     public synchronized Vector<Vector<String>> getTable() {
 
         int i = getQueueList().size();
@@ -150,9 +170,9 @@ public class Queue implements Subject {
         // master list (ArrayList of ArrayList)
 
         List<Bill> queueList = getQueueList();
-
+        // For each bill in the queue
         for (Bill bill : queueList) {
-
+            // Add a row for ID, size and price
             Vector<String> row = new Vector<String>();
             row.add(String.valueOf(bill.getCustomerID()));
             row.add(String.valueOf(bill.getOrderList().size()));

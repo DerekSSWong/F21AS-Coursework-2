@@ -203,10 +203,9 @@ public class JobDispatcher {
 					}
 				}
 
-				// Report related methods can go here
+				// Report based methods
 				addToLog("All jobs processed, producing report...");
 				System.out.println("All jobs processed, producing report...");
-
 				Manager.getInstance().writeFile();
 				writeLog();
 				System.exit(0);
@@ -346,17 +345,19 @@ public class JobDispatcher {
 
 	public static void getAvailableCooks(Bill workingBill) {
 		boolean staffFound = true;
-		
-		System.out.println("cookStaffList is " + cookStaffList.size());
 
+		System.out.println("cookStaffList is " + cookStaffList.size());
+		// Whilst there is a staff lock them
 		while (staffFound) {
 			cookLock.lock();
+			// And if there are cooks then a staff member has been found
 			if (cookStaffList.size() > 0) {
-				
 				System.out.println("cookStaffList is " + cookStaffList.size());
 				staffFound = false;
-			
-			} else { cookLock.unlock();
+				// If a staff member hasn't been found unlock, and sleep (requires exception
+				// handling)
+			} else {
+				cookLock.unlock();
 				try {
 					Thread.sleep(5);
 				} catch (InterruptedException e) {
@@ -367,33 +368,29 @@ public class JobDispatcher {
 			}
 
 		}
+		// Gets the details of the first staff in the list, removes them and sets them
+		// to be working
 		KitchenStaff ks1 = cookStaffList.get(0);
 		cookStaffList.get(0).getName();
 		Condition condition = cookStaffList.get(0).getAlert();
 		ReentrantLock cookPersonLock = cookStaffList.get(0).getLock();
 		cookStaffList.remove(0);
 		ks1.storeStaff(workingBill);
-		
 		cookLock.unlock();
-		
-		
 		cookPersonLock.lock();
-
 		condition.signal();
 		try {
 			condition.await();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		System.out.println("Now back in hands of server");
 		cookPersonLock.unlock();
-		
-		
 
 	}
 
+	// Locks the cook list and adds a staff
 	public void addCookStaffList(KitchenStaff staff1) {
 		cookLock.lock();
 		cookStaffList.add(staff1);

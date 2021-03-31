@@ -1,12 +1,16 @@
+// Stating the package name
 package main;
 
+// Importing the controllers
 import controllers.SlideController;
-import views.QueueGUI;
+// Importing the views
 import model.JobDispatcher;
 import model.KitchenStaff;
 import model.Manager;
 import model.Staff;
 import model.Queue;
+// Importing the models
+import views.QueueGUI;
 import views.SliderGUI;
 
 public class CafeDemo {
@@ -18,11 +22,12 @@ public class CafeDemo {
     private KitchenStaff cook2 = new KitchenStaff(5, "Dee");
 
     public void setUpGUI() {
-
+        // Telling the manager (singleton) to read in the files and convert them to
+        // bills
         Manager.getInstance().readFile("Menu.csv");
         Manager.getInstance().readFile("ExistingOrders.csv");
         Manager.getInstance().toBills();
-
+        // Telling the job dispatcher (singleton) to add staff
         JobDispatcher dispatcher = JobDispatcher.getInstance();
         dispatcher.addStaff(staff1);
         dispatcher.addStaff(staff2);
@@ -43,15 +48,15 @@ public class CafeDemo {
         KitchenStaff kitchenStaffModel2 = cook2;
         SliderGUI sliderView = new SliderGUI();
 
+        // Creates the GUI
         gui = new QueueGUI(queueModel, staffModel1, staffModel2, staffModel3, kitchenStaffModel, kitchenStaffModel2);
 
-        // it needs to know about the view and the model
+        // Slider needs to know about the view and the model
         SlideController slideController = new SlideController(sliderView, dispatcher);
 
     }
 
     public static void main(String arg[]) {
-
         CafeDemo cafeDemo = new CafeDemo();
         cafeDemo.setUpGUI();
     }
