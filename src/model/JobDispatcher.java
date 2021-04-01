@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.JOptionPane;
+
 /**
  * Gradually queues bills from AllBills for server(s) to process
  * 
@@ -208,6 +210,8 @@ public class JobDispatcher {
 				System.out.println("All jobs processed, producing report...");
 				Manager.getInstance().writeFile();
 				writeLog();
+				// Print end of program message 
+				JOptionPane.showMessageDialog(null, "Queue completed", "success", JOptionPane.INFORMATION_MESSAGE);
 				System.exit(0);
 
 			}
