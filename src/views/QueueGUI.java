@@ -49,6 +49,7 @@ public class QueueGUI extends JFrame {
         addNorthPanel(queueView);
         addCenterPanel(staffView1, staffView2, staffView3);
         addSouthPanel(kitchenStaffView, kitchenStaffView2);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Making the GUI visible
         setVisible(true);
         pack();
