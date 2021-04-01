@@ -78,9 +78,9 @@ public class StaffDisplay extends JPanel implements Observer {
                 double newDiscountedTotal = newBill.getDiscountedPrice();
                 double newDiscount = newTotal - newDiscountedTotal;
                 // Setting the labels with the values
-                totalLabel.setText("Total: Â£" + decimalFormat.format(newTotal));
-                discountLabel.setText("Discount: Â£" + decimalFormat.format(newDiscount));
-                discountedLabel.setText("Discounted Total: Â£" + decimalFormat.format(newDiscountedTotal));
+                totalLabel.setText("Total: £" + decimalFormat.format(newTotal));
+                discountLabel.setText("Discount: £" + decimalFormat.format(newDiscount));
+                discountedLabel.setText("Discounted Total: £" + decimalFormat.format(newDiscountedTotal));
                 customerLabel.setText("Processing for customer: " + staff.getBill().getCustomerID());
                 // Adding a list to the JTextAre for each order being processed
                 List<Order> orderList = staff.getBill().getOrderList();
