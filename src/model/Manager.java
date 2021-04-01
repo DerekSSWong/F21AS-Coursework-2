@@ -1,10 +1,13 @@
 package model;
 
+import java.io.BufferedReader;
 //Imports for classes
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -31,11 +34,16 @@ public class Manager {
 	public void readFile(String filename) {
 		try {
 			// Tries to find the file
-			File f = new File(filename);
-			Scanner scanner = new Scanner(f);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(filename)));
 			// Whilst there are more lines
-			while (scanner.hasNextLine()) {
-				String inputLine = scanner.nextLine();
+			String inputLine = null;
+			try {
+				inputLine = reader.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			while (inputLine != null) {
 				if (inputLine.length() != 0) {
 					// Calls a different method depending on the file
 					switch (filename) {
@@ -48,10 +56,15 @@ public class Manager {
 					default:
 						throw new FileNotFoundException("File could not be found");
 					}
-
+ 
+				}
+				try {
+					inputLine = reader.readLine();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
-			scanner.close();
 			// Exception if the file can't be found and closes
 		} catch (FileNotFoundException fnf) {
 			System.out.println(fnf);
