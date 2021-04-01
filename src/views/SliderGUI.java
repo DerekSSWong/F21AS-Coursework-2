@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 
 /**
  * 
- * 
- * 
  * @author Dan Ryan, Rose Ulldemolins
  *
  */
@@ -80,18 +78,22 @@ public class SliderGUI extends JFrame {
 
     }
 
+    // Adding a change listener for the slider
     public void addSetListener(ChangeListener changeListener) {
         simulationSpeedSlider.addChangeListener(changeListener);
     }
 
+    // Adding an action listener for the start button
     public void addActionListener(ActionListener actionListener) {
         startSimulation.addActionListener(actionListener);
     }
 
+    // Returning the slider component
     public JSlider getSlider() {
         return simulationSpeedSlider;
     }
 
+    // Returning the slider component
     public JButton getStartButton() {
         return startSimulation;
     }

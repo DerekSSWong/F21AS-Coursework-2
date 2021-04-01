@@ -30,7 +30,9 @@ import java.time.LocalDateTime;
 import javax.swing.table.TableRowSorter;
 
 import model.Bill;
+import model.Item;
 import model.Manager;
+import model.Order;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -116,7 +118,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         menuPanel.add(addButton);
         // Setting border and title
         menuPanel.setBorder(
-                new CompoundBorder(new EmptyBorder(20, 20, 20, 20), BorderFactory.createTitledBorder("../Menu")));
+                new CompoundBorder(new EmptyBorder(20, 20, 20, 20), BorderFactory.createTitledBorder("Menu")));
         return menuPanel;
     }
 

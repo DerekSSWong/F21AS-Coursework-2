@@ -1,4 +1,7 @@
+// Setting the package
 package model;
+
+//Importing class
 import java.time.LocalDateTime;
 
 /**
@@ -22,11 +25,9 @@ public class Order {
 	 * @param item          The item that has been ordered
 	 */
 	public Order(LocalDateTime orderDateTime, int customerID, Item item) {
-
 		this.customerID = customerID;
 		this.item = item;
 		this.orderDateTime = orderDateTime;
-
 	}
 
 	/**

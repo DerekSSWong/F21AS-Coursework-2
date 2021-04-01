@@ -12,14 +12,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
-import controllers.StaffController;
-
 import java.awt.*;
-
+// Importing  models and controllers
 import model.KitchenStaff;
 import model.Queue;
 import model.Staff;
+import controllers.StaffController;
 
 public class QueueGUI extends JFrame {
 
@@ -31,16 +29,18 @@ public class QueueGUI extends JFrame {
     // Constructor
     public QueueGUI(Queue queueModel, Staff staffModel, Staff staffModel2, Staff staffModel3,
             KitchenStaff kitchenStaffModel, KitchenStaff kitchenStaffModel2) {
-
+        // Creating the views from the models
         QueueDisplay queueView = new QueueDisplay(queueModel);
         StaffDisplay staffView1 = new StaffDisplay(staffModel);
         StaffDisplay staffView2 = new StaffDisplay(staffModel2);
         StaffDisplay staffView3 = new StaffDisplay(staffModel3);
+        KitchenStaffDisplay kitchenStaffView = new KitchenStaffDisplay(kitchenStaffModel);
+        KitchenStaffDisplay kitchenStaffView2 = new KitchenStaffDisplay(kitchenStaffModel2);
+        // Creating the controllers from the views and models
         StaffController staffController1 = new StaffController(staffView1, staffModel);
         StaffController staffController2 = new StaffController(staffView2, staffModel2);
         StaffController staffController3 = new StaffController(staffView3, staffModel3);
-        KitchenStaffDisplay kitchenStaffView = new KitchenStaffDisplay(kitchenStaffModel);
-        KitchenStaffDisplay kitchenStaffView2 = new KitchenStaffDisplay(kitchenStaffModel2);
+
         // Setting title for window
         setTitle("Queue");
         // Setting the size of the window
@@ -71,7 +71,7 @@ public class QueueGUI extends JFrame {
     }
 
     public void addSouthPanel(JPanel panel1, JPanel panel2) {
-        // Adding kitchen staff to panel
+        // Adding both kitchen staff to panel
         JPanel kitchenStaffPanel = new JPanel();
         kitchenStaffPanel.add(panel1, BorderLayout.NORTH);
         kitchenStaffPanel.add(panel2, BorderLayout.SOUTH);

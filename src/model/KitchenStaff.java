@@ -1,37 +1,42 @@
+// Stating the package
 package model;
 
+// Importing other classes including concurrency 
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+//Importing model
 import model.Item.ItemCat;
 
 public class KitchenStaff extends Staff {
-
 	final private Condition alert;
-	final private ReentrantLock personallock;
+	final private ReentrantLock personalLock;
 	private KitchenStaff thisStaff;
 	String cookingState = "";
-	Order currentlyCooking = null;
 	Bill currentlyWorking;
 
 	public ReentrantLock getLock() {
-		return personallock;
+		return personalLock;
 	}
 
 	public KitchenStaff(int staffID, String name) {
 		super(staffID, name);
-		personallock = new ReentrantLock();
-		alert = personallock.newCondition();
+		personalLock = new ReentrantLock();
+		alert = personalLock.newCondition();
+		// Moves the staff to the kitchen
 		moveToKitchen(staffID);
 
 	}
 
 	private void moveToKitchen(int staffID) {
+		// Starts a new thread
 		Thread ks = new Thread() {
 			public void run() {
+				// So that it keeps running
 				while (true) {
-					personallock.lock();
+					// Locks, sets the cook to be cooking and then notifies observers
+					personalLock.lock();
 					cookingState = "Waiting to cook";
 					notifyObservers();
 					System.out.println("kitchen staff " + name + " is waiting for meals to cook");
@@ -39,37 +44,41 @@ public class KitchenStaff extends Staff {
 					try {
 						alert.await();
 					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
+
+					// List of items being cooked
 					ArrayList<String> thingsBeingHeatedup = new ArrayList<String>();
-					for(Order od: currentlyWorking.getOrderList()) {
-			        	if(od.getItem().getItemCat() == ItemCat.MAIN) {
-			        		thingsBeingHeatedup.add(od.getItem().getItemName());
-			        		
-			        	}
+					// Loops through the order list of the bill they're currently working
+					for (Order od : currentlyWorking.getOrderList()) {
+						// If it's a main
+						if (od.getItem().getItemCat() == ItemCat.MAIN) {
+							// Then add
+							thingsBeingHeatedup.add(od.getItem().getItemName());
+
+						}
 					}
-					cookingState = "Currently cooking " +  currentlyWorking.getCustomerID() ; 
-					for(String str :thingsBeingHeatedup)
-						cookingState += str + "  ";
-						
-						
-					//cookingState = "Cooking the meal";
+					// Starts off as an empty string
+					cookingState = "";
+					// Loops through the names of items being heated up
+					for (String str : thingsBeingHeatedup)
+						// Adds them to the string with a new line
+						cookingState += str + "\n";
+					// Tells the obsservers
 					notifyObservers();
 					System.out.println("kitchen staff " + name + " is cooking the meal");
-
+					// Thread is sleeping so needs to catch the exception
 					try {
 						Thread.sleep(5000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					// Sets the meal to be returned
 					cookingState = "Returning the meal";
-					notifyObservers();
-					System.out.println("kitchen staff " + getName() + "has cooked the meal, returning it to server");
+					System.out.println("Kitchen staff " + getName() + "has cooked the meal, returning it to server");
 					alert.signal();
-					personallock.unlock();
+					// Unlocks and adds the staff back to the staff list
+					personalLock.unlock();
 					JobDispatcher.getInstance().addCookStaffList(thisStaff);
 					notifyObservers();
 				}
@@ -92,17 +101,5 @@ public class KitchenStaff extends Staff {
 		thisStaff = this;
 		this.currentlyWorking = currentlyWorking;
 	}
-
-	/**
-	 * Sets whether the order the staff is cooking
-	 * 
-	 * @param order
-	 */
-	public void setCurrentlyCooking(Order order) {
-		this.currentlyCooking = order;
-		notifyObservers();
-	}
-	
-	
 
 }
